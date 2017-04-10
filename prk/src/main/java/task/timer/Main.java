@@ -10,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Main extends Application{
+public class Main extends Application { 
 	
 	public void start(Stage primaryStage){
 		
