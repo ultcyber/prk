@@ -28,6 +28,14 @@ public class User {
 	 
 	 @OneToMany(mappedBy="user")
 	 private Set<User> users;
+	 
+	 
+	public User(String login, String firstName, String lastName) {
+		this.login = login;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 
 	public int getId() {
 		return id;
