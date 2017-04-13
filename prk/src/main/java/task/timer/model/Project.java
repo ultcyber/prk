@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.*;
 
 import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 
 @Entity
 @Table(name = "PROJECTS")
@@ -15,21 +17,16 @@ public class Project {
 	private int id;
 
 	@Column(name = "name")
-	private StringProperty name;
+	private String name;
 	
 	@OneToMany(mappedBy="project")
 	private Set<Project> projects;
 
-	public Project(){
-		name.set("Pierwsza próbna nazwa projektu");
-	}
-	
-	
 	public int getId() {
 		return id;
 	}
 
-	public StringProperty getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -37,8 +34,14 @@ public class Project {
 		this.id = id;
 	}
 
-	public void setName(StringProperty name) {
+	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public StringProperty getStringPropertyName(){
+		StringProperty prop = new SimpleStringProperty();
+		prop.setValue(name);
+		return prop;
 	}
 
 }
