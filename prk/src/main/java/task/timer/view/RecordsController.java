@@ -1,19 +1,31 @@
 package task.timer.view;
 
-import arch.task.timer.model.History;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import task.timer.model.Record;
 
-public class HistoryController {
-	@FXML private TableView<History> historyTable;
-	@FXML private TableColumn<History, Integer> userIdColumn;
-	@FXML private TableColumn<History, String> projectNameColumn;
-	@FXML private TableColumn<History, String> workNameColumn;
-	@FXML private TableColumn<History, Long> startTimeColumn;
-	@FXML private TableColumn<History, Long> stopTimeColumn;
+public class RecordsController {
+	@FXML private TableView<Record> recordTable;
+	@FXML private TableColumn<Record, Integer> userIdColumn;
+	@FXML private TableColumn<Record, String> projectNameColumn;
+	@FXML private TableColumn<Record, String> workNameColumn;
+	@FXML private TableColumn<Record, Long> startTimeColumn;
+	@FXML private TableColumn<Record, Long> stopTimeColumn;
 	
+
+@FXML private void initialize(){
+	recordTable.setTableMenuButtonVisible(true);
+	
+	userIdColumn.setCellValueFactory(cellData -> 
+			cellData.getValue().recordIdProperty().asObject());
+	
+	projectNameColumn.setCellValueFactory(cellData ->
+			cellData.getValue().projectNameProperty());
+	
+
+	
+
 }
 
-
-
+}
