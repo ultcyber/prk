@@ -5,7 +5,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import task.timer.model.History;
 
-public class HistoryContoller {
+public class HistoryController {
 	@FXML private TableView<History> historyTable;
 	@FXML private TableColumn<History, Integer> userIdColumn;
 	@FXML private TableColumn<History, String> projectNameColumn;
