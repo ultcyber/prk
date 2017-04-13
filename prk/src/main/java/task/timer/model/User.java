@@ -1,4 +1,4 @@
-package database;
+package task.timer.model;
 import java.util.Set;
 
 import javax.persistence.*;
