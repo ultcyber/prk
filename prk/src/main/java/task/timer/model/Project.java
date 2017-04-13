@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import javafx.beans.property.StringProperty;
+
 @Entity
 @Table(name = "PROJECTS")
 public class Project {
@@ -13,16 +15,21 @@ public class Project {
 	private int id;
 
 	@Column(name = "name")
-	private String name;
+	private StringProperty name;
 	
 	@OneToMany(mappedBy="project")
 	private Set<Project> projects;
 
+	public Project(){
+		name.set("Pierwsza próbna nazwa projektu");
+	}
+	
+	
 	public int getId() {
 		return id;
 	}
 
-	public String getName() {
+	public StringProperty getName() {
 		return name;
 	}
 
@@ -30,7 +37,7 @@ public class Project {
 		this.id = id;
 	}
 
-	public void setName(String name) {
+	public void setName(StringProperty name) {
 		this.name = name;
 	}
 

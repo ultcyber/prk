@@ -4,13 +4,17 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.StringProperty;
+
 @Entity
 @Table(name="RECORDS")
 
 public class Record {
 	 @Id @GeneratedValue
-	 @Column(name = "id")
-	 private int id;
+	 @Column(name = "recordId")
+	 private IntegerProperty recordId;
 	 
 	 @ManyToOne
 	 @JoinColumn(name="user_id")
@@ -28,5 +32,19 @@ public class Record {
 	 
 	 @OneToMany(mappedBy="record")
 	 private Set<Record> records;
+
+	
+	 public Record(){
+		 recordId.set(1);
+	 }
+	 
+	 public IntegerProperty recordIdProperty(){ 
+		 return recordId;
+	 }
+	 
+	 public StringProperty projectNameProperty(){
+		 return project.getName();
+	 }
+
 	 
 }
