@@ -1,4 +1,4 @@
-package task.timer.model;
+package arch.task.timer.model;
 
 import java.util.Date;
 

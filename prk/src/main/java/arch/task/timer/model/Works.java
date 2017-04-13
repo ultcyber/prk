@@ -1,4 +1,4 @@
-package task.timer.model;
+package arch.task.timer.model;
 
 public class Works {
 	private int workId;
