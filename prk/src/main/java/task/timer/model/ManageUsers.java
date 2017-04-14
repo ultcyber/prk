@@ -44,7 +44,7 @@ public class ManageUsers {
       return userID;
    }
    /* Method to  READ all the users */
-   public List<User> listUsers( ){
+   public List<User> listUsers(){
       Session session = factory.openSession();
       Transaction tx = null;
       List<User> users = null;
