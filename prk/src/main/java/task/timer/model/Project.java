@@ -12,16 +12,24 @@ import javafx.beans.property.SimpleStringProperty;
 @Table(name = "PROJECTS")
 public class Project {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
 
 	@Column(name = "name")
 	private String name;
 	
-	@OneToMany(mappedBy="project")
-	private Set<Project> projects;
-
+	//@OneToMany(mappedBy="project")
+	//private Set<Project> projects;
+	
+	public Project(String name){
+		this.name = name;
+	}
+	
+	public Project(){
+		
+	}
+	
 	public int getId() {
 		return id;
 	}

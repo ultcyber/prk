@@ -1,4 +1,5 @@
 package task.timer.model;
+import java.sql.Date;
 import java.util.List;
  
 import org.hibernate.HibernateException; 
@@ -8,10 +9,10 @@ import org.hibernate.cfg.Configuration;
 
 import org.hibernate.SessionFactory;
 
-public class ManageUsers {
+public class ManageProjects {
    private SessionFactory factory;
    
-   public ManageUsers(){
+   public ManageProjects(){
 	   try {
 			factory=new Configuration().configure().buildSessionFactory();}
 		catch(Throwable ex) {
@@ -21,19 +22,19 @@ public class ManageUsers {
 		}
    }
    
-   public ManageUsers(SessionFactory factory){
+   public ManageProjects(SessionFactory factory){
 	   this.factory = factory;
    }
    
-   /* Method to CREATE an employee in the database */
-   public Integer addUser(String login, String password, String fname, String lname, String permissions){
+   /* Method to CREATE a project in the database */
+   public Integer addProject(String name){
       Session session = factory.openSession();
       Transaction tx = null;
-      Integer userID = null;
+      Integer projectID = null;
       try{
          tx = session.beginTransaction();
-         User user = new User(login, password, fname, lname, permissions);
-         userID = (Integer) session.save(user); 
+         Project project = new Project(name);
+         projectID = (Integer) session.save(project); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
@@ -41,38 +42,37 @@ public class ManageUsers {
       }finally {
     	 session.close();
       }
-      return userID;
+      return projectID;
    }
-   /* Method to  READ all the users */
-   public List<User> listUsers( ){
+   /* Method to  READ all the records */
+   public List<Project> listProjects( ){
       Session session = factory.openSession();
       Transaction tx = null;
-      List<User> users = null;
+      List<Project> projects = null;
       try{
          tx = session.beginTransaction();
-         users = session.createQuery("from User").list(); 
+         projects = session.createQuery("from Project").list(); 
          tx.commit();
-         return users;
+         return projects;
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
     	  session.close(); 
       }
-      return users;
+      return projects;
    }
-   /* Method to UPDATE first and last name for a user */
-   public void updateUser(Integer UserID, String firstName, String lastName ){
+   /* Method to UPDATE timeStart and timeStop for a record */
+   public void updateProject(Integer ProjectID, String name ){
       Session session = factory.openSession();
       Transaction tx = null;
       try{
          tx = session.beginTransaction();
-         User user = 
-                    (User)session.get(User.class, UserID); 
-         user.setFirstName( firstName );
-         user.setLastName( lastName );
+         Project project = 
+                    (Project)session.get(Project.class, ProjectID); 
+         project.setName(name);
 
-		 session.update(user); 
+		 session.update(project); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
@@ -81,15 +81,15 @@ public class ManageUsers {
      	 session.close(); 
       }
    }
-   /* Method to DELETE a user from the records */
-   public void deleteUser(Integer UserID){
+   /* Method to DELETE a record from the database */
+   public void deleteUser(Integer ProjectID){
       Session session = factory.openSession();
       Transaction tx = null;
       try{
          tx = session.beginTransaction();
-         User user = 
-                   (User)session.get(User.class, UserID); 
-         session.delete(user); 
+         Project project = 
+                   (Project)session.get(Project.class, ProjectID); 
+         session.delete(project); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();

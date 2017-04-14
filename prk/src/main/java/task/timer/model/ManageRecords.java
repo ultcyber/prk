@@ -1,4 +1,5 @@
 package task.timer.model;
+import java.sql.Date;
 import java.util.List;
  
 import org.hibernate.HibernateException; 
@@ -8,10 +9,10 @@ import org.hibernate.cfg.Configuration;
 
 import org.hibernate.SessionFactory;
 
-public class ManageUsers {
+public class ManageRecords {
    private SessionFactory factory;
    
-   public ManageUsers(){
+   public ManageRecords(){
 	   try {
 			factory=new Configuration().configure().buildSessionFactory();}
 		catch(Throwable ex) {
@@ -21,19 +22,19 @@ public class ManageUsers {
 		}
    }
    
-   public ManageUsers(SessionFactory factory){
+   public ManageRecords(SessionFactory factory){
 	   this.factory = factory;
    }
    
-   /* Method to CREATE an employee in the database */
-   public Integer addUser(String login, String password, String fname, String lname, String permissions){
+   /* Method to CREATE a record in the database */
+   public Integer addRecord(User user, Project project, Date timeStart, Date timeStop){
       Session session = factory.openSession();
       Transaction tx = null;
-      Integer userID = null;
+      Integer recordID = null;
       try{
          tx = session.beginTransaction();
-         User user = new User(login, password, fname, lname, permissions);
-         userID = (Integer) session.save(user); 
+         Record record = new Record(user, project, timeStart, timeStop);
+         recordID = (Integer) session.save(user); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
@@ -41,38 +42,38 @@ public class ManageUsers {
       }finally {
     	 session.close();
       }
-      return userID;
+      return recordID;
    }
-   /* Method to  READ all the users */
-   public List<User> listUsers( ){
+   /* Method to  READ all the records */
+   public List<Record> listRecords( ){
       Session session = factory.openSession();
       Transaction tx = null;
-      List<User> users = null;
+      List<Record> records = null;
       try{
          tx = session.beginTransaction();
-         users = session.createQuery("from User").list(); 
+         records = session.createQuery("from Record").list(); 
          tx.commit();
-         return users;
+         return records;
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
     	  session.close(); 
       }
-      return users;
+      return records;
    }
-   /* Method to UPDATE first and last name for a user */
-   public void updateUser(Integer UserID, String firstName, String lastName ){
+   /* Method to UPDATE timeStart and timeStop for a record */
+   public void updateRecord(Integer RecordID, Date timeStart, Date timeStop ){
       Session session = factory.openSession();
       Transaction tx = null;
       try{
          tx = session.beginTransaction();
-         User user = 
-                    (User)session.get(User.class, UserID); 
-         user.setFirstName( firstName );
-         user.setLastName( lastName );
+         Record record = 
+                    (Record)session.get(Record.class, RecordID); 
+         record.setTimeStart(timeStart);
+         record.setTimeStop(timeStop);
 
-		 session.update(user); 
+		 session.update(record); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
@@ -81,15 +82,15 @@ public class ManageUsers {
      	 session.close(); 
       }
    }
-   /* Method to DELETE a user from the records */
-   public void deleteUser(Integer UserID){
+   /* Method to DELETE a record from the database */
+   public void deleteRecord(Integer RecordID){
       Session session = factory.openSession();
       Transaction tx = null;
       try{
          tx = session.beginTransaction();
-         User user = 
-                   (User)session.get(User.class, UserID); 
-         session.delete(user); 
+         Record record = 
+                   (Record)session.get(Record.class, RecordID); 
+         session.delete(record); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
