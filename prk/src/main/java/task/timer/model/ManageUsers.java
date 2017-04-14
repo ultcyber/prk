@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session; 
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
 import org.hibernate.SessionFactory;
 
 public class ManageUsers {
@@ -15,25 +16,30 @@ public class ManageUsers {
 			factory=new Configuration().configure().buildSessionFactory();}
 		catch(Throwable ex) {
 			System.err.println("Failed to create sessionFactory object." + ex);
+			ex.printStackTrace();
 			throw new ExceptionInInitializerError(ex);
 		}
    }
    
+   public ManageUsers(SessionFactory factory){
+	   this.factory = factory;
+   }
+   
    /* Method to CREATE an employee in the database */
-   public Integer addUser(String login, String fname, String lname){
+   public Integer addUser(String login, String password, String fname, String lname, String permissions){
       Session session = factory.openSession();
       Transaction tx = null;
       Integer userID = null;
       try{
          tx = session.beginTransaction();
-         User user = new User(login, fname, lname);
+         User user = new User(login, password, fname, lname, permissions);
          userID = (Integer) session.save(user); 
          tx.commit();
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
-         session.close(); 
+    	 session.close();
       }
       return userID;
    }
@@ -44,14 +50,14 @@ public class ManageUsers {
       List<User> users = null;
       try{
          tx = session.beginTransaction();
-         users = session.createQuery("FROM USERS").list(); 
+         users = session.createQuery("from User").list(); 
          tx.commit();
          return users;
       }catch (HibernateException e) {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
-         session.close(); 
+    	  session.close(); 
       }
       return users;
    }
@@ -72,7 +78,7 @@ public class ManageUsers {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
-         session.close(); 
+     	 session.close(); 
       }
    }
    /* Method to DELETE an employee from the records */
@@ -89,7 +95,8 @@ public class ManageUsers {
          if (tx!=null) tx.rollback();
          e.printStackTrace(); 
       }finally {
-         session.close(); 
+     	session.close(); 
       }
    }
+   
 }

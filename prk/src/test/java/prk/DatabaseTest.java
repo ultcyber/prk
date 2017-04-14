@@ -1,5 +1,7 @@
 package prk;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,17 +13,28 @@ import task.timer.model.User;
 
 public class DatabaseTest {
 	ManageUsers MM;
+    private SessionFactory sessionFactory;
 
 	@Before
-	public void setUp() {	
-		MM = new ManageUsers();
+	public void setUp() {
+		try {
+			sessionFactory=new Configuration().configure().buildSessionFactory();}
+		catch(Throwable ex) {
+			System.err.println("Failed to create sessionFactory object." + ex);
+			ex.printStackTrace();
+			throw new ExceptionInInitializerError(ex);
+		}
+		MM = new ManageUsers(sessionFactory);
+		
 	}
 	
 	@Test
-	public void adding_a_user_then_retrieving_him_from_database(){
-		  Integer userID1 = MM.addUser("zara89", "Zara", "Ali");
-	      List<User> listUsers = MM.listUsers();
-	      
-	      assertEquals(listUsers.get(0), userID1);	      
+	public void when_I_save_a_new_user_I_get_his_id_from_database(){
+		  Integer userID1 = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw");
+	      List<User> users = MM.listUsers();
+		  assertEquals(Integer.valueOf(users.size()), userID1);	            
 	}
+	
+	
+	
 }
