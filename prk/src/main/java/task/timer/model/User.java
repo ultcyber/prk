@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name="USERS")
 
 public class User {
-	 @Id @GeneratedValue
+	 @Id @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "id")
 	 private int id;
 	 
@@ -23,17 +23,23 @@ public class User {
 	 @Column (name="password")
 	 private String password;
 	 
-	 @Column (name="privileges")
-	 private String privileges;
+	 @Column (name="permissions")
+	 private String permissions;
 	 
-	 @OneToMany(mappedBy="user")
-	 private Set<User> users;
+	 //@OneToMany(mappedBy="user")
+	 //private Set<User> users;
 	 
 	 
-	public User(String login, String firstName, String lastName) {
+	public User(String login, String password, String firstName, String lastName, String permissions) {
 		this.login = login;
+		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.permissions = permissions;
+	}
+	
+	public User(){
+	
 	}
 	
 
@@ -57,8 +63,8 @@ public class User {
 		return password;
 	}
 
-	public String getPrivileges() {
-		return privileges;
+	public String getPermissions() {
+		return permissions;
 	}
 
 	public void setId(int id) {
@@ -81,10 +87,11 @@ public class User {
 		this.password = password;
 	}
 
-	public void setPrivileges(String privileges) {
-		this.privileges = privileges;
+	public void setPermissions(String permissions) {
+		this.permissions = permissions;
 	}
 	
+	@Override
 	public boolean equals(Object other){
 		if (other == this) return true;
 		if (other == null) return false;
@@ -92,13 +99,19 @@ public class User {
 		User user = (User) other;
 		
 		return 
-				getLogin() == user.getLogin() &&
-				getPassword() == user.getPassword() &&
-				getFirstName() == user.getFirstName() &&
-				getLastName() == user.getLastName() &&
-				getPrivileges() == user.getPrivileges();
+				getLogin().equals(user.getLogin()) &&
+				getPassword().equals(user.getPassword()) &&
+				getFirstName().equals(user.getFirstName()) &&
+				getLastName().equals(user.getLastName()) &&
+				getPermissions().equals(user.getPermissions());
 
 				
+	}
+	
+	@Override
+	public int hashCode(){
+		return (int) (id*Math.random()*13*lastName.hashCode());
+		
 	}
 	
 }
