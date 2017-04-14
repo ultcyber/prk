@@ -1,12 +1,11 @@
 package task.timer.model;
-import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="USERS")
 
-public class User {
+public class User extends AbstractEntity {
 	 @Id @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "id")
 	 private int id;

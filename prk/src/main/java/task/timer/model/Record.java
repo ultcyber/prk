@@ -12,7 +12,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 @Entity
 @Table(name="RECORDS")
 
-public class Record {
+public class Record extends AbstractEntity {
 	 @Id @GeneratedValue
 	 @Column(name = "id")
 	 private int id;

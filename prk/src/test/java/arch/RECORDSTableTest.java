@@ -1,20 +1,22 @@
-package prk;
+package arch;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
+
+import arch.task.timer.model.ManageRecords;
+import arch.task.timer.model.ManageUsers;
+
 import static org.junit.Assert.*;
 
 import java.util.List;
 
-import task.timer.model.ManageProjects;
-import task.timer.model.ManageUsers;
-import task.timer.model.Project;
 import task.timer.model.User;
 
-public class PROJECTSTableTest {
-	ManageProjects MP;
+public class RECORDSTableTest {
+	ManageUsers MM;
+	ManageRecords MR;
     private SessionFactory sessionFactory;
 
 	@Before
@@ -26,17 +28,14 @@ public class PROJECTSTableTest {
 			ex.printStackTrace();
 			throw new ExceptionInInitializerError(ex);
 		}
-		MP = new ManageProjects(sessionFactory);
+		MM = new ManageUsers(sessionFactory);
+		MR = new ManageRecords(sessionFactory);
 		
 	}
 	
 	@Test
-	public void when_I_save_a_new_user_I_get_his_id_from_database(){
-		  Integer project = MP.addProject("FirstProject");
-	      List<Project> projects = MP.listProjects();
-		  assertEquals(Integer.valueOf(projects.size()), project);	            
+	public void when_creating_a_new_project_for_existing_user_and_project_I_get_id(){
+	      List<User> users = MM.listUsers();
+	      // TODO: finish the test
 	}
-	
-	
-
 }

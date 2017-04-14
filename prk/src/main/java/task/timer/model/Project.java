@@ -1,7 +1,5 @@
 package task.timer.model;
 
-import java.util.Set;
-
 import javax.persistence.*;
 
 import javafx.beans.property.StringProperty;
@@ -10,7 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 @Entity
 @Table(name = "PROJECTS")
-public class Project {
+public class Project extends AbstractEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

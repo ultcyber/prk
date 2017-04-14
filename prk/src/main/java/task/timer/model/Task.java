@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="TASKS")
 
-public class Task {
+public class Task extends AbstractEntity {
 	@Id @GeneratedValue
 	@Column(name = "id")
 	 private int id;

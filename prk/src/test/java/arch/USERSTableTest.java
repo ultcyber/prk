@@ -1,20 +1,20 @@
-package prk;
+package arch;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
+
+import arch.task.timer.model.ManageUsers;
+
 import static org.junit.Assert.*;
 
 import java.util.List;
 
-import task.timer.model.ManageRecords;
-import task.timer.model.ManageUsers;
 import task.timer.model.User;
 
-public class RECORDSTableTest {
+public class USERSTableTest {
 	ManageUsers MM;
-	ManageRecords MR;
     private SessionFactory sessionFactory;
 
 	@Before
@@ -27,13 +27,23 @@ public class RECORDSTableTest {
 			throw new ExceptionInInitializerError(ex);
 		}
 		MM = new ManageUsers(sessionFactory);
-		MR = new ManageRecords(sessionFactory);
 		
 	}
 	
 	@Test
-	public void when_creating_a_new_project_for_existing_user_and_project_I_get_id(){
+	public void when_I_save_a_new_user_I_get_his_id_from_database(){
+		  Integer user = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw");
 	      List<User> users = MM.listUsers();
-	      // TODO: finish the test
+		  assertEquals(Integer.valueOf(users.size()), user);	            
 	}
+	
+	@Test
+	public void when_adding_a_user_then_I_can_retrieve_his_data(){
+	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw");
+		  List<User> users = MM.listUsers();
+		  User userFromDb = users.get(users.size()-1);
+		  
+		  assertTrue(compareUser.equals(userFromDb));	      
+	}
+
 }

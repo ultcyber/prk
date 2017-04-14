@@ -1,4 +1,4 @@
-package task.timer.model;
+package arch.task.timer.model;
 import java.sql.Date;
 import java.util.List;
  
@@ -6,6 +6,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session; 
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+
+import task.timer.model.Project;
+import task.timer.model.Record;
+import task.timer.model.User;
 
 import org.hibernate.SessionFactory;
 
