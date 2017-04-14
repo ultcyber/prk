@@ -27,33 +27,38 @@ public class RecordsController {
 	@FXML private Label measuredTime;
 	@FXML private ChoiceBox projectChoice;
 	
-	private int licznikCzasu;
-	private Timer t;
+	private int timeCounter;
+	private Timer time;
 	
+	
+	private void startTimeMeaserement(Label measuredTimeLabel){
+		time = new Timer(1000, e -> {				
+			timeCounter++;
+			int timeHour = timeCounter/3600;
+			int rest = timeCounter%3600;										
+			int timeMinutes = rest/60;
+			int timeSeconds = rest%60;			
+			Platform.runLater(() -> measuredTime.setText(timeHour + ":" + timeMinutes + ":" + timeSeconds));
+		});		
+		time.start();
+	}
+	
+	private void stopTimeMeaserement(){
+		time.stop();
+	}
 	
 	@FXML private void timing(){
 		if (startStopTime.getText().equals("START")){
 			startStopTime.setText("STOP");	
 			projectChoice.setDisable(true);
-			licznikCzasu=0;
+			timeCounter=0;
 			measuredTime.setText("0:0:0");
-		
-			t = new Timer(1000, e -> {				
-				licznikCzasu++;
-				int timeHour = licznikCzasu/3600;
-				int reszta = licznikCzasu%3600;										
-				int timeMinutes = reszta/60;
-				int timeSeconds = reszta%60;
-				
-				Platform.runLater(() -> measuredTime.setText(timeHour + ":" + timeMinutes + ":" + timeSeconds));
-			});
 			
-			t.start();
-		}
-				
+			startTimeMeaserement(measuredTime);		
+		}				
 		else {
 			startStopTime.setText("START");
-			t.stop();
+			stopTimeMeaserement();
 			projectChoice.setDisable(false);
 		}
 	}
