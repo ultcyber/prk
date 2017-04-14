@@ -91,6 +91,7 @@ public class User {
 		this.permissions = permissions;
 	}
 	
+	@Override
 	public boolean equals(Object other){
 		if (other == this) return true;
 		if (other == null) return false;
@@ -98,13 +99,19 @@ public class User {
 		User user = (User) other;
 		
 		return 
-				getLogin() == user.getLogin() &&
-				getPassword() == user.getPassword() &&
-				getFirstName() == user.getFirstName() &&
-				getLastName() == user.getLastName() &&
-				getPermissions() == user.getPermissions();
+				getLogin().equals(user.getLogin()) &&
+				getPassword().equals(user.getPassword()) &&
+				getFirstName().equals(user.getFirstName()) &&
+				getLastName().equals(user.getLastName()) &&
+				getPermissions().equals(user.getPermissions());
 
 				
+	}
+	
+	@Override
+	public int hashCode(){
+		return (int) (id*Math.random()*13*lastName.hashCode());
+		
 	}
 	
 }

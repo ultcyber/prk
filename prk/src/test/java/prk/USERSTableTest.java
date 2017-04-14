@@ -11,7 +11,7 @@ import java.util.List;
 import task.timer.model.ManageUsers;
 import task.timer.model.User;
 
-public class DatabaseTest {
+public class USERSTableTest {
 	ManageUsers MM;
     private SessionFactory sessionFactory;
 
@@ -30,11 +30,18 @@ public class DatabaseTest {
 	
 	@Test
 	public void when_I_save_a_new_user_I_get_his_id_from_database(){
-		  Integer userID1 = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw");
+		  Integer user = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw");
 	      List<User> users = MM.listUsers();
-		  assertEquals(Integer.valueOf(users.size()), userID1);	            
+		  assertEquals(Integer.valueOf(users.size()), user);	            
 	}
 	
-	
-	
+	@Test
+	public void when_adding_a_user_then_I_can_retrieve_his_data(){
+	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw");
+		  List<User> users = MM.listUsers();
+		  User userFromDb = users.get(users.size()-1);
+		  
+		  assertTrue(compareUser.equals(userFromDb));	      
+	}
+
 }
