@@ -85,4 +85,20 @@ public class User {
 		this.privileges = privileges;
 	}
 	
+	public boolean equals(Object other){
+		if (other == this) return true;
+		if (other == null) return false;
+		if (getClass() != other.getClass()) return false;
+		User user = (User) other;
+		
+		return 
+				getLogin() == user.getLogin() &&
+				getPassword() == user.getPassword() &&
+				getFirstName() == user.getFirstName() &&
+				getLastName() == user.getLastName() &&
+				getPrivileges() == user.getPrivileges();
+
+				
+	}
+	
 }
