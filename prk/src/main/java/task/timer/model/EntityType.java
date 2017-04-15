@@ -2,15 +2,20 @@ package task.timer.model;
 
 public enum EntityType {
 	
-	User("User"),
-	Record("Record"),
-	Task("Task"),
-	Project("Project");
 	
-	private String type;
+	User("task.timer.model.User"),
+	Record("task.timer.model.Record"),
+	Task("task.timer.model.Task"),
+	Project("task.timer.model.Project");
 	
-	EntityType(String type){
-		this.type = type;
+	private String classType;
+	
+	EntityType(String classType){
+		this.classType = classType;
+	}
+	
+	public String getClassType(){
+		return classType;
 	}
 
 }

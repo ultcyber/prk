@@ -79,7 +79,7 @@ public void delete(int id) throws ClassNotFoundException {
     try{
        tx = session.beginTransaction();
        AbstractEntity existingEntity = 
-               (AbstractEntity)session.get(Class.forName(entityType.toString()), id); 
+               (AbstractEntity)session.get(Class.forName(entityType.getClassType()), id); 
        session.delete(existingEntity); 
        tx.commit();
     }catch (HibernateException e) {
