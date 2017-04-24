@@ -15,7 +15,7 @@ import task.timer.model.RecordFx;
 import task.timer.model.User;
 
 public class ManagerTabAddEmployeerController {
-	ManageUsers MM;
+	ManageEntity MM;
     private SessionFactory sessionFactory;
     
 	private final ObservableList<User> dataUsers = 
@@ -29,11 +29,11 @@ public class ManagerTabAddEmployeerController {
 			ex.printStackTrace();
 			throw new ExceptionInInitializerError(ex);
 		}
-		MM = new ManageUsers(sessionFactory);
+		MM = new ManageEntity(sessionFactory);
 		
-		List<User> users = MM.listUsers();
+		List<AbstractEntity> users = MM.list();
 		
-		User userFromDb = users.get(users.size()-1);
+		User userFromDb =   (User) users.get(users.size()-1);
 		
 		
 		dataUsers.add(userFromDb);

@@ -99,11 +99,7 @@ public class RecordsController {
 	}
 
 	private void readProjectsFromDataBase(){
-		dataProjects.add(new Project(0, "Projekt pierwszy"));
-		dataProjects.add(new Project(1, "Projekt drugi"));
-		dataProjects.add(new Project(2, "Projekt trzeci"));
-		dataProjects.add(new Project(3, "Projekt czwarty"));
-		dataProjects.add(new Project(4, "Projekt piąty"));
+
 	}
 	
 	private void readRecordsFromDataBase(){

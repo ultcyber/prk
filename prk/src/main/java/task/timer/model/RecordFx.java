@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class RecordToTableView {
+public class RecordFx {
 	private final SimpleStringProperty projectName;
 	private final SimpleStringProperty workName;
 	private final SimpleStringProperty timeStartRecord;
@@ -14,7 +14,7 @@ public class RecordToTableView {
 	private DateFormat df = new SimpleDateFormat("yyyyMMdd HH:mm");
 	
 
-	public RecordToTableView(String pName, String wName, String timeStart, String timeStop){
+	public RecordFx(String pName, String wName, String timeStart, String timeStop){
 		this.projectName = new SimpleStringProperty(pName);
 		this.workName = new SimpleStringProperty(wName); 
 		this.timeStartRecord = new SimpleStringProperty(timeStart);
