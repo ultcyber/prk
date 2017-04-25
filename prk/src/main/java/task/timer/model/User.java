@@ -2,6 +2,11 @@ package task.timer.model;
 
 import javax.persistence.*;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 @Entity
 @Table(name="USERS")
 
@@ -45,6 +50,11 @@ public class User extends AbstractEntity {
 	public int getId() {
 		return id;
 	}
+	
+	public IntegerProperty getIdProperty(){
+		SimpleIntegerProperty idProperty = new SimpleIntegerProperty(id);
+		return idProperty;
+	}
 
 	public String getLogin() {
 		return login;
@@ -53,9 +63,19 @@ public class User extends AbstractEntity {
 	public String getFirstName() {
 		return firstName;
 	}
+	
+	public StringProperty getFirstNameProperty(){
+		SimpleStringProperty firstNameProperty = new SimpleStringProperty(firstName);
+		return firstNameProperty;
+	}
 
 	public String getLastName() {
 		return lastName;
+	}
+	
+	public StringProperty getLastNameProperty(){
+		SimpleStringProperty lastNameProperty = new SimpleStringProperty(lastName);
+		return lastNameProperty;
 	}
 
 	public String getPassword() {
