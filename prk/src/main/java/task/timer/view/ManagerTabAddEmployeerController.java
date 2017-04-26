@@ -34,6 +34,8 @@ public class ManagerTabAddEmployeerController {
 	@FXML private TextField userLogin;
 	@FXML private TextField userPassword;
 	@FXML private ChoiceBox userPermissions;
+
+	
 	
 	@FXML private Label lackUserName;
 	@FXML private Label lackUserLastName;
