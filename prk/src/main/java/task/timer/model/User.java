@@ -42,6 +42,15 @@ public class User extends AbstractEntity {
 		this.permissions = permissions;
 	}
 	
+	public User(int id, String login, String password, String firstName, String lastName, String permissions) {
+		this.id = id;
+		this.login = login;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.permissions = permissions;
+	}
+	
 	public User(){
 	
 	}
