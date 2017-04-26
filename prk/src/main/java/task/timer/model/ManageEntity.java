@@ -52,7 +52,7 @@ public Integer add(AbstractEntity entity) {
     return entityID;
 }
 
-@Override
+/*@Override
 public void update(int id, AbstractEntity newEntity) throws ClassNotFoundException {
 	Session session = factory.openSession();
     Transaction tx = null;
@@ -61,6 +61,7 @@ public void update(int id, AbstractEntity newEntity) throws ClassNotFoundExcepti
        AbstractEntity existingEntity = 
                   (AbstractEntity)session.get(Class.forName(entityType.toString()), id); 
        existingEntity = newEntity;
+       
        session.update(existingEntity); 
        tx.commit();
     }catch (HibernateException e) {
@@ -68,8 +69,23 @@ public void update(int id, AbstractEntity newEntity) throws ClassNotFoundExcepti
        e.printStackTrace(); 
     }finally {
    	 session.close(); 
-    }
-	
+    }	
+}*/
+
+@Override
+public void update(AbstractEntity newEntity) throws ClassNotFoundException {
+	Session session = factory.openSession();
+    Transaction tx = null;
+    try{
+       tx = session.beginTransaction();          
+       session.update(newEntity); 
+       tx.commit();
+    }catch (HibernateException e) {
+       if (tx!=null) tx.rollback();
+       e.printStackTrace(); 
+    }finally {
+   	 session.close(); 
+    }	
 }
 
 @Override
