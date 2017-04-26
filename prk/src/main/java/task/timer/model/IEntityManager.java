@@ -8,7 +8,7 @@ public interface IEntityManager {
 	
 	List<AbstractEntity> list();
 	
-	void update(int id, AbstractEntity compareEntity) throws ClassNotFoundException;
+	void update(AbstractEntity compareEntity) throws ClassNotFoundException;
 	
 	void delete(int id) throws ClassNotFoundException;
 	
