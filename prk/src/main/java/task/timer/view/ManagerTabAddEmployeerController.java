@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -34,6 +35,12 @@ public class ManagerTabAddEmployeerController {
 	@FXML private TextField userPassword;
 	@FXML private ChoiceBox userPermissions;
 	
+	@FXML private Label lackUserName;
+	@FXML private Label lackUserLastName;
+	@FXML private Label lackUserLogin;
+	@FXML private Label lackUserPassword;
+	@FXML private Label lackUserPermissions;
+	
 	private String permission;
     
 	private final ObservableList<User> dataUsers = 
@@ -47,6 +54,12 @@ public class ManagerTabAddEmployeerController {
 		usersTable.getSelectionModel().selectedItemProperty()
 			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTable(newValue));
 		
+		lackUserName.setVisible(false);
+		lackUserLastName.setVisible(false);
+		lackUserLogin.setVisible(false);
+		lackUserPassword.setVisible(false);
+		lackUserPermissions.setVisible(false);
+		
 		readAndShowUsersFromDataBase();		
 		refreshInformationsFromTable(null);
 		userPermissions.getItems().addAll("administrator", "manager", "pracownik");
@@ -59,13 +72,12 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	@FXML private void updateUser() throws ClassNotFoundException{
+		int positionInTable;
 		
-		//aktualna pozycja zaznaczonego usera (ID) w bazie
-		System.out.println(usersTable.getSelectionModel().getSelectedItem().getId());
-		
-		MM.update(
-				usersTable.getSelectionModel().getSelectedItem().getId(), 
+		positionInTable = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
+		MM.update(				 
 				new User(
+						usersTable.getSelectionModel().getSelectedItem().getId(),
 						userLogin.getText(), 
 						userPassword.getText(), 
 						userName.getText(), 
@@ -73,18 +85,30 @@ public class ManagerTabAddEmployeerController {
 						permission));
 
 		readAndShowUsersFromDataBase();
+		usersTable.getSelectionModel().select(positionInTable); // ustaw podswietlenie na bieżący wiersz
 	}
 	
-	@FXML private Integer addUser(){
-		Integer userID = MM.add(
+	@FXML void addUser(){
+		if (isAllFieldsAreFull() && (isLoginUnique())){		
+			Integer userID = MM.add(
 				new User(
 						userLogin.getText(), 
 						userPassword.getText(), 
 						userName.getText(), 
 						userLastName.getText(), 
 						permission));
+		}
+		// pokaż aktualny stan bazy pracowników
 		readAndShowUsersFromDataBase();
-		return userID;
+		usersTable.getSelectionModel().select(usersTable.getItems().size()-1); // ustaw podswietlenie na ostatni wiersz
+	}
+	
+	@FXML private void deleteUser() throws ClassNotFoundException{
+		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
+		{
+			MM.delete(usersTable.getSelectionModel().getSelectedItem().getId());
+			readAndShowUsersFromDataBase();
+		}
 	}
 	
 	private void readAndShowUsersFromDataBase(){
@@ -121,6 +145,48 @@ public class ManagerTabAddEmployeerController {
 			userPassword.setText("");
 			userPermissions.getSelectionModel().select(null);
 		}
+	}
+	
+	private boolean isAllFieldsAreFull(){
+		boolean lack = true;
+		if (userName.getText().equals("")) {
+			lackUserName.setVisible(true);		
+			lack = false;
+		}
+		if (userLastName.getText().equals("")) {
+			lackUserLastName.setVisible(true);
+			lack = false;
+		}
+		if (userLogin.getText().equals("")) {
+			lackUserLogin.setText("to pole nie może być puste");
+			lackUserLogin.setVisible(true);
+			lack = false;
+		}
+		if (userPassword.getText().equals("")) {
+			lackUserPassword.setVisible(true);
+			lack = false;
+		}
+		if (userPermissions.getSelectionModel().getSelectedIndex() <= -1) {
+			lackUserPermissions.setVisible(true);
+			lack = false;
+		}
+		System.out.println(lack);
+		return lack;
+	}
+	
+	private boolean isLoginUnique(){
+		List<AbstractEntity> users = MM.list();	
+		for (int i=0; i<users.size(); i++){
+			User userFromDb =   (User) users.get(i);		
+			if (userFromDb.getLogin().equals(userLogin.getText())) {
+				lackUserLogin.setText("taki login już istnieje");
+				lackUserLogin.setVisible(true);
+				System.out.println("false");
+				return false;
+			}
+		}	
+		System.out.println("true");
+		return true;
 	}
 
 }
