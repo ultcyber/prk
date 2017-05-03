@@ -13,54 +13,48 @@ import javafx.beans.property.SimpleIntegerProperty;
 @Table(name="RECORDS")
 
 public class Record extends AbstractEntity {
-	 @Id @GeneratedValue
-	 @Column(name = "id")
+	
 	 private int id;
-	 
-	 private User user;	 
-
-	 @Column(name="project")
+	 private User user;	
 	 private Project project;
-	 
-	 @Column(name="timeStart")
 	 private Date timeStart;
-	 
-	 @Column(name="timeStop")
 	 private Date timeStop;
 	 
-	 
-	 
-	 public IntegerProperty getIntegerPropertyId(){
-		 SimpleIntegerProperty prop = new SimpleIntegerProperty();
-		 prop.setValue(id);
-		 return prop;
-	 }
-
 	public Record(User user, Project project, Date timeStart, Date timeStop) {
 		this.user = user;
 		this.project = project;
 		this.timeStart = timeStart;
 		this.timeStop = timeStop;
 	}
+	
+	public Record(){
+	
+	}
 
+	@Id @GeneratedValue
+	@Column(name = "id")
 	public int getId() {
 		return id;
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="user")
 	public User getUser() {
 		return user;
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="project")
 	public Project getProject() {
 		return project;
 	}
 
+	@Column(name="timeStart")
 	public Date getTimeStart() {
 		return timeStart;
 	}
 
+	@Column(name="timeStop")
 	public Date getTimeStop() {
 		return timeStop;
 	}
