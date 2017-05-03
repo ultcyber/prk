@@ -32,7 +32,8 @@ THIS IS JUST A SCHEMA - REAL FILE NEEDS TO BE IN hibernate.cfg.xml
    
    <mapping class="task.timer.model.User"></mapping>
    <mapping class="task.timer.model.Project"></mapping>
-   
+   <mapping class="task.timer.model.Record"></mapping>
+   <mapping class="task.timer.model.Task"></mapping>   
 
 </session-factory>
 </hibernate-configuration>

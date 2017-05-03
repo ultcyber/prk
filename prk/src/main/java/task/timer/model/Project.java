@@ -9,16 +9,9 @@ import javafx.beans.property.SimpleStringProperty;
 @Entity
 @Table(name = "PROJECTS")
 public class Project extends AbstractEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	private int id;
-
-	@Column(name = "name")
-	private String name;
 	
-	//@OneToMany(mappedBy="project")
-	//private Set<Project> projects;
+	private int id;
+	private String name;
 	
 	public Project(String name){
 		this.name = name;
@@ -28,10 +21,14 @@ public class Project extends AbstractEntity {
 		
 	}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	public int getId() {
 		return id;
 	}
-
+	
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -44,10 +41,5 @@ public class Project extends AbstractEntity {
 		this.name = name;
 	}
 	
-	public StringProperty getStringPropertyName(){
-		StringProperty prop = new SimpleStringProperty();
-		prop.setValue(name);
-		return prop;
-	}
 
 }

@@ -7,14 +7,50 @@ import javax.persistence.*;
 @Table(name="TASKS")
 
 public class Task extends AbstractEntity {
-	@Id @GeneratedValue
-	@Column(name = "id")
-	 private int id;
 	
-	@Column(name="description")
-	private String description;
-	
-	@ManyToOne
-	@JoinColumn(name="record_id")
+	private int id;	
+	private String description;	
 	private Record record;
+	
+	public Task(Record record, String description) {
+		this.record = record;
+		this.description = description;
+	}
+	
+	public Task(){
+	
+	}
+
+	@Id 	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+		
+	@Column(name="description")
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+
+	@ManyToOne
+	@JoinColumn(name="record")
+	public Record getRecord() {
+		return record;
+	}
+
+	public void setRecord(Record record) {
+		this.record = record;
+	}
+	
+	
 }
