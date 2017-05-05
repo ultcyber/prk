@@ -20,7 +20,7 @@ import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.RecordFx;
 
-public class RecordsController {
+public class MainEmployeerController {
 	@FXML private TableView<RecordFx> recordTable;
 	@FXML private TableColumn<RecordFx, Integer> userIdColumn;
 	@FXML private TableColumn<RecordFx, String> projectNameColumn;

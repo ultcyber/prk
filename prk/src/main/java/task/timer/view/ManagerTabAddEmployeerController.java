@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import arch.task.timer.model.ManageUsers;
+import arch.task.timer.model.UserFx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,7 +21,6 @@ import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
 import task.timer.model.RecordFx;
 import task.timer.model.User;
-import task.timer.model.UserFx;
 
 public class ManagerTabAddEmployeerController {
 	ManageEntity MM = new MEFactory().getUserEntityManager();
