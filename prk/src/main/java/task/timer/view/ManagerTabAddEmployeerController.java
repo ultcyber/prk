@@ -29,19 +29,17 @@ public class ManagerTabAddEmployeerController {
 	@FXML private TableColumn<User, String> userNameColumn;
 	@FXML private TableColumn<User, String> userLastNameColumn;
 	
-	@FXML private TextField userName;
-	@FXML private TextField userLastName;
-	@FXML private TextField userLogin;
-	@FXML private TextField userPassword;
-	@FXML private ChoiceBox userPermissions;
-
+	@FXML private TextField userNameField;
+	@FXML private TextField userLastNameField;
+	@FXML private TextField userLoginField;
+	@FXML private TextField userPasswordField;
+	@FXML private ChoiceBox userPermissionsBox;
 	
-	
-	@FXML private Label lackUserName;
-	@FXML private Label lackUserLastName;
-	@FXML private Label lackUserLogin;
-	@FXML private Label lackUserPassword;
-	@FXML private Label lackUserPermissions;
+	@FXML private Label lackUserNameLabel;
+	@FXML private Label lackUserLastNameLabel;
+	@FXML private Label lackUserLoginLabel;
+	@FXML private Label lackUserPasswordLabel;
+	@FXML private Label lackUserPermissionsLabel;
 	
 	private String permission;
     
@@ -54,55 +52,90 @@ public class ManagerTabAddEmployeerController {
 		userLastNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getLastNameProperty());		
 		usersTable.getSelectionModel().selectedItemProperty()
-			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTable(newValue));
-		
-		lackUserName.setVisible(false);
-		lackUserLastName.setVisible(false);
-		lackUserLogin.setVisible(false);
-		lackUserPassword.setVisible(false);
-		lackUserPermissions.setVisible(false);
+			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTableView(newValue));
+				
+		lackUserNameLabel.setVisible(false);
+		lackUserLastNameLabel.setVisible(false);
+		lackUserLoginLabel.setVisible(false);
+		lackUserPasswordLabel.setVisible(false);
+		lackUserPermissionsLabel.setVisible(false);
 		
 		readAndShowUsersFromDataBase();		
-		refreshInformationsFromTable(null);
-		userPermissions.getItems().addAll("administrator", "manager", "pracownik");
-		userPermissions.getSelectionModel().selectedIndexProperty()
+		refreshInformationsFromTableView(null);
+		
+		userPermissionsBox.getItems().addAll("administrator", "manager", "pracownik");
+		userPermissionsBox.getSelectionModel().selectedIndexProperty()
 			.addListener((observable, oldValue, newValue) -> setPermission());
+	}
+	
+	@FXML private void hideLackUserNameLabel(){
+		lackUserNameLabel.setVisible(false);
+	}
+	
+	@FXML private void hideLackUserLastNameLabel(){
+		lackUserLastNameLabel.setVisible(false);
+	}
+	
+	@FXML private void hideLackUserLoginLabel(){
+		lackUserLoginLabel.setVisible(false);
+	}
+	
+	@FXML private void hideLackUserPasswordLabel(){
+		lackUserPasswordLabel.setVisible(false);
+	}
+	
+	@FXML private void hideLackUserPermissionsLabel(){
+		lackUserPermissionsLabel.setVisible(false);
 	}
 	
 	@FXML private void clearFields(){
 		usersTable.getSelectionModel().clearSelection();
+		userNameField.clear();;
+		userLastNameField.clear();
+		userLoginField.clear();
+		userPasswordField.clear();
+		userPermissionsBox.getSelectionModel().select(null);
 	}
 	
 	@FXML private void updateUser() throws ClassNotFoundException{
-		int positionInTable;
+		int currentPositionInTableView;
 		
-		positionInTable = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
-		MM.update(				 
-				new User(
-						usersTable.getSelectionModel().getSelectedItem().getId(),
-						userLogin.getText(), 
-						userPassword.getText(), 
-						userName.getText(), 
-						userLastName.getText(), 
-						permission));
-
-		readAndShowUsersFromDataBase();
-		usersTable.getSelectionModel().select(positionInTable); // ustaw podswietlenie na bieżący wiersz
+		// jeśli wszystkie pola są wypełnione i jeśli login jest unikalny
+		// metoda isLoginUnique przeszuka wszystkich userów poza bieżącym
+		if ((isAllFieldsAreFull()) && (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
+					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
+					MM.update(				 
+							new User(
+									usersTable.getSelectionModel().getSelectedItem().getId(),
+									userLoginField.getText(), 
+									userPasswordField.getText(), 
+									userNameField.getText(), 
+									userLastNameField.getText(), 
+									permission));
+					// pokaż aktualny stan bazy pracowników
+					readAndShowUsersFromDataBase();
+					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+				}
+		
 	}
 	
 	@FXML void addUser(){
-		if (isAllFieldsAreFull() && (isLoginUnique())){		
+		int currentPositionInTableView;
+		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny; 
+		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
+		if (isAllFieldsAreFull() && (isLoginUnique(-1))){		
 			Integer userID = MM.add(
 				new User(
-						userLogin.getText(), 
-						userPassword.getText(), 
-						userName.getText(), 
-						userLastName.getText(), 
+						userLoginField.getText(), 
+						userPasswordField.getText(), 
+						userNameField.getText(), 
+						userLastNameField.getText(), 
 						permission));
+			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
+			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
+			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 		}
-		// pokaż aktualny stan bazy pracowników
-		readAndShowUsersFromDataBase();
-		usersTable.getSelectionModel().select(usersTable.getItems().size()-1); // ustaw podswietlenie na ostatni wiersz
+		
 	}
 	
 	@FXML private void deleteUser() throws ClassNotFoundException{
@@ -124,70 +157,74 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void setPermission(){
-		if (userPermissions.getSelectionModel().getSelectedIndex() == 0) permission = "A";
-		else if (userPermissions.getSelectionModel().getSelectedIndex() == 1) permission = "rw";
-		else if (userPermissions.getSelectionModel().getSelectedIndex() == 2) permission = "r";
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 0) permission = "A";
+		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1) permission = "rw";
+		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 2) permission = "r";
 		
 	}
 	
-	private void refreshInformationsFromTable(User usr){
+	private void refreshInformationsFromTableView(User usr){
+		lackUserNameLabel.setVisible(false);
+		lackUserLastNameLabel.setVisible(false);
+		lackUserLoginLabel.setVisible(false);
+		lackUserPasswordLabel.setVisible(false);
+		lackUserPermissionsLabel.setVisible(false);
 		if (usr != null){
-			userName.setText(usr.getFirstName());
-			userLastName.setText(usr.getLastName());
-			userLogin.setText(usr.getLogin());
-			userPassword.setText(usr.getPassword());
-			if (usr.getPermissions().equals("A")) userPermissions.getSelectionModel().select(0);
-			if (usr.getPermissions().equals("rw")) userPermissions.getSelectionModel().select(1);
-			if (usr.getPermissions().equals("r")) userPermissions.getSelectionModel().select(2);
+			userNameField.setText(usr.getFirstName());
+			userLastNameField.setText(usr.getLastName());
+			userLoginField.setText(usr.getLogin());
+			userPasswordField.setText(usr.getPassword());
+			if (usr.getPermissions().equals("A")) userPermissionsBox.getSelectionModel().select(0);
+			if (usr.getPermissions().equals("rw")) userPermissionsBox.getSelectionModel().select(1);
+			if (usr.getPermissions().equals("r")) userPermissionsBox.getSelectionModel().select(2);
 		}
 		else {
-			userName.setText("");
-			userLastName.setText("");
-			userLogin.setText("");
-			userPassword.setText("");
-			userPermissions.getSelectionModel().select(null);
+			userNameField.setText("");
+			userLastNameField.setText("");
+			userLoginField.setText("");
+			userPasswordField.setText("");
+			userPermissionsBox.getSelectionModel().select(null);
 		}
 	}
 	
 	private boolean isAllFieldsAreFull(){
 		boolean lack = true;
-		if (userName.getText().equals("")) {
-			lackUserName.setVisible(true);		
+		if (userNameField.getText().equals("")) {
+			lackUserNameLabel.setVisible(true);				
 			lack = false;
 		}
-		if (userLastName.getText().equals("")) {
-			lackUserLastName.setVisible(true);
+		if (userLastNameField.getText().equals("")) {
+			lackUserLastNameLabel.setVisible(true);
 			lack = false;
 		}
-		if (userLogin.getText().equals("")) {
-			lackUserLogin.setText("to pole nie może być puste");
-			lackUserLogin.setVisible(true);
+		if (userLoginField.getText().equals("")) {
+			lackUserLoginLabel.setText("to pole nie może być puste");
+			lackUserLoginLabel.setVisible(true);
 			lack = false;
 		}
-		if (userPassword.getText().equals("")) {
-			lackUserPassword.setVisible(true);
+		if (userPasswordField.getText().equals("")) {
+			lackUserPasswordLabel.setVisible(true);
 			lack = false;
 		}
-		if (userPermissions.getSelectionModel().getSelectedIndex() <= -1) {
-			lackUserPermissions.setVisible(true);
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() <= -1) {
+			lackUserPermissionsLabel.setVisible(true);
 			lack = false;
 		}
-		System.out.println(lack);
 		return lack;
 	}
 	
-	private boolean isLoginUnique(){
+	// metoda sprawdza czy login jest unikalny bez uwzględniania bieżacego usera
+	private boolean isLoginUnique(int currentUserId){
 		List<AbstractEntity> users = MM.list();	
 		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);		
-			if (userFromDb.getLogin().equals(userLogin.getText())) {
-				lackUserLogin.setText("taki login już istnieje");
-				lackUserLogin.setVisible(true);
-				System.out.println("false");
+			User userFromDb =   (User) users.get(i);
+			if (currentUserId == userFromDb.getId()) continue;
+			if (userFromDb.getLogin().equals(userLoginField.getText())) {
+				lackUserLoginLabel.setText("taki login już istnieje");
+				lackUserLoginLabel.setVisible(true);
 				return false;
 			}
 		}	
-		System.out.println("true");
 		return true;
 	}
 

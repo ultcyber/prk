@@ -52,12 +52,12 @@
                               </Label>
                               <VBox prefHeight="40.0" prefWidth="380.0">
                                  <children>
-                                    <Label fx:id="lackUserName" text="to pole nie może być puste" textFill="RED">
+                                    <Label fx:id="lackUserNameLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userName" maxWidth="370.0" minWidth="370.0" prefHeight="27.0" prefWidth="370.0" />
+                                    <TextField fx:id="userNameField" maxWidth="370.0" minWidth="370.0" onKeyTyped="#hideLackUserNameLabel" prefHeight="27.0" prefWidth="370.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -74,12 +74,12 @@
                               </Label>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label fx:id="lackUserLastName" text="to pole nie może być puste" textFill="RED">
+                                    <Label fx:id="lackUserLastNameLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userLastName" maxWidth="337.0" minWidth="337.0" prefHeight="27.0" prefWidth="337.0" />
+                                    <TextField fx:id="userLastNameField" maxWidth="337.0" minWidth="337.0" onKeyTyped="#hideLackUserLastNameLabel" prefHeight="27.0" prefWidth="337.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -93,12 +93,12 @@
                               </Label>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label fx:id="lackUserLogin" text="to pole nie może być puste" textFill="RED">
+                                    <Label fx:id="lackUserLoginLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userLogin" minWidth="363.0" prefHeight="27.0" prefWidth="362.0" />
+                                    <TextField fx:id="userLoginField" minWidth="363.0" onKeyTyped="#hideLackUserLoginLabel" prefHeight="27.0" prefWidth="362.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -112,12 +112,12 @@
                               </Label>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                  <children>
-                                    <Label fx:id="lackUserPassword" text="to pole nie może być puste" textFill="RED">
+                                    <Label fx:id="lackUserPasswordLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userPassword" minWidth="362.0" prefHeight="27.0" prefWidth="362.0" />
+                                    <TextField fx:id="userPasswordField" minWidth="362.0" onKeyTyped="#hideLackUserPasswordLabel" prefHeight="27.0" prefWidth="362.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -131,12 +131,12 @@
                               </Label>
                               <VBox maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="130.0">
                                  <children>
-                                    <Label fx:id="lackUserPermissions" prefWidth="130.0" text="ustaw uprawnienia" textFill="RED">
+                                    <Label fx:id="lackUserPermissionsLabel" prefWidth="130.0" text="ustaw uprawnienia" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <ChoiceBox fx:id="userPermissions" prefHeight="27.0" prefWidth="130.0" />
+                                    <ChoiceBox fx:id="userPermissionsBox" onMouseDragEntered="#hideLackUserPermissionsLabel" prefHeight="27.0" prefWidth="130.0" />
                                  </children>
                               </VBox>
                               <Button mnemonicParsing="false" onAction="#clearFields" text="Wyczyść pola">
