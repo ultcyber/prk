@@ -1,5 +1,8 @@
 package task.timer.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import javafx.beans.property.IntegerProperty;
@@ -30,10 +33,10 @@ public class User extends AbstractEntity {
 	 @Column (name="permissions")
 	 private String permissions;
 	 
-	 //@OneToMany(mappedBy="user")
-	 //private Set<User> users;
+	 @ManyToMany(mappedBy="users")  
+	 private Set<Project> projects = new HashSet<Project>();
 	 
-	 
+	 	
 	public User(String login, String password, String firstName, String lastName, String permissions) {
 		this.login = login;
 		this.password = password;
@@ -117,6 +120,10 @@ public class User extends AbstractEntity {
 
 	public void setPermissions(String permissions) {
 		this.permissions = permissions;
+	}
+	 
+	public Set<Project> getProjects() {
+	    return projects;
 	}
 	
 	@Override
