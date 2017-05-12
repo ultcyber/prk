@@ -126,7 +126,9 @@ public class User extends AbstractEntity {
 	    return projects;
 	}
 	
-	@Override
+	
+	
+@Override
 	public boolean equals(Object other){
 		if (other == this) return true;
 		if (other == null) return false;
@@ -143,10 +145,23 @@ public class User extends AbstractEntity {
 				
 	}
 	
+	
 	@Override
-	public int hashCode(){
-		return (int) (id*Math.random()*13*lastName.hashCode());
-		
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public String toString(){
+		return firstName + " " + lastName;
 	}
 	
 }
