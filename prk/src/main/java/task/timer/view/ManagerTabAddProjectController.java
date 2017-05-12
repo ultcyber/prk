@@ -58,7 +58,7 @@ public class ManagerTabAddProjectController {
 		projectNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getNameProjectProperty());		
 		projectsTable.getSelectionModel().selectedItemProperty()
-			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTableView(newValue));
+			.addListener((observable, oldValue, newValue) -> showDataOfProject(newValue));
 		
 		userNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getFirstNameProperty());
@@ -72,7 +72,7 @@ public class ManagerTabAddProjectController {
 			
 		readAndShowProjectsFromDataBase();	
 		
-		refreshInformationsFromTableView(null);
+		showDataOfProject(null);
 	}
 	
 	private void readAndShowProjectsFromDataBase(){
@@ -86,7 +86,7 @@ public class ManagerTabAddProjectController {
 		projectsTable.setItems(dataProjects);
 	}
 		
-	private void refreshInformationsFromTableView(Project project){
+	private void showDataOfProject(Project project){
 		if (project != null){
 			projectNameField.setText(project.getName());			
 			dataUsersInProject.clear();
