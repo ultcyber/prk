@@ -43,7 +43,7 @@ public class ManagerTabAddProjectController {
 	@FXML private TableColumn<User, String> userNameInProjectColumn;
 	@FXML private TableColumn<User, String> userLastNameInProjectColumn;
 	
-	@FXML private Label projectNameLabel;
+	@FXML private TextField projectNameField;
 	
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
@@ -69,62 +69,100 @@ public class ManagerTabAddProjectController {
 			cellData.getValue().getFirstNameProperty());
 		userLastNameInProjectColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getLastNameProperty());	
-	
-		
+			
 		readAndShowProjectsFromDataBase();	
-		readAndShowUsersFromDataBase();
+		
 		refreshInformationsFromTableView(null);
 	}
 	
 	private void readAndShowProjectsFromDataBase(){
 		List<AbstractEntity> projects; 	
-		projects = MMProject.list();	
-		
+		projects = MMProject.list();			
 		dataProjects.clear();
-		
 		for (int i=0; i<projects.size(); i++){				
 			Project projectFromDb =   (Project) projects.get(i);	
-			dataProjects.add(projectFromDb);		
-			
+			dataProjects.add(projectFromDb);					
 		}		
 		projectsTable.setItems(dataProjects);
 	}
+		
+	private void refreshInformationsFromTableView(Project project){
+		if (project != null){
+			projectNameField.setText(project.getName());			
+			dataUsersInProject.clear();
+			Set<User> usersOfProject = MMProject.listUsersOfProject(project.getId());			
+			if (!usersOfProject.isEmpty()){		
+				Iterator<User> wskaznik = usersOfProject.iterator();					
+				for (User i : usersOfProject)
+					if (wskaznik.hasNext()) 
+						dataUsersInProject.add(wskaznik.next());				
+			}
+			usersInProjectTable.setItems(dataUsersInProject);
+			readAndShowAvailableUsersFromDataBase(usersOfProject);
+		}
+		else {
+			projectNameField.setText("");
+		}
+	}
 	
-	private void readAndShowUsersFromDataBase(){
+	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
 		List<AbstractEntity> users = MMUser.list();	
 		dataUsers.clear();
 		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);		
-			dataUsers.add(userFromDb);
-			System.out.println(userFromDb);
+			User userFromDb =   (User) users.get(i);				
+			// dodaj do TableView jeśli userFromDb nie jest jeszcze przypięty do projektu
+			if (!usersOfProject.contains(userFromDb))
+				dataUsers.add(userFromDb);
 		}		
 		usersTable.setItems(dataUsers);
 	}
 	
-	private void refreshInformationsFromTableView(Project project){
-		if (project != null){
-			projectNameLabel.setText(project.getName());
-			
-			dataUsersInProject.clear();
-			Set<User> usersOfProject = MMProject.listUsersOfProject(project.getId());
-			
-			if (!usersOfProject.isEmpty()){
-			
-				Iterator<User> wskaznik = usersOfProject.iterator();
-					
-				for (User i : usersOfProject){
-					if (wskaznik.hasNext()) 
-						dataUsersInProject.add(wskaznik.next());
-					}
-
-				usersInProjectTable.setItems(dataUsersInProject);
-			}
-		}
-		else {
-			projectNameLabel.setText("");
+	
+	@FXML private void addUserToProject(){
+		if (usersTable.getSelectionModel().getSelectedIndex() > -1){	
+			User userToAdd = usersTable.getSelectionModel().selectedItemProperty().get();
+			dataUsersInProject.add(userToAdd);
+			dataUsers.remove(userToAdd);
 		}
 	}
 	
+	@FXML private void removeUserFromProject(){
+		if (usersInProjectTable.getSelectionModel().getSelectedIndex() > -1){	
+			User userToRemove = usersInProjectTable.getSelectionModel().selectedItemProperty().get();
+			dataUsersInProject.remove(userToRemove);			
+			dataUsers.add(userToRemove);
+		}
+	}
 	
+	@FXML private void updateProject() throws ClassNotFoundException{	
+		int currentPositionInTableView;
+		if (!projectNameField.getText().equals("")) {
+			Set<User> userToUpdate = new HashSet<User>();			
+			for (int i=0; i < dataUsersInProject.size(); i++)
+				userToUpdate.add(dataUsersInProject.get(i));							
+			usersInProjectTable.setItems(dataUsersInProject);
+			currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
+			MMProject.update(
+					new Project(
+						projectsTable.getSelectionModel().getSelectedItem().getId(),
+						projectNameField.getText(),
+						userToUpdate
+						));
+			readAndShowProjectsFromDataBase();
+			projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+		}
+	}
+	
+	@FXML private void addProject(){
+		int currentPositionInTableView;
+		if (!newProjectName.getText().equals("")) {
+			Integer projectID = MMProject.add(
+					new Project(
+							newProjectName.getText()));			
+		}	
+		currentPositionInTableView = projectsTable.getItems().size();
+		readAndShowProjectsFromDataBase();
+		projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+	}
 	
 }
