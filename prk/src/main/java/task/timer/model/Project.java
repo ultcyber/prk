@@ -27,6 +27,16 @@ public class Project extends AbstractEntity {
 			inverseJoinColumns = { @JoinColumn(name = "USER_ID") })	
 	private Set<User> users = new HashSet<User>();
 
+	public Project(int id, String name, Set<User> users){
+		this.id = id;
+		this.name = name;
+		this.users = users;
+	}
+	
+	public Project(int id, String name){
+		this.id = id;
+		this.name = name;
+	}
 	
 	public Project(String name){
 		this.name = name;
