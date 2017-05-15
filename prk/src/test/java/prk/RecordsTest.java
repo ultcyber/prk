@@ -39,7 +39,7 @@ public class RecordsTest {
 	
 	}
 	
-	@Test
+	/*@Test
 	public void when_I_save_a_new_record_of_certain_user_and_project_I_get_its_id_from_database(){
 		  
 		  List<AbstractEntity> users = MU.list();
@@ -56,6 +56,6 @@ public class RecordsTest {
 	      
 		  assertEquals(Integer.valueOf(lastRecordID), recordID);            
 	}
-	
+	*/
 
 }

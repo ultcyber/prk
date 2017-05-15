@@ -31,7 +31,7 @@ public class ManageRecords {
    }
    
    /* Method to CREATE a record in the database */
-   public Integer addRecord(User user, Project project, Date timeStart, Date timeStop){
+   /*public Integer addRecord(User user, Project project, Date timeStart, Date timeStop){
       Session session = factory.openSession();
       Transaction tx = null;
       Integer recordID = null;
@@ -47,7 +47,7 @@ public class ManageRecords {
     	 session.close();
       }
       return recordID;
-   }
+   }*/
    /* Method to  READ all the records */
    public List<Record> listRecords( ){
       Session session = factory.openSession();
@@ -67,7 +67,7 @@ public class ManageRecords {
       return records;
    }
    /* Method to UPDATE timeStart and timeStop for a record */
-   public void updateRecord(Integer RecordID, Date timeStart, Date timeStop ){
+   /*public void updateRecord(Integer RecordID, Date timeStart, Date timeStop ){
       Session session = factory.openSession();
       Transaction tx = null;
       try{
@@ -85,7 +85,7 @@ public class ManageRecords {
       }finally {
      	 session.close(); 
       }
-   }
+   }*/
    /* Method to DELETE a record from the database */
    public void deleteRecord(Integer RecordID){
       Session session = factory.openSession();
