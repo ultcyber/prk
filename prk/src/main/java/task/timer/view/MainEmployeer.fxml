@@ -14,13 +14,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="400.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.MainEmployeerController">
+<AnchorPane prefHeight="800.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.MainEmployeerController">
    <children>
-      <Pane prefHeight="400.0" prefWidth="710.0">
+      <Pane prefHeight="800.0" prefWidth="710.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#37ff2100" height="389.0" layoutX="4.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="699.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="90.0" layoutX="11.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
+            <Label layoutX="11.0" layoutY="14.0" text="Zalogowano:" />
+            <Label layoutX="106.0" layoutY="14.0" text="NAZWA UŻYTKOWNIKA" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#37ff2100" height="789.0" layoutX="4.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="699.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff4f00" height="44.0" layoutX="456.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="233.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="90.0" layoutX="11.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
             <VBox prefHeight="149.0" prefWidth="699.0">
                <children>
                   <HBox prefHeight="136.0" prefWidth="672.0">
@@ -42,12 +44,12 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="460.0">
                                  <children>
-                                    <Label text="Zadanie:">
+                                    <Label text="Opis:">
                                        <HBox.margin>
                                           <Insets left="20.0" right="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="taskName" prefHeight="33.0" prefWidth="367.0" />
+                                    <TextField fx:id="descriptionName" prefHeight="33.0" prefWidth="386.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -57,7 +59,7 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="91.0" prefWidth="226.0">
                            <children>
-                              <DatePicker fx:id="date">
+                              <DatePicker fx:id="date" onAction="#readAndShowRecordsFromDataBase">
                                  <VBox.margin>
                                     <Insets right="5.0" top="10.0" />
                                  </VBox.margin>
@@ -98,11 +100,11 @@
                   </HBox>
                </children>
             </VBox>
-            <TableView fx:id="recordTable" layoutX="11.0" layoutY="158.0" prefHeight="203.0" prefWidth="683.0" tableMenuButtonVisible="true">
+            <TableView fx:id="recordTable" editable="true" layoutX="11.0" layoutY="158.0" prefHeight="626.0" prefWidth="683.0" tableMenuButtonVisible="true">
               <columns>
                   <TableColumn fx:id="dateColumn" prefWidth="89.0" resizable="false" text="Data" />
                 <TableColumn fx:id="projectNameColumn" prefWidth="123.0" resizable="false" text="Projekt" />
-                  <TableColumn fx:id="workNameColumn" prefWidth="284.0" resizable="false" text="Zadanie" />
+                  <TableColumn fx:id="descriptionColumn" onEditCommit="#onEditDescription" prefWidth="284.0" resizable="false" text="Opis" />
                   <TableColumn prefWidth="143.0" resizable="false" text="Czas pracy">
                      <columns>
                       <TableColumn fx:id="startTimeColumn" prefWidth="85.0" resizable="false" text="Początek" />
@@ -114,8 +116,6 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <Label layoutX="11.0" layoutY="14.0" text="Zalogowano:" />
-            <Label layoutX="106.0" layoutY="14.0" text="NAZWA UŻYTKOWNIKA" />
          </children>
       </Pane>
    </children>

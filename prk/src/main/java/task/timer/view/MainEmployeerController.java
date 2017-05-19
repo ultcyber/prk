@@ -25,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
@@ -41,7 +42,7 @@ public class MainEmployeerController {
 	@FXML private TableView<Record> recordTable;
 	@FXML private TableColumn<Record, String> dateColumn;
 	@FXML private TableColumn<Record, String> projectNameColumn;
-	@FXML private TableColumn<Record, String> workNameColumn;
+	@FXML private TableColumn<Record, String> descriptionColumn;
 	@FXML private TableColumn<Record, String> startTimeColumn;
 	@FXML private TableColumn<Record, String> stopTimeColumn;
 	
@@ -50,7 +51,7 @@ public class MainEmployeerController {
 	@FXML private Label measuredTimeMinutesLabel;
 	@FXML private Label measuredTimeSecondsLabel;
 	@FXML private ChoiceBox projectChoice;
-	@FXML private TextField taskName;
+	@FXML private TextField descriptionName;
 	@FXML private DatePicker date;
 	
 	private final String pattern = "yyyy-MM-dd";
@@ -67,6 +68,7 @@ public class MainEmployeerController {
 	List<AbstractEntity> users;
 	private int indexOfCurrentProject;
 	User loggedUser;
+	Record newRecord;
 	
 	private final ObservableList<Record> dataRecords = 
 			FXCollections.observableArrayList();
@@ -75,72 +77,114 @@ public class MainEmployeerController {
 	
 		
 	@FXML private void timing() throws ClassNotFoundException{
-		if (startStopTime.getText().equals("START")){
-			setVisualAfterStartButton();						
-			timeStart = LocalTime.now();
-			startTimeMeaserement();			
-			addNewRecordToDataBase();	
-			readAndShowRecordsFromDataBase();		
-		}				
-		else {
-			startStopTime.setText("START");
-			stopTimeMeaserement();
-			projectChoice.setDisable(false);
-			taskName.setDisable(false);
-			date.setDisable(false);
+		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		
+		// zareaguj gdy jest wybrany projekt
+		if (indexOfCurrentProject>-1){	
+			if (startStopTime.getText().equals("START")){
+				int currentPositionInTableView;
+				disableElements();						
+				timeStart = LocalTime.now();
+				startTimeMeaserement();			
+				addNewRecordToDataBase();	
+				
+				currentPositionInTableView = recordTable.getItems().size();
+				readAndShowRecordsFromDataBase();		
+				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+			}				
+			else {
+				enableElements();
+				timeStop = LocalTime.now();
+				stopTimeMeaserement();
+				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);
+				
+				updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+			}
 		}
 	}
 
-@FXML private void initialize(){
-	loggedUser = setLoggedUser();
+	@FXML private void initialize(){
+		loggedUser = setLoggedUser();
 	
-	setDatePicker();
-	currentDate = date.getValue();	
+		setDatePicker();
+		currentDate = date.getValue();	
 	
-	dateColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getDateProperty());
-
-	projectNameColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getProjectName());
+		dateColumn.setCellValueFactory(cellData ->
+			cellData.getValue().getDateProperty());
+		projectNameColumn.setCellValueFactory(cellData ->
+			cellData.getValue().getProjectName());			
+		descriptionColumn.setCellValueFactory(cellData ->
+			cellData.getValue().getDescriptionProperty());			
+		descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola	
+		startTimeColumn.setCellValueFactory(cellData ->
+			cellData.getValue().getTimeStartProperty());	
+		stopTimeColumn.setCellValueFactory(cellData ->
+			cellData.getValue().getTimeStopProperty());	
 		
-	//workNameColumn.setCellValueFactory(cellData ->
-	//	cellData.getValue().get);
+		recordTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			
+		});
 	
-	startTimeColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getTimeStartProperty());
-	
-	stopTimeColumn.setCellValueFactory(
-			new PropertyValueFactory<>("timeStopRecord"));
-	
-	
-    projectChoice.setItems(readProjectsFromDataBase());
-
+		projectChoice.setItems(readProjectsFromDataBase());
     
-    readAndShowRecordsFromDataBase();
-	//recordTable.setItems(dataRecords);
+		readAndShowRecordsFromDataBase();
+	}
 
-}
-	private void setVisualAfterStartButton(){
+	@FXML private void readAndShowRecordsFromDataBase(){
+		currentDate = date.getValue();
+		List<AbstractEntity> records; 	
+		records = MMRecord.list();			
+		dataRecords.clear();
+		for (int i=0; i<records.size(); i++){				
+			Record recordFromDb =   (Record) records.get(i);
+			if (recordFromDb.getDate().equals(currentDate) && (recordFromDb.getUser().equals(loggedUser)))
+				dataRecords.add(recordFromDb);					
+		}		
+		recordTable.setItems(dataRecords);	
+	}
+	
+	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
+		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
+		updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+		
+	}
+
+	private void disableElements(){
 		startStopTime.setText("STOP");	
 		projectChoice.setDisable(true);
-		taskName.setDisable(true);
-		date.setDisable(true);		
+		descriptionName.setDisable(true);
+		date.setDisable(true);	
+		recordTable.setDisable(true);
 		measuredTimeHoursLabel.setText("0");	
 		measuredTimeMinutesLabel.setText("0");
 		measuredTimeSecondsLabel.setText("0");
 	}
 	
+	private void enableElements(){
+		startStopTime.setText("START");
+		projectChoice.setDisable(false);
+		descriptionName.setDisable(false);
+		date.setDisable(false);
+		recordTable.setDisable(false);
+	}
+	
 	private void addNewRecordToDataBase(){
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();	    
-	    Project currentProject = (Project)projects.get(indexOfCurrentProject);	    
-	    Integer recordID = MMRecord.add(
-	    		new Record(
-	    				loggedUser, 
-	    				currentProject, 
-	    				currentDate,
-	    				timeStart,
-	    				timeStart
-	    				));
+		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();		
+	    Project currentProject = (Project)projects.get(indexOfCurrentProject);	  
+	    Record newRecord = new Record(
+				loggedUser, 
+				currentProject, 
+				descriptionName.getText(),
+				currentDate,
+				timeStart,
+				timeStart
+				);	    
+	    Integer recordID = MMRecord.add(newRecord);
+	}
+	
+	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
+		MMRecord.update(recordToUpdate);
+		readAndShowRecordsFromDataBase();
 	}
 
 	private User setLoggedUser(){
@@ -203,15 +247,6 @@ public class MainEmployeerController {
 		return listProjectsName;
 	}
 	
-	private void readAndShowRecordsFromDataBase(){
-		List<AbstractEntity> records; 	
-		records = MMRecord.list();			
-		dataRecords.clear();
-		for (int i=0; i<records.size(); i++){				
-			Record recordFromDb =   (Record) records.get(i);	
-			dataRecords.add(recordFromDb);					
-		}		
-		recordTable.setItems(dataRecords);	
-	}
+
 
 }
