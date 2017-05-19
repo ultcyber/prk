@@ -18,10 +18,11 @@ import javafx.beans.property.StringProperty;
 
 public class Record extends AbstractEntity {
 	 
-	public Record(User user, Project project, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
+	public Record(User user, Project project, String description, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
 		this.user = user;
 		this.project = project;
 		this.date = date;
+		this.description = description;
 		this.timeStart = timeStart;
 		this.timeStop = timeStop;
 	}
@@ -42,6 +43,9 @@ public class Record extends AbstractEntity {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="project")
 	private Project project;
+	
+	@Column(name="description")
+	private String description;	
 
 	@Column(name="date")
 	private LocalDate date;
@@ -87,6 +91,19 @@ public class Record extends AbstractEntity {
 		this.project = project;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public StringProperty getDescriptionProperty(){
+		SimpleStringProperty descriptionProperty = new SimpleStringProperty(description);
+		return descriptionProperty;
+	}
+	
 	public StringProperty getProjectName(){
 		SimpleStringProperty projectNameProperty = new SimpleStringProperty(project.getName());
 		return projectNameProperty;
@@ -122,10 +139,6 @@ public class Record extends AbstractEntity {
 		return date;
 	}
 
-	public void setTimeStop(LocalDate date) {
-		this.date = date;
-	}
-	
 	public StringProperty getDateProperty(){
 		SimpleStringProperty dateProperty = new SimpleStringProperty(date.toString());
 		return dateProperty;
