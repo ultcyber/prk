@@ -246,7 +246,15 @@ public class MainEmployeerController {
 		}		
 		return listProjectsName;
 	}
-	
 
+	public User getLoggedUser() {
+		return loggedUser;
+	}
+
+	public void setLoggedUser(User loggedUser) {
+		this.loggedUser = loggedUser;
+	}
+	
+	
 
 }

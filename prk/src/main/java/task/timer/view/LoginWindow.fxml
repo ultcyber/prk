@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="demo.LoginController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.LoginWindowController">
   <children>
     <AnchorPane id="anchorPane2" prefHeight="300.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
@@ -18,7 +18,7 @@
             <AnchorPane id="AnchorPane" prefHeight="180.0" prefWidth="430.0">
               <children>
                 <Label id="label1" layoutX="14.0" layoutY="67.0" text="Nazwa użytkownika" />
-                <TextField id="usernameField" fx:id="userId" layoutY="86.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
+                <TextField id="usernameField" fx:id="username" layoutY="86.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
                 <Label id="label1" layoutX="14.0" layoutY="139.0" text="Hasło" />
                 <PasswordField id="passwordField" fx:id="password" layoutY="157.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0">
                            <opaqueInsets>
@@ -31,13 +31,12 @@
                 </ImageView>
               </children>
             </AnchorPane>
-                  <Label text="Wybierz rolę" />
-                  <ComboBox id="roleDropdown" prefHeight="25.0" prefWidth="230.0" />
+                  <Label fx:id="errorBox" prefHeight="43.0" prefWidth="372.0" textFill="RED" />
           </children>
         </VBox>
       </children>
     </AnchorPane>
-    <Button id="button1" fx:id="login" defaultButton="true" onAction="#processLogin" prefHeight="70.0" prefWidth="400.0" text="Zaloguj się" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+    <Button id="button1" fx:id="login" defaultButton="true" layoutX="40.0" layoutY="309.0" onAction="#processLogin" onMouseClicked="#processLogin" prefHeight="70.0" prefWidth="400.0" text="Zaloguj się" AnchorPane.bottomAnchor="121.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
     <HBox id="hBox1" alignment="CENTER" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
       <children>
         <Label id="label2" fx:id="errorMessage" />

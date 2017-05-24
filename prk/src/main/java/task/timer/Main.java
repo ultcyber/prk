@@ -1,6 +1,7 @@
 package task.timer;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 
@@ -11,11 +12,13 @@ public class Main extends Application{
 	
 	public void start(Stage primaryStage){
 	
-
+			
 			
 			ViewLoader<AnchorPane, Object> viewLoader = 
 					//new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
 					new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
+					//new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
+
 			
 			AnchorPane anchorPane = viewLoader.getLayout();
 			
@@ -32,5 +35,6 @@ public class Main extends Application{
 		launch(args);
 
 	}
+	
 
 }
