@@ -30,7 +30,7 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException {
 		
-		User loggedUser = login(username.getText(), password.getText());
+		User loggedUser = login();
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
 			ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
@@ -50,12 +50,12 @@ public class LoginWindowController {
 	}
 	
 	@FXML
-	public User login(String username, String password ){
+	public User login(){
 		List<AbstractEntity> users = MM.list();
 		for (AbstractEntity user : users){
 			User thisUser = (User) user;
 			
-			if (thisUser.getLogin().equals(username) && thisUser.getPassword().equals(password)){
+			if (thisUser.getLogin().equals(username.getText()) && thisUser.getPassword().equals(password.getText())){
 				return thisUser;
 			}
 		}
