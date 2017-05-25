@@ -16,8 +16,8 @@ public class Main extends Application{
 			
 			ViewLoader<AnchorPane, Object> viewLoader = 
 					//new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
-					new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
-					//new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
+					//new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
+					new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
 
 			
 			AnchorPane anchorPane = viewLoader.getLayout();

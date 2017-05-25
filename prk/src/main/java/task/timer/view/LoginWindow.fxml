@@ -36,7 +36,7 @@
         </VBox>
       </children>
     </AnchorPane>
-    <Button id="button1" fx:id="login" defaultButton="true" layoutX="40.0" layoutY="309.0" onAction="#processLogin" onMouseClicked="#processLogin" prefHeight="70.0" prefWidth="400.0" text="Zaloguj się" AnchorPane.bottomAnchor="121.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
+    <Button id="button1" fx:id="login" defaultButton="true" layoutX="40.0" layoutY="309.0" onAction="#processLogin" prefHeight="70.0" prefWidth="400.0" text="Zaloguj się" AnchorPane.bottomAnchor="121.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" />
     <HBox id="hBox1" alignment="CENTER" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
       <children>
         <Label id="label2" fx:id="errorMessage" />
