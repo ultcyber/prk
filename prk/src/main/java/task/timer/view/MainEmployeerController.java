@@ -75,34 +75,6 @@ public class MainEmployeerController {
 	private final ObservableList<Project> dataProjects =
 			FXCollections.observableArrayList();
 	
-		
-	@FXML private void timing() throws ClassNotFoundException{
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
-		
-		// zareaguj gdy jest wybrany projekt
-		if (indexOfCurrentProject>-1){	
-			if (startStopTime.getText().equals("START")){
-				int currentPositionInTableView;
-				disableElements();						
-				timeStart = LocalTime.now();
-				startTimeMeaserement();			
-				addNewRecordToDataBase();	
-				
-				currentPositionInTableView = recordTable.getItems().size();
-				readAndShowRecordsFromDataBase();		
-				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
-			}				
-			else {
-				enableElements();
-				timeStop = LocalTime.now();
-				stopTimeMeaserement();
-				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);
-				
-				updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
-			}
-		}
-	}
-
 	@FXML private void initialize(){
 		loggedUser = setLoggedUser();
 	
@@ -128,6 +100,33 @@ public class MainEmployeerController {
 		projectChoice.setItems(readProjectsFromDataBase());
     
 		readAndShowRecordsFromDataBase();
+	}
+	
+	@FXML private void timing() throws ClassNotFoundException{
+		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		
+		// zareaguj gdy jest wybrany projekt
+		if (indexOfCurrentProject>-1){	
+			if (startStopTime.getText().equals("START")){
+				int currentPositionInTableView;
+				disableElements();						
+				timeStart = LocalTime.now();
+				startTimeMeaserement();			
+				addNewRecordToDataBase();	
+				
+				currentPositionInTableView = recordTable.getItems().size();
+				readAndShowRecordsFromDataBase();		
+				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+			}				
+			else {
+				enableElements();
+				timeStop = LocalTime.now();
+				stopTimeMeaserement();
+				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);
+				
+				updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+			}
+		}
 	}
 
 	@FXML private void readAndShowRecordsFromDataBase(){
