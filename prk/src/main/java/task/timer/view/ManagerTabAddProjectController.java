@@ -29,8 +29,7 @@ public class ManagerTabAddProjectController {
 	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
 	ManageEntity MMUser = new MEFactory().getUserEntityManager();
 	
-	@FXML private TextField newProjectName;
-	@FXML private Button addButton;
+	List<AbstractEntity> projects;
 	
 	@FXML private TableView<Project> projectsTable;
 	@FXML private TableColumn<Project, String> projectNameColumn;
@@ -44,6 +43,10 @@ public class ManagerTabAddProjectController {
 	@FXML private TableColumn<User, String> userLastNameInProjectColumn;
 	
 	@FXML private TextField projectNameField;
+	@FXML private TextField newProjectNameField;
+	
+	@FXML private Label lackProjectNameLabel1;
+	@FXML private Label lackProjectNameLabel2;
 	
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
@@ -70,13 +73,27 @@ public class ManagerTabAddProjectController {
 		userLastNameInProjectColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getLastNameProperty());	
 			
+		lackProjectNameLabel1.setVisible(false);
+		lackProjectNameLabel2.setVisible(false);
+		
 		readAndShowProjectsFromDataBase();	
 		
 		showDataOfProject(null);
 	}
 	
-	private void readAndShowProjectsFromDataBase(){
-		List<AbstractEntity> projects; 	
+	@FXML private void hideLackProjectNameLabel1(){
+		lackProjectNameLabel1.setVisible(false);
+	}
+	
+	@FXML private void hideLackProjectNameLabel2(){
+		lackProjectNameLabel2.setVisible(false);
+	}
+	
+	public void refreshAvailableUsersOnInterface(){
+		showDataOfProject(projectsTable.getSelectionModel().getSelectedItem());
+	}
+	
+	private void readAndShowProjectsFromDataBase(){ 	
 		projects = MMProject.list();			
 		dataProjects.clear();
 		for (int i=0; i<projects.size(); i++){				
@@ -103,6 +120,8 @@ public class ManagerTabAddProjectController {
 		else {
 			projectNameField.setText("");
 		}
+		hideLackProjectNameLabel1();
+		hideLackProjectNameLabel2();
 	}
 	
 	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
@@ -136,33 +155,99 @@ public class ManagerTabAddProjectController {
 	
 	@FXML private void updateProject() throws ClassNotFoundException{	
 		int currentPositionInTableView;
-		if (!projectNameField.getText().equals("")) {
-			Set<User> userToUpdate = new HashSet<User>();			
-			for (int i=0; i < dataUsersInProject.size(); i++)
-				userToUpdate.add(dataUsersInProject.get(i));							
-			usersInProjectTable.setItems(dataUsersInProject);
-			currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
-			MMProject.update(
+		if (isProjectNameFieldFull()) 
+			if (isProjectUnique(projectsTable.getSelectionModel().getSelectedItem().getId())){
+				Set<User> userToUpdate = new HashSet<User>();			
+				for (int i=0; i < dataUsersInProject.size(); i++)
+					userToUpdate.add(dataUsersInProject.get(i));							
+				usersInProjectTable.setItems(dataUsersInProject);
+				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
+				MMProject.update(
 					new Project(
 						projectsTable.getSelectionModel().getSelectedItem().getId(),
 						projectNameField.getText(),
 						userToUpdate
 						));
-			readAndShowProjectsFromDataBase();
-			projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
-		}
+				readAndShowProjectsFromDataBase();
+				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+			}
+			else {
+				lackProjectNameLabel2.setText("taki projekt już istnieje");
+				lackProjectNameLabel2.setVisible(true);
+			}
 	}
 	
 	@FXML private void addProject(){
 		int currentPositionInTableView;
-		if (!newProjectName.getText().equals("")) {
-			Integer projectID = MMProject.add(
+		if (isNewProjectNameFieldsFull()) 
+			if (isNewProjectUnique(newProjectNameField.getText())){
+				Integer projectID = MMProject.add(
 					new Project(
-							newProjectName.getText()));			
-		}	
+							newProjectNameField.getText()));	
+					newProjectNameField.setText("");
+				}	
+				else {
+					lackProjectNameLabel1.setText("taki projekt już istnieje");
+					lackProjectNameLabel1.setVisible(true);
+				}
 		currentPositionInTableView = projectsTable.getItems().size();
 		readAndShowProjectsFromDataBase();
 		projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 	}
+	
+	@FXML private void deleteProject() throws ClassNotFoundException{
+		if (projectsTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony projekt	
+		{
+			MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
+			readAndShowProjectsFromDataBase();
+			clearFields();
+		}
+	}
+	
+	private void clearFields(){
+		projectsTable.getSelectionModel().clearSelection();
+		usersTable.setItems(null);
+		usersInProjectTable.setItems(null);
+	}
+	
+	private boolean isNewProjectNameFieldsFull(){
+		if (newProjectNameField.getText().equals("")) {
+			lackProjectNameLabel1.setText("to pole nie może być puste");
+			lackProjectNameLabel1.setVisible(true);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean isProjectNameFieldFull(){
+		if (projectNameField.getText().equals("")) {
+			lackProjectNameLabel2.setText("to pole nie może być puste");
+			lackProjectNameLabel2.setVisible(true);
+			return false;
+		}
+		return true;
+	}
+	
+	// metoda sprawdza czy projekt jest unikalny
+	private boolean isNewProjectUnique(String projectName){
+		for (int i=0; i<projects.size(); i++){
+			Project projectFromDb = (Project) projects.get(i);
+			if (projectName.equals(projectFromDb.getName())) 
+				return false;			
+		}	
+		return true;
+	}
+	
+	// metoda sprawdza czy projekt jest unikalny bez uwzględniania bieżacego projektu
+	private boolean isProjectUnique(int currentProjectId){
+		for (int i=0; i<projects.size(); i++){
+			Project projectFromDb = (Project) projects.get(i);
+			if (currentProjectId == projectFromDb.getId()) continue;
+			if (projectFromDb.getName().equals(projectNameField.getText())) 
+				return false;			
+		}	
+		return true;
+	}
+
 	
 }

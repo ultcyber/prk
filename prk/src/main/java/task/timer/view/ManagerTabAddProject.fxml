@@ -15,7 +15,7 @@
 <AnchorPane prefHeight="490.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddProjectController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="450.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="350.0" layoutX="-21.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="455.0" x="310.0" y="100.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="288.0" layoutX="-21.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="455.0" x="310.0" y="100.0" />
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="450.0" prefWidth="740.0">
          <children>
             <Label text="Projekty">
@@ -26,11 +26,23 @@
                <children>
                   <Label text="Nowy projekt:">
                      <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="15.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="newProjectName" prefHeight="27.0" prefWidth="498.0" />
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProject" text="Dodaj" />
+                  <VBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="508.0">
+                     <children>
+                        <Label fx:id="lackProjectNameLabel1" text="to pole nie może być puste" textFill="RED">
+                           <font>
+                              <Font name="System Italic" size="11.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="newProjectNameField" onKeyTyped="#hideLackProjectNameLabel1" prefHeight="27.0" prefWidth="263.0" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#addProject" text="Dodaj">
+                     <HBox.margin>
+                        <Insets top="13.0" />
+                     </HBox.margin></Button>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -45,20 +57,32 @@
                   </TableView>
                   <VBox alignment="TOP_CENTER" prefHeight="350.0" prefWidth="455.0">
                      <children>
-                        <VBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="455.0">
                            <children>
                               <Label text="Nazwa projektu:">
                                  <padding>
-                                    <Insets bottom="10.0" left="15.0" right="10.0" top="10.0" />
+                                    <Insets bottom="10.0" left="15.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <TextField fx:id="projectNameField" maxWidth="500.0" prefHeight="27.0">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="15.0" right="10.0" />
-                                 </VBox.margin>
-                              </TextField>
+                              <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="341.0">
+                                 <children>
+                                    <Label fx:id="lackProjectNameLabel2" text="to pole nie może być puste" textFill="RED">
+                                       <font>
+                                          <Font name="System Italic" size="11.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="15.0" right="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="projectNameField" maxWidth="500.0" onKeyTyped="#hideLackProjectNameLabel2" prefHeight="27.0" prefWidth="315.0">
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" left="15.0" right="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                         <HBox alignment="CENTER" prefHeight="227.0" prefWidth="436.0">
                            <children>
                               <TableView fx:id="usersTable" maxWidth="200.0" prefHeight="218.0" prefWidth="200.0">
@@ -105,17 +129,20 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="67.0" prefWidth="436.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#updateProject" prefHeight="50.0" prefWidth="130.0" text="Zapisz">
+                              <Button mnemonicParsing="false" onAction="#updateProject" prefHeight="50.0" prefWidth="130.0" text="Aktualizuj dane">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" text="Anuluj">
+                              <Button mnemonicParsing="false" onAction="#deleteProject" prefHeight="50.0" prefWidth="130.0" text="Usuń projekt">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
