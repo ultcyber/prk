@@ -10,6 +10,7 @@ import arch.task.timer.model.UserFx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -40,6 +41,9 @@ public class ManagerTabAddEmployeerController {
 	@FXML private Label lackUserLoginLabel;
 	@FXML private Label lackUserPasswordLabel;
 	@FXML private Label lackUserPermissionsLabel;
+	
+	@FXML private Button updateUser;
+	@FXML private Button deleteUser;
 	
 	private String permission;
     
@@ -95,6 +99,8 @@ public class ManagerTabAddEmployeerController {
 		userLoginField.clear();
 		userPasswordField.clear();
 		userPermissionsBox.getSelectionModel().select(null);
+		updateUser.setDisable(true);
+		deleteUser.setDisable(true);
 	}
 	
 	@FXML private void updateUser() throws ClassNotFoundException{
@@ -115,6 +121,7 @@ public class ManagerTabAddEmployeerController {
 					// pokaż aktualny stan bazy pracowników
 					readAndShowUsersFromDataBase();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+					MainManagerController.changedData = true;
 				}
 		
 	}
@@ -134,6 +141,7 @@ public class ManagerTabAddEmployeerController {
 			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
 			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+			MainManagerController.changedData = true;
 		}
 		
 	}
@@ -143,6 +151,8 @@ public class ManagerTabAddEmployeerController {
 		{
 			MM.delete(usersTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowUsersFromDataBase();
+			MainManagerController.changedData = true;
+			clearFields();
 		}
 	}
 	
@@ -177,6 +187,8 @@ public class ManagerTabAddEmployeerController {
 			if (usr.getPermissions().equals("A")) userPermissionsBox.getSelectionModel().select(0);
 			if (usr.getPermissions().equals("rw")) userPermissionsBox.getSelectionModel().select(1);
 			if (usr.getPermissions().equals("r")) userPermissionsBox.getSelectionModel().select(2);
+			updateUser.setDisable(false);
+			deleteUser.setDisable(false);
 		}
 		else {
 			userNameField.setText("");
