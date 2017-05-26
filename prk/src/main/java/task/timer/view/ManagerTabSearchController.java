@@ -47,4 +47,14 @@ public class ManagerTabSearchController {
 		}		
 		return listProjects;
 	}
+	
+	public void refreshChooseUser(){
+		chooseUser.getItems().clear();
+		chooseUser.getItems().addAll(readUsersFromDataBase());
+	}
+	
+	public void refreshChooseProject(){
+		chooseProject.getItems().clear();
+		chooseProject.getItems().addAll(readProjectsFromDataBase());
+	}
 }

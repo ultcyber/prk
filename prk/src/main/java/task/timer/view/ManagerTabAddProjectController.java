@@ -170,6 +170,7 @@ public class ManagerTabAddProjectController {
 						));
 				readAndShowProjectsFromDataBase();
 				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+				MainManagerController.changedProjectsData = true;
 			}
 			else {
 				lackProjectNameLabel2.setText("taki projekt już istnieje");
@@ -185,6 +186,7 @@ public class ManagerTabAddProjectController {
 					new Project(
 							newProjectNameField.getText()));	
 					newProjectNameField.setText("");
+					MainManagerController.changedProjectsData = true;
 				}	
 				else {
 					lackProjectNameLabel1.setText("taki projekt już istnieje");
@@ -201,6 +203,7 @@ public class ManagerTabAddProjectController {
 			MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowProjectsFromDataBase();
 			clearFields();
+			MainManagerController.changedProjectsData = true;
 		}
 	}
 	

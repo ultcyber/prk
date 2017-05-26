@@ -121,7 +121,7 @@ public class ManagerTabAddEmployeerController {
 					// pokaż aktualny stan bazy pracowników
 					readAndShowUsersFromDataBase();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
-					MainManagerController.changedData = true;
+					MainManagerController.changedUsersData = true;
 				}
 		
 	}
@@ -141,7 +141,7 @@ public class ManagerTabAddEmployeerController {
 			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
 			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
-			MainManagerController.changedData = true;
+			MainManagerController.changedUsersData = true;
 		}
 		
 	}
@@ -151,7 +151,7 @@ public class ManagerTabAddEmployeerController {
 		{
 			MM.delete(usersTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowUsersFromDataBase();
-			MainManagerController.changedData = true;
+			MainManagerController.changedUsersData = true;
 			clearFields();
 		}
 	}
