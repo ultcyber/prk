@@ -22,12 +22,6 @@ import task.timer.model.FactoryCreator;
 
 public class LoginWindowController {
 	
-	private static SessionFactory sessionFactory = new FactoryCreator().getFactory();
-	
-	public static ManageEntity MMUser = new MEFactory(sessionFactory).getUserEntityManager();
-	public static ManageEntity MMRecord = new MEFactory(sessionFactory).getRecordEntityManager();
-	public static ManageEntity MMProject = new MEFactory(sessionFactory).getProjectEntityManager();
-	
 	public static User loggedUser;
 	
 	
@@ -49,10 +43,12 @@ public class LoginWindowController {
 			
 			String permissions = loggedUser.getPermissions();
 			if (permissions.equals("manager")){
-				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");	
+				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
+
 			}
 			else if (permissions.equals("pracownik")) {
 				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
+
 			}
 			else {
 				errorBox.setText("Nie masz odpowiednich uprawnień do zalogowania się do aplikacji.\n Skontaktuj się z administratorem.");
@@ -60,7 +56,7 @@ public class LoginWindowController {
 			}
 			
 			Scene scene = new Scene(viewLoader.getLayout());
-			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();            
+			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			appStage.setScene(scene);
             appStage.show();
 		
@@ -73,7 +69,7 @@ public class LoginWindowController {
 	
 	@FXML
 	public User login(){
-		List<AbstractEntity> users = MMUser.list();
+		List<AbstractEntity> users = DAO.MMUser.list();
 		for (AbstractEntity user : users){
 			User thisUser = (User) user;
 			

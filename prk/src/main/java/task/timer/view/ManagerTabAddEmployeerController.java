@@ -45,6 +45,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private Button deleteUser;
 	
 	private String permission;
+	private User loggedUser = new User();
     
 	private final ObservableList<User> dataUsers = 
 			FXCollections.observableArrayList();
@@ -109,7 +110,7 @@ public class ManagerTabAddEmployeerController {
 		// metoda isLoginUnique przeszuka wszystkich userów poza bieżącym
 		if ((isAllFieldsAreFull()) && (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
 					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
-					LoginWindowController.MMUser.update(				 
+					DAO.MMUser.update(				 
 							new User(
 									usersTable.getSelectionModel().getSelectedItem().getId(),
 									userLoginField.getText(), 
@@ -130,7 +131,7 @@ public class ManagerTabAddEmployeerController {
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
 		if (isAllFieldsAreFull() && (isLoginUnique(-1))){		
-			Integer userID = LoginWindowController.MMUser.add(
+			Integer userID = DAO.MMUser.add(
 				new User(
 						userLoginField.getText(), 
 						userPasswordField.getText(), 
@@ -148,7 +149,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void deleteUser() throws ClassNotFoundException{
 		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
 		{
-			LoginWindowController.MMUser.delete(usersTable.getSelectionModel().getSelectedItem().getId());
+			DAO.MMUser.delete(usersTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowUsersFromDataBase();
 			MainManagerController.changedUsersData = true;
 			clearFields();
@@ -156,7 +157,7 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void readAndShowUsersFromDataBase(){
-		List<AbstractEntity> users = LoginWindowController.MMUser.list();	
+		List<AbstractEntity> users = DAO.MMUser.list();	
 		dataUsers.clear();
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);		
@@ -226,7 +227,7 @@ public class ManagerTabAddEmployeerController {
 	
 	// metoda sprawdza czy login jest unikalny bez uwzględniania bieżacego usera
 	private boolean isLoginUnique(int currentUserId){
-		List<AbstractEntity> users = LoginWindowController.MMUser.list();	
+		List<AbstractEntity> users = DAO.MMUser.list();	
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);
 			if (currentUserId == userFromDb.getId()) continue;

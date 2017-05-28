@@ -44,7 +44,7 @@ public class ManagerTabSearchController {
 	private List<String> readUsersFromDataBase(){
 		List<String> listUsers;
 		listUsers = new LinkedList<String>();		
-		List<AbstractEntity> users = LoginWindowController.MMUser.list();	
+		List<AbstractEntity> users = DAO.MMUser.list();	
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);		
 			listUsers.add(userFromDb.getFirstName()+ " " + userFromDb.getLastName());
@@ -55,7 +55,7 @@ public class ManagerTabSearchController {
 	private List<String> readProjectsFromDataBase(){
 		List<String> listProjects;
 		listProjects = new LinkedList<String>();		
-		List<AbstractEntity> projects = LoginWindowController.MMProject.list();	
+		List<AbstractEntity> projects = DAO.MMProject.list();	
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb =   (Project) projects.get(i);		
 			listProjects.add(projectFromDb.getName());
@@ -71,7 +71,7 @@ public class ManagerTabSearchController {
 				(Project) chooseProject.getSelectionModel().getSelectedItem(), 
 				date.getValue());*/
 	
-		List<AbstractEntity> listRecords = LoginWindowController.MMRecord.list();
+		List<AbstractEntity> listRecords = DAO.MMRecord.list();
 		dataRecords.clear();
 		
 		

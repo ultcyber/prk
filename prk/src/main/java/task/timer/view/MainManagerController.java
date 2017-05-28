@@ -9,6 +9,7 @@ public class MainManagerController {
 	public static boolean changedUsersData;
 	public static boolean changedProjectsData;
 	
+	
 	@FXML private Label loggedUserName;
 	
 	@FXML private ManagerTabAddProjectController projectController;
@@ -40,6 +41,8 @@ public class MainManagerController {
 		}
 		
 	}
+
+	
 	
 	
 }

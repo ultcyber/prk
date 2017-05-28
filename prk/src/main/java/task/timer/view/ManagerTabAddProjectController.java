@@ -92,7 +92,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	private void readAndShowProjectsFromDataBase(){ 	
-		projects = LoginWindowController.MMProject.list();			
+		projects = DAO.MMProject.list();			
 		dataProjects.clear();
 		for (int i=0; i<projects.size(); i++){				
 			Project projectFromDb =   (Project) projects.get(i);	
@@ -105,7 +105,7 @@ public class ManagerTabAddProjectController {
 		if (project != null){
 			projectNameField.setText(project.getName());			
 			dataUsersInProject.clear();
-			Set<User> usersOfProject = LoginWindowController.MMProject.listUsersOfProject(project.getId());			
+			Set<User> usersOfProject = DAO.MMProject.listUsersOfProject(project.getId());			
 			if (!usersOfProject.isEmpty()){		
 				Iterator<User> wskaznik = usersOfProject.iterator();					
 				for (User i : usersOfProject)
@@ -123,7 +123,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
-		List<AbstractEntity> users = LoginWindowController.MMUser.list();	
+		List<AbstractEntity> users = DAO.MMUser.list();	
 		dataUsers.clear();
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);				
@@ -160,7 +160,7 @@ public class ManagerTabAddProjectController {
 					userToUpdate.add(dataUsersInProject.get(i));							
 				usersInProjectTable.setItems(dataUsersInProject);
 				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
-				LoginWindowController.MMProject.update(
+				DAO.MMProject.update(
 					new Project(
 						projectsTable.getSelectionModel().getSelectedItem().getId(),
 						projectNameField.getText(),
@@ -180,7 +180,7 @@ public class ManagerTabAddProjectController {
 		int currentPositionInTableView;
 		if (isNewProjectNameFieldsFull()) 
 			if (isNewProjectUnique(newProjectNameField.getText())){
-				Integer projectID = LoginWindowController.MMProject.add(
+				Integer projectID = DAO.MMProject.add(
 					new Project(
 							newProjectNameField.getText()));	
 					newProjectNameField.setText("");
@@ -198,7 +198,7 @@ public class ManagerTabAddProjectController {
 	@FXML private void deleteProject() throws ClassNotFoundException{
 		if (projectsTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony projekt	
 		{
-			LoginWindowController.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
+			DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowProjectsFromDataBase();
 			clearFields();
 			MainManagerController.changedProjectsData = true;
