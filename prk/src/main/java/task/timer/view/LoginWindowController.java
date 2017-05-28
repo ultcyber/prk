@@ -3,6 +3,8 @@ package task.timer.view;
 import java.io.IOException;
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,11 +18,15 @@ import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
 import task.timer.model.User;
+import task.timer.model.FactoryCreator;
 
 public class LoginWindowController {
-	public static ManageEntity MMUser = new MEFactory().getUserEntityManager();
-	public static ManageEntity MMRecord = new MEFactory().getRecordEntityManager();
-	public static ManageEntity MMProject = new MEFactory().getProjectEntityManager();
+	
+	private static SessionFactory sessionFactory = new FactoryCreator().getFactory();
+	
+	public static ManageEntity MMUser = new MEFactory(sessionFactory).getUserEntityManager();
+	public static ManageEntity MMRecord = new MEFactory(sessionFactory).getRecordEntityManager();
+	public static ManageEntity MMProject = new MEFactory(sessionFactory).getProjectEntityManager();
 	
 	public static User loggedUser;
 	

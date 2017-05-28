@@ -22,15 +22,7 @@ public class ManageEntity implements IEntityManager {
    public ManageEntity(EntityType entityType){
 	   this.entityType = entityType;
 	   
-	   try {
-			factory=new Configuration().configure().buildSessionFactory();
-		}
-		catch(Throwable ex) {
-			System.err.println("Failed to create sessionFactory object." + ex);
-			ex.printStackTrace();
-			new AlertDialog("Error", "Błąd połączenia z bazą danych.", "Wystąpił błąd z połączeniem z bazą danych. Spróbuj ponownie uruchomić aplikację. \n\nW razie częstego występowania błędu, skontaktuj się z administratorem podając poniższe szczegóły błędu.", AlertType.ERROR, ex);
-			throw new ExceptionInInitializerError(ex);
-		}
+	   factory = new FactoryCreator().getFactory();
    }
    
    public ManageEntity(SessionFactory factory){
@@ -42,6 +34,10 @@ public class ManageEntity implements IEntityManager {
 	   this.entityType = entityType;
    }
    
+   
+   
+
+
 
 @Override
 public Integer add(AbstractEntity entity) {
