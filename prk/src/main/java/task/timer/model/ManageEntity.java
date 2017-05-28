@@ -9,6 +9,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
+import javafx.scene.control.Alert.AlertType;
+import task.timer.helper.AlertDialog;
+
 import org.hibernate.SessionFactory;
 
 public class ManageEntity implements IEntityManager {
@@ -19,10 +23,12 @@ public class ManageEntity implements IEntityManager {
 	   this.entityType = entityType;
 	   
 	   try {
-			factory=new Configuration().configure().buildSessionFactory();}
+			factory=new Configuration().configure().buildSessionFactory();
+		}
 		catch(Throwable ex) {
 			System.err.println("Failed to create sessionFactory object." + ex);
 			ex.printStackTrace();
+			new AlertDialog("Error", "Błąd połączenia z bazą danych.", "Wystąpił błąd z połączeniem z bazą danych. Spróbuj ponownie uruchomić aplikację. \n\nW razie częstego występowania błędu, skontaktuj się z administratorem podając poniższe szczegóły błędu.", AlertType.ERROR, ex);
 			throw new ExceptionInInitializerError(ex);
 		}
    }
@@ -54,26 +60,6 @@ public Integer add(AbstractEntity entity) {
     }
     return entityID;
 }
-
-/*@Override
-public void update(int id, AbstractEntity newEntity) throws ClassNotFoundException {
-	Session session = factory.openSession();
-    Transaction tx = null;
-    try{
-       tx = session.beginTransaction();
-       AbstractEntity existingEntity = 
-                  (AbstractEntity)session.get(Class.forName(entityType.toString()), id); 
-       existingEntity = newEntity;
-       
-       session.update(existingEntity); 
-       tx.commit();
-    }catch (HibernateException e) {
-       if (tx!=null) tx.rollback();
-       e.printStackTrace(); 
-    }finally {
-   	 session.close(); 
-    }	
-}*/
 
 @Override
 public void update(AbstractEntity newEntity) throws ClassNotFoundException {

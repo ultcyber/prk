@@ -38,10 +38,20 @@ public class LoginWindowController {
 		loggedUser = login();
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
-			ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
-					
-			/*MainEmployeerController controller = (MainEmployeerController) viewLoader.getController();
-			controller.setLoggedUser(loggedUser);*/
+			
+			ViewLoader<AnchorPane, Object> viewLoader = null;
+			
+			String permissions = loggedUser.getPermissions();
+			if (permissions.equals("manager")){
+				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");	
+			}
+			else if (permissions.equals("pracownik")) {
+				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
+			}
+			else {
+				errorBox.setText("Nie masz odpowiednich uprawnień do zalogowania się do aplikacji.\n Skontaktuj się z administratorem.");
+				return;
+			}
 			
 			Scene scene = new Scene(viewLoader.getLayout());
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();            

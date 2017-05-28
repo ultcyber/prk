@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 public class Main extends Application{
 	
 	public void start(Stage primaryStage){
-	
-			
 			
 			ViewLoader<AnchorPane, Object> viewLoader = 
 					//new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
@@ -36,5 +34,4 @@ public class Main extends Application{
 
 	}
 	
-
 }

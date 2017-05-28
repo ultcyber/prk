@@ -9,29 +9,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.LoginWindowController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.LoginWindowController">
   <children>
-    <AnchorPane id="anchorPane2" prefHeight="300.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <AnchorPane id="anchorPane2" layoutY="-15.0" prefHeight="315.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-15.0">
       <children>
-        <VBox id="VBox" alignment="CENTER" layoutX="32.5" layoutY="3.5" prefHeight="300.0" prefWidth="428.0" spacing="5.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="2.0">
+        <VBox id="VBox" alignment="CENTER" layoutX="32.5" layoutY="3.5" prefHeight="348.0" prefWidth="427.0" spacing="5.0" AnchorPane.bottomAnchor="-35.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="2.0">
           <children>
-            <AnchorPane id="AnchorPane" prefHeight="180.0" prefWidth="430.0">
+            <AnchorPane id="AnchorPane" prefHeight="204.0" prefWidth="427.0">
               <children>
-                <Label id="label1" layoutX="14.0" layoutY="67.0" text="Nazwa użytkownika" />
-                <TextField id="usernameField" fx:id="username" layoutY="86.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
-                <Label id="label1" layoutX="14.0" layoutY="139.0" text="Hasło" />
-                <PasswordField id="passwordField" fx:id="password" layoutY="157.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0">
+                <Label id="label1" layoutX="14.0" layoutY="78.0" text="Nazwa użytkownika" />
+                <TextField id="usernameField" fx:id="username" layoutX="10.0" layoutY="100.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
+                <Label id="label1" layoutX="13.0" layoutY="145.0" text="Hasło" />
+                <PasswordField id="passwordField" fx:id="password" layoutX="9.0" layoutY="164.0" prefWidth="415.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="1.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></PasswordField>
-                <ImageView id="app-login-logo" layoutX="181.0" layoutY="-30.0">
+                <ImageView id="app-login-logo" blendMode="SRC_ATOP" fitHeight="85.0" fitWidth="100.0" layoutX="163.0" layoutY="-14.0">
                   <image>
-                    <Image preserveRatio="true" smooth="true" url="@LoginLogo.png" />
+                    <Image url="@../helper/1496020755_preferences-system-login.png" />
                   </image>
                 </ImageView>
               </children>
             </AnchorPane>
-                  <Label fx:id="errorBox" prefHeight="43.0" prefWidth="372.0" textFill="RED" />
+                  <Label fx:id="errorBox" prefHeight="84.0" prefWidth="372.0" textFill="RED" />
           </children>
         </VBox>
       </children>
@@ -43,7 +43,4 @@
       </children>
     </HBox>
   </children>
-  <stylesheets>
-    <URL value="@Login.css" />
-  </stylesheets>
 </AnchorPane>
