@@ -18,7 +18,12 @@ import task.timer.model.ManageEntity;
 import task.timer.model.User;
 
 public class LoginWindowController {
-	ManageEntity MM = new MEFactory().getUserEntityManager();
+	public static ManageEntity MMUser = new MEFactory().getUserEntityManager();
+	public static ManageEntity MMRecord = new MEFactory().getRecordEntityManager();
+	public static ManageEntity MMProject = new MEFactory().getProjectEntityManager();
+	
+	public static User loggedUser;
+	
 	
 	@FXML
 	private TextField username;	
@@ -30,12 +35,13 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException {
 		
-		User loggedUser = login();
+		loggedUser = login();
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
-			ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/MainEmployeer.fxml");
-			MainEmployeerController controller = (MainEmployeerController) viewLoader.getController();
-			controller.setLoggedUser(loggedUser);
+			ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
+					
+			/*MainEmployeerController controller = (MainEmployeerController) viewLoader.getController();
+			controller.setLoggedUser(loggedUser);*/
 			
 			Scene scene = new Scene(viewLoader.getLayout());
 			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();            
@@ -51,7 +57,7 @@ public class LoginWindowController {
 	
 	@FXML
 	public User login(){
-		List<AbstractEntity> users = MM.list();
+		List<AbstractEntity> users = MMUser.list();
 		for (AbstractEntity user : users){
 			User thisUser = (User) user;
 			
