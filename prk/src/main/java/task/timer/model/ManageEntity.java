@@ -1,4 +1,5 @@
 package task.timer.model;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -7,7 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session; 
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-
+import org.hibernate.query.Query;
 import org.hibernate.SessionFactory;
 
 public class ManageEntity implements IEntityManager {
@@ -149,6 +150,27 @@ public Set<User> listUsersOfProject(int idProject){
     	session.close();
     }
     
+    return entities;
+ }
+
+public List<AbstractEntity> listRecords(User user, Project project, LocalDate date){
+    Session session = factory.openSession();
+    Transaction tx = null;
+    List<AbstractEntity> entities = null;
+    try{
+       tx = session.beginTransaction();
+       String hql = "from Record R where R.user = " + user;
+       Query query = session.createQuery(hql); 
+       entities = query.list();
+      
+       tx.commit();
+       return entities;
+    }catch (HibernateException e) {
+       if (tx!=null) tx.rollback();
+       e.printStackTrace(); 
+    }finally {
+  	  session.close(); 
+    }
     return entities;
  }
 

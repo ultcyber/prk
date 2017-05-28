@@ -16,21 +16,8 @@ import javafx.beans.property.StringProperty;
 @Entity
 @Table(name="RECORDS")
 
-public class Record extends AbstractEntity {
-	 
-	public Record(User user, Project project, String description, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
-		this.user = user;
-		this.project = project;
-		this.date = date;
-		this.description = description;
-		this.timeStart = timeStart;
-		this.timeStop = timeStop;
-	}
-	
-	public Record(){
-	
-	}
 
+public class Record extends AbstractEntity {
 	@Id @GeneratedValue
 	@Column(name = "id")
 	private int id;
@@ -55,6 +42,21 @@ public class Record extends AbstractEntity {
 
 	@Column(name="timeStop")
 	private LocalTime timeStop;
+	 
+	public Record(User user, Project project, String description, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
+		this.user = user;
+		this.project = project;
+		this.date = date;
+		this.description = description;
+		this.timeStart = timeStart;
+		this.timeStop = timeStop;
+	}
+	
+	public Record(){
+	
+	}
+
+
 
 	
 	public int getId() {
