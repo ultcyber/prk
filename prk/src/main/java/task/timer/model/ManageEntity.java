@@ -141,7 +141,15 @@ public List<AbstractEntity> listRecords(User user, Project project, LocalDate da
     List<AbstractEntity> entities = null;
     try{
        tx = session.beginTransaction();
-       String hql = "from Record R where R.user = " + user;
+       
+       //select e.employeeId,e.employeeName from Employee e where e.deptNumber=:p1")
+       
+    	//String hql = "SELECT R from Record R where R.user = " + user.getId() + ", R.project = " + project.getId();
+       
+       String hql = "from Record R where R.user = " + user.getId() 
+       								+ "and R.project = " + project.getId()
+       								+ "and R.date = " + date;
+       
        Query query = session.createQuery(hql); 
        entities = query.list();
       
