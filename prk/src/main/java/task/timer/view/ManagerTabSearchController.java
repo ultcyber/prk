@@ -80,18 +80,11 @@ public class ManagerTabSearchController {
 	
 	@FXML private void searchAndShowRecords(){ 
 		
-		List<AbstractEntity> listRecords = DAO.MMRecord.listRecords(
+		List<Record> listRecords = DAO.MMRecord.listRecords(
 				(User) users.get(chooseUser.getSelectionModel().getSelectedIndex()),
 				(Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()), 
 				date.getValue());
 		
-		System.out.println(listRecords.size() + "  " + date.getValue());
-		
-		Record example = (Record) listRecords.get(0);
-		System.out.println("User: " + example.getUserName()
-						+ "Project" + example.getProjectName()
-						+ "Data" + example.getDateProperty()
-				);
 
 		dataRecords.clear();
 		for (int i=0; i<listRecords.size(); i++){				

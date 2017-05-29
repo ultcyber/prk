@@ -135,28 +135,17 @@ public Set<User> listUsersOfProject(int idProject){
     return entities;
  }
 
-public List<AbstractEntity> listRecords(User user, Project project, LocalDate date){
+public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
-    Transaction tx = null;
-    List<AbstractEntity> entities = null;
-    try{
-       tx = session.beginTransaction();
+    List<Record> entities = null;
+    try{     
+    	String sql = String.format("from Record R where R.user = %s and R.project = %s and R.date = '%s'", user.getId(), project.getId(), date);          
+    	Query query = session.createQuery(sql, Record.class);
+    	entities = query.list();
        
-       //select e.employeeId,e.employeeName from Employee e where e.deptNumber=:p1")
-       
-    	//String hql = "SELECT R from Record R where R.user = " + user.getId() + ", R.project = " + project.getId();
-       
-       String hql = "from Record R where R.user = " + user.getId() 
-       								+ "and R.project = " + project.getId()
-       								+ "and R.date = " + date;
-       
-       Query query = session.createQuery(hql); 
-       entities = query.list();
-      
-       tx.commit();
        return entities;
+       
     }catch (HibernateException e) {
-       if (tx!=null) tx.rollback();
        e.printStackTrace(); 
     }finally {
   	  session.close(); 
