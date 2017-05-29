@@ -35,9 +35,11 @@ import task.timer.model.Record;
 import task.timer.model.User;
 
 public class MainEmployeerController {
-	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
-	ManageEntity MMRecord = new MEFactory().getRecordEntityManager();
-	ManageEntity MMUser = new MEFactory().getUserEntityManager();
+	//ManageEntity MMProject = new MEFactory().getProjectEntityManager();
+	//ManageEntity MMRecord = new MEFactory().getRecordEntityManager();
+	//ManageEntity MMUser = new MEFactory().getUserEntityManager();
+	
+	@FXML private Label loggedUserName;
 	
 	@FXML private TableView<Record> recordTable;
 	@FXML private TableColumn<Record, String> dateColumn;
@@ -67,7 +69,6 @@ public class MainEmployeerController {
 	List<AbstractEntity> projects;
 	List<AbstractEntity> users;
 	private int indexOfCurrentProject;
-	User loggedUser;
 	Record newRecord;
 	
 	private final ObservableList<Record> dataRecords = 
@@ -76,7 +77,11 @@ public class MainEmployeerController {
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){
-		loggedUser = setLoggedUser();
+		loggedUserName.setText(
+				LoginWindowController.loggedUser.getFirstName() 
+				+ " " 
+				+ LoginWindowController.loggedUser.getLastName());
+	
 	
 		setDatePicker();
 		currentDate = date.getValue();	
@@ -93,9 +98,9 @@ public class MainEmployeerController {
 		stopTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStopProperty());	
 		
-		recordTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+		/*recordTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			
-		});
+		});*/
 	
 		projectChoice.setItems(readProjectsFromDataBase());
     
@@ -132,16 +137,20 @@ public class MainEmployeerController {
 	@FXML private void readAndShowRecordsFromDataBase(){
 		currentDate = date.getValue();
 		List<AbstractEntity> records; 	
-		records = MMRecord.list();			
-		dataRecords.clear();
-		for (int i=0; i<records.size(); i++){				
-			Record recordFromDb =   (Record) records.get(i);
-			if (recordFromDb.getDate().equals(currentDate) && (recordFromDb.getUser().equals(loggedUser)))
-				dataRecords.add(recordFromDb);					
-		}		
-		recordTable.setItems(dataRecords);	
+		records = DAO.MMRecord.list();		
+		
+		if (records.size() > 0){
+			dataRecords.clear();
+			for (int i=0; i<records.size(); i++){				
+				Record recordFromDb =   (Record) records.get(i);
+				if (recordFromDb.getDate().equals(currentDate) && (recordFromDb.getUser().equals(LoginWindowController.loggedUser)))
+					dataRecords.add(recordFromDb);					
+			}		
+			recordTable.setItems(dataRecords);	
+		}
 	}
 	
+	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
 		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
 		updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
@@ -171,24 +180,19 @@ public class MainEmployeerController {
 		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();		
 	    Project currentProject = (Project)projects.get(indexOfCurrentProject);	  
 	    Record newRecord = new Record(
-				loggedUser, 
+	    		LoginWindowController.loggedUser, 
 				currentProject, 
 				descriptionName.getText(),
 				currentDate,
 				timeStart,
 				timeStart
 				);	    
-	    Integer recordID = MMRecord.add(newRecord);
+	    Integer recordID = DAO.MMRecord.add(newRecord);
 	}
 	
 	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
-		MMRecord.update(recordToUpdate);
+		DAO.MMRecord.update(recordToUpdate);
 		readAndShowRecordsFromDataBase();
-	}
-
-	private User setLoggedUser(){
-		users = MMUser.list();	 
-		return (User) users.get(1);
 	}
 
 	private void setDatePicker(){
@@ -238,22 +242,13 @@ public class MainEmployeerController {
 
 	private ObservableList<String> readProjectsFromDataBase(){
 		ObservableList<String> listProjectsName = FXCollections.observableArrayList();	
-		projects = MMProject.list();	
+		projects = DAO.MMProject.list();	
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb =   (Project) projects.get(i);		
 			listProjectsName.add(projectFromDb.getName());
 		}		
 		return listProjectsName;
 	}
-
-	public User getLoggedUser() {
-		return loggedUser;
-	}
-
-	public void setLoggedUser(User loggedUser) {
-		this.loggedUser = loggedUser;
-	}
-	
 	
 
 }

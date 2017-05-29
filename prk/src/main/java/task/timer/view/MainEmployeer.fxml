@@ -19,7 +19,7 @@
       <Pane prefHeight="800.0" prefWidth="710.0">
          <children>
             <Label layoutX="11.0" layoutY="14.0" text="Zalogowano:" />
-            <Label layoutX="106.0" layoutY="14.0" text="NAZWA UŻYTKOWNIKA" />
+            <Label fx:id="loggedUserName" layoutX="106.0" layoutY="14.0" text="NAZWA UŻYTKOWNIKA" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#37ff2100" height="789.0" layoutX="4.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="699.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff4f00" height="44.0" layoutX="456.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="233.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="90.0" layoutX="11.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
