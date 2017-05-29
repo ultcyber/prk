@@ -81,8 +81,8 @@ public class ManagerTabSearchController {
 	@FXML private void searchAndShowRecords(){ 
 		
 		List<Record> listRecords = DAO.MMRecord.listRecords(
-				(User) users.get(chooseUser.getSelectionModel().getSelectedIndex()),
-				(Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()), 
+				chooseUser.getSelectionModel().getSelectedIndex() > -1 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()) : null,
+				chooseProject.getSelectionModel().getSelectedIndex() > -1? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()) : null, 
 				date.getValue());
 		
 

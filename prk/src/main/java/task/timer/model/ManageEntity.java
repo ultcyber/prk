@@ -1,5 +1,7 @@
 package task.timer.model;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -134,18 +136,19 @@ public Set<User> listUsersOfProject(int idProject){
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
     List<Record> entities = null;
-    try{
-    	StringBuilder sqlb = new StringBuilder();
-    	sqlb.append("from Record R where ");
-    	if (user != null)
-    		sqlb.append("R.user = " + user.getId());
-    	if (project != null)
-    		sqlb.append(" and R.project = " + project.getId());
-    	if (date != null)
-    		sqlb.append(String.format("and R.date = '%s'", date));
-    	
-    	String sql = sqlb.toString(); 
-    	//String sql = String.format("from Record R where R.user = %s and R.project = %s and R.date = '%s'", user.getId(), project.getId(), date);          
+    
+    // Creating a string and removing all null values
+    String[] data = new String[3];
+    
+    data[0] = user != null ? "R.user = " + String.valueOf(user.getId()) : null;
+    data[1] = project != null ? "R.project = " + String.valueOf(project.getId()) : null;
+    data[2] = date != null ? "R.date = " + String.format("'%s'", date) : null;
+   
+    data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
+     
+    try{ 	
+    	String sql = "from Record R where " + String.join(" and ", data);
+    	System.out.println(sql);
     	Query query = session.createQuery(sql, Record.class);
     	entities = query.list();
        
