@@ -63,11 +63,11 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <TableView prefHeight="320.0" prefWidth="720.0">
+                  <TableView fx:id="recordTable" prefHeight="320.0" prefWidth="720.0">
                     <columns>
                         <TableColumn fx:id="userNameColumn" prefWidth="75.0" text="Pracownik" />
-                      <TableColumn fx:id="projectNameColumn" prefWidth="279.0" text="Projekt" />
-                        <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Zadanie" />
+                      <TableColumn fx:id="projectNameColumn" prefWidth="123.0" text="Projekt" />
+                        <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Opis" />
                       <TableColumn prefWidth="166.0" resizable="false" text="Czas pracy">
                            <columns>
                               <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Początek" />
