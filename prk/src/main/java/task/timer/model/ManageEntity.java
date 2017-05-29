@@ -34,10 +34,6 @@ public class ManageEntity implements IEntityManager {
 	   this.entityType = entityType;
    }
    
-   
-   
-
-
 
 @Override
 public Integer add(AbstractEntity entity) {
@@ -138,14 +134,25 @@ public Set<User> listUsersOfProject(int idProject){
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
     List<Record> entities = null;
-    try{     
-    	String sql = String.format("from Record R where R.user = %s and R.project = %s and R.date = '%s'", user.getId(), project.getId(), date);          
+    try{
+    	StringBuilder sqlb = new StringBuilder();
+    	sqlb.append("from Record R where ");
+    	if (user != null)
+    		sqlb.append("R.user = " + user.getId());
+    	if (project != null)
+    		sqlb.append(" and R.project = " + project.getId());
+    	if (date != null)
+    		sqlb.append(String.format("and R.date = '%s'", date));
+    	
+    	String sql = sqlb.toString(); 
+    	//String sql = String.format("from Record R where R.user = %s and R.project = %s and R.date = '%s'", user.getId(), project.getId(), date);          
     	Query query = session.createQuery(sql, Record.class);
     	entities = query.list();
        
        return entities;
        
     }catch (HibernateException e) {
+		new AlertDialog("Error", "Błąd połączenia z bazą danych.", "Wystąpił błąd z połączeniem z bazą danych. Spróbuj ponownie uruchomić aplikację. \n\nW razie częstego występowania błędu, skontaktuj się z administratorem podając poniższe szczegóły błędu.", AlertType.ERROR, e);
        e.printStackTrace(); 
     }finally {
   	  session.close(); 
