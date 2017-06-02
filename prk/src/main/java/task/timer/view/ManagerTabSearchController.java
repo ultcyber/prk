@@ -97,10 +97,10 @@ public class ManagerTabSearchController {
 				date.getValue());
 		
 		dataRecords.clear();
-		for (int i=0; i<listRecords.size(); i++){				
-			Record recordFromDb =   (Record) listRecords.get(i);
-			dataRecords.add(recordFromDb);					
-		}	
+			for (int i = 0; i < listRecords.size(); i++) {
+				Record recordFromDb = (Record) listRecords.get(i);
+				dataRecords.add(recordFromDb);
+			}
 		
 		recordTable.setItems(dataRecords);
 	}
