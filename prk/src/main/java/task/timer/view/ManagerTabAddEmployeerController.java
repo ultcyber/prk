@@ -1,5 +1,6 @@
 package task.timer.view;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
@@ -103,7 +105,7 @@ public class ManagerTabAddEmployeerController {
 		deleteUser.setDisable(true);
 	}
 	
-	@FXML private void updateUser() throws ClassNotFoundException{
+	@FXML private void updateUser() throws ClassNotFoundException, NoSuchAlgorithmException{
 		int currentPositionInTableView;
 		
 		// jeśli wszystkie pola są wypełnione i jeśli login jest unikalny
@@ -114,7 +116,7 @@ public class ManagerTabAddEmployeerController {
 							new User(
 									usersTable.getSelectionModel().getSelectedItem().getId(),
 									userLoginField.getText(), 
-									userPasswordField.getText(), 
+									Helper.encryptPassword(userPasswordField.getText()), 
 									userNameField.getText(), 
 									userLastNameField.getText(), 
 									permission));
@@ -126,7 +128,7 @@ public class ManagerTabAddEmployeerController {
 		
 	}
 	
-	@FXML void addUser(){
+	@FXML void addUser() throws NoSuchAlgorithmException{
 		int currentPositionInTableView;
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
@@ -134,7 +136,7 @@ public class ManagerTabAddEmployeerController {
 			Integer userID = DAO.MMUser.add(
 				new User(
 						userLoginField.getText(), 
-						userPasswordField.getText(), 
+						Helper.encryptPassword(userPasswordField.getText()), 
 						userNameField.getText(), 
 						userLastNameField.getText(), 
 						permission));

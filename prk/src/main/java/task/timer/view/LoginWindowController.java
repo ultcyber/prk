@@ -1,6 +1,7 @@
 package task.timer.view;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -14,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import task.timer.ViewLoader;
+import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
@@ -33,7 +35,7 @@ public class LoginWindowController {
 	private Label errorBox;
 	
 	@FXML
-	private void processLogin(ActionEvent event) throws IOException {
+	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
 		loggedUser = login();
 		// Not null means user has successfully logged in
@@ -68,12 +70,12 @@ public class LoginWindowController {
 	}
 	
 	@FXML
-	public User login(){
+	public User login() throws NoSuchAlgorithmException{
 		List<AbstractEntity> users = DAO.MMUser.list();
 		for (AbstractEntity user : users){
 			User thisUser = (User) user;
 			
-			if (thisUser.getLogin().equals(username.getText()) && thisUser.getPassword().equals(password.getText())){
+			if (thisUser.getLogin().equals(username.getText()) && thisUser.getPassword().equals(Helper.encryptPassword(password.getText()))){
 				return thisUser;
 			}
 		}
