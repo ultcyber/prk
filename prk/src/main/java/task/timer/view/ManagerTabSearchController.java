@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import task.timer.model.AbstractEntity;
@@ -26,6 +27,7 @@ public class ManagerTabSearchController {
 	@FXML private TableColumn<Record, String> userNameColumn;
 	@FXML private TableColumn<Record, String> projectNameColumn;
 	@FXML private TableColumn<Record, String> descriptionColumn;
+	@FXML private TableColumn<Record, String> dateColumn;
 	@FXML private TableColumn<Record, String> startTimeColumn;
 	@FXML private TableColumn<Record, String> stopTimeColumn;
 	
@@ -40,6 +42,11 @@ public class ManagerTabSearchController {
 		chooseUser.getItems().addAll(readUsersFromDataBase());
 		chooseProject.getItems().addAll(readProjectsFromDataBase());
 		
+		chooseUser.getSelectionModel().select(0);
+		chooseProject.getSelectionModel().select(0);
+		
+		recordTable.setPlaceholder(new Label("Dla wybranych kryteriów - brak danych do wyświetlenia"));
+		
 		userNameColumn.setCellValueFactory(cellData ->
 		cellData.getValue().getUserName());
 		
@@ -48,6 +55,9 @@ public class ManagerTabSearchController {
 		
 		descriptionColumn.setCellValueFactory(cellData ->
 		cellData.getValue().getDescriptionProperty());
+		
+		dateColumn.setCellValueFactory(cellData ->
+		cellData.getValue().getDateProperty());
 		
 		startTimeColumn.setCellValueFactory(cellData ->
 		cellData.getValue().getTimeStartProperty());
@@ -60,6 +70,7 @@ public class ManagerTabSearchController {
 		List<String> listUsers;
 		listUsers = new LinkedList<String>();		
 		users = DAO.MMUser.list();	
+		listUsers.add("Wszyscy");
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);		
 			listUsers.add(userFromDb.getFirstName()+ " " + userFromDb.getLastName());
@@ -71,6 +82,7 @@ public class ManagerTabSearchController {
 		List<String> listProjects;
 		listProjects = new LinkedList<String>();		
 		projects = DAO.MMProject.list();	
+		listProjects.add("Wszystkie");
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb =   (Project) projects.get(i);		
 			listProjects.add(projectFromDb.getName());
@@ -79,13 +91,11 @@ public class ManagerTabSearchController {
 	}
 	
 	@FXML private void searchAndShowRecords(){ 
-		
 		List<Record> listRecords = DAO.MMRecord.listRecords(
-				chooseUser.getSelectionModel().getSelectedIndex() > -1 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()) : null,
-				chooseProject.getSelectionModel().getSelectedIndex() > -1? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()) : null, 
+				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()-1) : null,
+				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()-1) : null, 
 				date.getValue());
 		
-
 		dataRecords.clear();
 		for (int i=0; i<listRecords.size(); i++){				
 			Record recordFromDb =   (Record) listRecords.get(i);

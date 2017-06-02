@@ -136,18 +136,42 @@ public Set<User> listUsersOfProject(int idProject){
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
     List<Record> entities = null;
+    boolean addedToSqlQuery = false;
     
     // Creating a string and removing all null values
-    String[] data = new String[3];
+    /*String[] data = new String[3];
     
     data[0] = user != null ? "R.user = " + String.valueOf(user.getId()) : null;
     data[1] = project != null ? "R.project = " + String.valueOf(project.getId()) : null;
-    data[2] = date != null ? "R.date = " + String.format("'%s'", date) : null;
+    data[2] = date != null ? "R.date = " + String.format("'%s'", date) : null;*/
    
-    data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
-     
+    StringBuilder data = new StringBuilder()
+    	.append("from Record R");
+    	
+    if (user != null) {
+    	data.append(" where R.user = "+ String.valueOf(user.getId()));
+    	addedToSqlQuery = true;
+    }
+    
+    if (project != null){
+    	if (addedToSqlQuery) data.append(" and R.project = " + String.valueOf(project.getId()));
+    	else{
+    		data.append(" where R.project = " + String.valueOf(project.getId()));
+    		addedToSqlQuery = true;
+    	}
+    }
+    
+    if (date != null){
+    	if (addedToSqlQuery) data.append(" and R.date = " + String.format("'%s'", date));
+    	else
+    		data.append(" where R.date = " + String.format("'%s'", date));
+    }
+
+    //data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
+    
     try{ 	
-    	String sql = "from Record R where " + String.join(" and ", data);
+    	String sql = data.toString();
+
     	System.out.println(sql);
     	Query query = session.createQuery(sql, Record.class);
     	entities = query.list();
