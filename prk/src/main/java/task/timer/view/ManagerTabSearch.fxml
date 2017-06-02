@@ -67,11 +67,12 @@
                     <columns>
                         <TableColumn fx:id="userNameColumn" prefWidth="75.0" text="Pracownik" />
                       <TableColumn fx:id="projectNameColumn" prefWidth="123.0" text="Projekt" />
-                        <TableColumn fx:id="descriptionColumn" prefWidth="75.0" text="Opis" />
-                      <TableColumn prefWidth="166.0" resizable="false" text="Czas pracy">
+                        <TableColumn fx:id="descriptionColumn" prefWidth="180.0" resizable="false" text="Opis" />
+                        <TableColumn fx:id="dateColumn" prefWidth="63.0" text="Data" />
+                      <TableColumn prefWidth="160.0" resizable="false" text="Czas pracy">
                            <columns>
-                              <TableColumn fx:id="startTimeColumn" prefWidth="75.0" text="Początek" />
-                              <TableColumn fx:id="stopTimeColumn" prefWidth="75.0" text="Koniec" />
+                              <TableColumn fx:id="startTimeColumn" resizable="false" text="Początek" />
+                              <TableColumn fx:id="stopTimeColumn" resizable="false" text="Koniec" />
                            </columns>
                         </TableColumn>
                     </columns>
