@@ -169,9 +169,9 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void setPermission(){
-		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 0) permission = "A";
-		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1) permission = "rw";
-		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 2) permission = "r";
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 0) permission = "administrator";
+		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1) permission = "manager";
+		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 2) permission = "pracownik";
 		
 	}
 	
