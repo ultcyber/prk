@@ -109,53 +109,9 @@ public List<AbstractEntity> list(){
     return entities;
  }
 
-public Set<User> listUsersOfProject(int idProject){
-    Session session = factory.openSession();
-    Transaction tx = null;
-    Set<User> entities = null;
-    try{
-       tx = session.beginTransaction();
-       Project project = (Project) session.get(Project.class, idProject);
-      
-       entities = project.getUsers(); 
-       Hibernate.initialize(entities);
-       
-       tx.commit();
-       return entities; 
-    }catch (HibernateException e) {
-       if (tx!=null) tx.rollback();
-       e.printStackTrace(); 
-    }
-    finally{
-    	session.close();
-    }
-    
-    return entities;
- }
 
-public Set<Project> listProjectsOfUser(int userId){
-    Session session = factory.openSession();
-    Transaction tx = null;
-    Set<Project> entities = null;
-    try{
-       tx = session.beginTransaction();
-       User user = (User) session.get(User.class, userId);
-      
-       entities = user.getProjects(); 
-       Hibernate.initialize(entities);
-       
-       tx.commit();
-       return entities; 
-    }catch (HibernateException e) {
-       if (tx!=null) tx.rollback();
-       e.printStackTrace(); 
-    }
-    finally{
-    	session.close();
-    }
-    
-    return entities;
- }
+
+
 
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();

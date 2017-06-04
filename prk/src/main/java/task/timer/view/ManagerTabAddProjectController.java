@@ -105,7 +105,7 @@ public class ManagerTabAddProjectController {
 		if (project != null){
 			projectNameField.setText(project.getName());			
 			dataUsersInProject.clear();
-			Set<User> usersOfProject = DAO.MMProject.listUsersOfProject(project.getId());			
+			Set<User> usersOfProject = project.getUsers();			
 			if (!usersOfProject.isEmpty()){		
 				Iterator<User> wskaznik = usersOfProject.iterator();					
 				for (User i : usersOfProject)
