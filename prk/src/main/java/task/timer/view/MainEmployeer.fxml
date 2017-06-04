@@ -13,21 +13,33 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="800.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.MainEmployeerController">
    <children>
       <Pane prefHeight="800.0" prefWidth="710.0">
          <children>
-            <Label layoutX="11.0" layoutY="14.0" text="Zalogowano:" />
-            <Label fx:id="loggedUserName" layoutX="106.0" layoutY="14.0" text="NAZWA UŻYTKOWNIKA" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#37ff2100" height="789.0" layoutX="4.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="699.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff4f00" height="44.0" layoutX="456.0" layoutY="87.0" stroke="BLACK" strokeType="INSIDE" width="233.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="90.0" layoutX="11.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
-            <VBox prefHeight="149.0" prefWidth="699.0">
+            <VBox prefHeight="194.0" prefWidth="699.0">
                <children>
-                  <HBox prefHeight="136.0" prefWidth="672.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="685.0">
                      <children>
-                        <VBox prefHeight="124.0" prefWidth="460.0">
+                        <Label text="Zalogowano:" />
+                        <Label fx:id="loggedUserName" text="NAZWA UŻYTKOWNIKA">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <DatePicker fx:id="date" editable="false" onAction="#readAndShowRecordsFromDataBase" visible="false" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="14.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="89.0" prefWidth="699.0">
+                     <children>
+                        <VBox prefHeight="95.0" prefWidth="460.0">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="97.0" prefWidth="464.0">
                                  <children>
@@ -42,31 +54,30 @@
                                     <Insets />
                                  </VBox.margin>
                               </HBox>
-                              <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="460.0">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="460.0">
                                  <children>
                                     <Label text="Opis:">
                                        <HBox.margin>
                                           <Insets left="20.0" right="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="descriptionName" prefHeight="33.0" prefWidth="386.0" />
+                                    <TextField fx:id="descriptionName" prefHeight="33.0" prefWidth="375.0" />
                                  </children>
                               </HBox>
                            </children>
                            <HBox.margin>
-                              <Insets top="45.0" />
+                              <Insets />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="91.0" prefWidth="226.0">
+                        <Button fx:id="startStopTime" mnemonicParsing="false" onAction="#timing" prefHeight="73.0" prefWidth="89.0" text="START">
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <VBox alignment="CENTER" prefHeight="73.0" prefWidth="226.0">
                            <children>
-                              <DatePicker fx:id="date" onAction="#readAndShowRecordsFromDataBase">
-                                 <VBox.margin>
-                                    <Insets right="5.0" top="10.0" />
-                                 </VBox.margin>
-                              </DatePicker>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button fx:id="startStopTime" mnemonicParsing="false" onAction="#timing" prefHeight="27.0" prefWidth="112.0" text="START" />
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                        <children>
                                           <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -91,10 +102,16 @@
                                     </HBox>
                                  </children>
                               </HBox>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Label fx:id="dataLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="179.0" text="Data">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
                            </children>
-                           <HBox.margin>
-                              <Insets top="45.0" />
-                           </HBox.margin>
                         </VBox>
                      </children>
                   </HBox>

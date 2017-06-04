@@ -6,8 +6,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Timer;
 
@@ -35,10 +37,6 @@ import task.timer.model.Record;
 import task.timer.model.User;
 
 public class MainEmployeerController {
-	//ManageEntity MMProject = new MEFactory().getProjectEntityManager();
-	//ManageEntity MMRecord = new MEFactory().getRecordEntityManager();
-	//ManageEntity MMUser = new MEFactory().getUserEntityManager();
-	
 	@FXML private Label loggedUserName;
 	
 	@FXML private TableView<Record> recordTable;
@@ -55,9 +53,11 @@ public class MainEmployeerController {
 	@FXML private ChoiceBox projectChoice;
 	@FXML private TextField descriptionName;
 	@FXML private DatePicker date;
+	@FXML private Label dataLabel;
 	
 	private final String pattern = "yyyy-MM-dd";
 	private LocalDate currentDate;
+	
 	private LocalTime timeStart;
 	private LocalTime timeStop;
 	private Timer time;
@@ -66,14 +66,14 @@ public class MainEmployeerController {
 	private long timeMinutes;
 	private long timeSeconds;
 	private long rest;	
-	List<AbstractEntity> projects;
-	List<AbstractEntity> users;
+
 	private int indexOfCurrentProject;
 	Record newRecord;
 	
+	ObservableList<Project> listOfProjects = FXCollections.observableArrayList();
+	ObservableList<String> listOfProjectsName = FXCollections.observableArrayList();
+	
 	private final ObservableList<Record> dataRecords = 
-			FXCollections.observableArrayList();
-	private final ObservableList<Project> dataProjects =
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){
@@ -84,7 +84,9 @@ public class MainEmployeerController {
 	
 	
 		setDatePicker();
-		currentDate = date.getValue();	
+		
+		currentDate = date.getValue();
+		dataLabel.setText(currentDate.toString());
 	
 		dateColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getDateProperty());
@@ -96,13 +98,10 @@ public class MainEmployeerController {
 		startTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStartProperty());	
 		stopTimeColumn.setCellValueFactory(cellData ->
-			cellData.getValue().getTimeStopProperty());	
-		
-		/*recordTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			
-		});*/
-	
-		projectChoice.setItems(readProjectsFromDataBase());
+			cellData.getValue().getTimeStopProperty());		
+
+		readProjectsFromDataBase();
+		projectChoice.setItems(listOfProjectsName);
     
 		readAndShowRecordsFromDataBase();
 	}
@@ -127,25 +126,21 @@ public class MainEmployeerController {
 				enableElements();
 				timeStop = LocalTime.now();
 				stopTimeMeaserement();
-				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);
-				
+				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);				
 				updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+				descriptionName.clear();
 			}
 		}
 	}
 
 	@FXML private void readAndShowRecordsFromDataBase(){
-		currentDate = date.getValue();
-		List<AbstractEntity> records; 	
-		records = DAO.MMRecord.list();		
+		//currentDate = date.getValue();
+		
+		List<Record> records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);	
 		
 		if (records.size() > 0){
-			dataRecords.clear();
-			for (int i=0; i<records.size(); i++){				
-				Record recordFromDb =   (Record) records.get(i);
-				if (recordFromDb.getDate().equals(currentDate) && (recordFromDb.getUser().equals(LoginWindowController.loggedUser)))
-					dataRecords.add(recordFromDb);					
-			}		
+			dataRecords.clear();			
+			dataRecords.addAll(records);					
 			recordTable.setItems(dataRecords);	
 		}
 	}
@@ -177,8 +172,10 @@ public class MainEmployeerController {
 	}
 	
 	private void addNewRecordToDataBase(){
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();		
-	    Project currentProject = (Project)projects.get(indexOfCurrentProject);	  
+		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		
+		Project currentProject = listOfProjects.get(indexOfCurrentProject);
+  
 	    Record newRecord = new Record(
 	    		LoginWindowController.loggedUser, 
 				currentProject, 
@@ -240,14 +237,19 @@ public class MainEmployeerController {
 		time.stop();
 	}
 
-	private ObservableList<String> readProjectsFromDataBase(){
-		ObservableList<String> listProjectsName = FXCollections.observableArrayList();	
-		projects = DAO.MMProject.list();	
-		for (int i=0; i<projects.size(); i++){
-			Project projectFromDb =   (Project) projects.get(i);		
-			listProjectsName.add(projectFromDb.getName());
-		}		
-		return listProjectsName;
+	private void readProjectsFromDataBase(){		
+		Set<Project> projects = LoginWindowController.loggedUser.getProjects();
+		Project project;
+				
+		if (!projects.isEmpty()){		
+			Iterator<Project> wskaznik = projects.iterator();					
+			for (Project i : projects)
+				if (wskaznik.hasNext()) {
+					project = wskaznik.next();
+					listOfProjects.add(project);
+					listOfProjectsName.add(project.getName());
+				}
+		}
 	}
 	
 
