@@ -55,7 +55,8 @@ public class MainEmployeerController {
 	@FXML private DatePicker date;
 	@FXML private Label dataLabel;
 	
-	private final String pattern = "yyyy-MM-dd";
+	private final String patternDate = "yyyy-MM-dd";
+	private final String patternTime = "HH:mm:ss";
 	private LocalDate currentDate;
 	
 	private LocalTime timeStart;
@@ -124,18 +125,21 @@ public class MainEmployeerController {
 			}				
 			else {
 				enableElements();
-				timeStop = LocalTime.now();
+				timeStop = LocalTime.now().withNano(0);
+			      				
 				stopTimeMeaserement();
 				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);				
-				updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+				
+				recordTable.refresh();
 				descriptionName.clear();
 			}
 		}
 	}
 
+
 	@FXML private void readAndShowRecordsFromDataBase(){
-		//currentDate = date.getValue();
-		
+	
 		List<Record> records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);	
 		
 		if (records.size() > 0){
@@ -148,8 +152,7 @@ public class MainEmployeerController {
 	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
 		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
-		updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
-		
+		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());		
 	}
 
 	private void disableElements(){
@@ -187,16 +190,16 @@ public class MainEmployeerController {
 	    Integer recordID = DAO.MMRecord.add(newRecord);
 	}
 	
-	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
+/*	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
 		DAO.MMRecord.update(recordToUpdate);
-		readAndShowRecordsFromDataBase();
-	}
+		//readAndShowRecordsFromDataBase();
+	}*/
 
 	private void setDatePicker(){
 		date.setValue(LocalDate.now());
 		StringConverter converter = new StringConverter<LocalDate>() {
 	        DateTimeFormatter dateFormatter = 
-	            DateTimeFormatter.ofPattern(pattern);
+	            DateTimeFormatter.ofPattern(patternDate);
 	        
 	        @Override
 	        public String toString(LocalDate date) {
@@ -215,7 +218,7 @@ public class MainEmployeerController {
 	        }
 	    };             
 	    date.setConverter(converter);
-	    date.setPromptText(pattern.toLowerCase());
+	    date.setPromptText(patternDate.toLowerCase());
 	}
 
 	private void startTimeMeaserement(){

@@ -105,6 +105,18 @@ public class ManagerTabSearchController {
 		recordTable.setItems(dataRecords);
 	}
 	
+	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
+		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
+		updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
+		
+	}
+	
+	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
+		DAO.MMRecord.update(recordToUpdate);
+		//readAndShowRecordsFromDataBase();
+	}
+	
 	public void refreshChooseUser(){
 		chooseUser.getItems().clear();
 		chooseUser.getItems().addAll(readUsersFromDataBase());
