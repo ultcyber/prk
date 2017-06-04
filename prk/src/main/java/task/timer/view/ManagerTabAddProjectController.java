@@ -88,6 +88,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	public void refreshAvailableUsersOnInterface(){
+		readAndShowProjectsFromDataBase();
 		showDataOfProject(projectsTable.getSelectionModel().getSelectedItem());
 	}
 	
