@@ -13,6 +13,7 @@ public class MainManagerController {
 	@FXML private Label loggedUserName;
 	
 	@FXML private ManagerTabAddProjectController projectController;
+	@FXML private ManagerTabAddEmployeerController employeerController;
 	@FXML private ManagerTabSearchController searchController;
 	
 	@FXML private void initialize(){
@@ -22,24 +23,17 @@ public class MainManagerController {
 				+ LoginWindowController.loggedUser.getLastName());
 	}
 	
-	@FXML private void changedUsers(){
-		if (changedUsersData) {
-			projectController.refreshAvailableUsersOnInterface();
-			changedUsersData = false;
-		}
+	@FXML private void clearTabProjects(){
+		projectController.clearFields();
 	}
 	
-	@FXML private void changedUsersAndProjects(){
-		if (changedUsersData) {
-			projectController.refreshAvailableUsersOnInterface();
-			searchController.refreshChooseUser();
-			changedUsersData = false;
-		}
-		if (changedProjectsData) {
-			searchController.refreshChooseProject();
-			changedProjectsData = false;
-		}
-		
+	@FXML private void clearTabEmployeer(){
+		employeerController.clearFields();
+	}
+	
+	@FXML private void readUsersAndProjects(){
+		searchController.refreshChooseUser();
+		searchController.refreshChooseProject();		
 	}
 
 	

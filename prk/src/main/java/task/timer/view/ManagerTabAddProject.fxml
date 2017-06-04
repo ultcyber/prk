@@ -85,7 +85,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="227.0" prefWidth="436.0">
                            <children>
-                              <TableView fx:id="usersTable" maxWidth="200.0" prefHeight="218.0" prefWidth="200.0">
+                              <TableView fx:id="usersOutOfProjectTable" maxWidth="200.0" prefHeight="218.0" prefWidth="200.0">
                                  <columns>
                                     <TableColumn minWidth="290.0" prefWidth="185.0" resizable="false" text="Pracownicy poza projektem">
                                        <columns>

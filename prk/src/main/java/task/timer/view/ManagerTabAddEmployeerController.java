@@ -94,7 +94,7 @@ public class ManagerTabAddEmployeerController {
 		lackUserPermissionsLabel.setVisible(false);
 	}
 	
-	@FXML private void clearFields(){
+	@FXML public void clearFields(){
 		usersTable.getSelectionModel().clearSelection();
 		userNameField.clear();;
 		userLastNameField.clear();

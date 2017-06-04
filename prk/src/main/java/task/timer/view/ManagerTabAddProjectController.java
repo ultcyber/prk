@@ -32,7 +32,7 @@ public class ManagerTabAddProjectController {
 	@FXML private TableView<Project> projectsTable;
 	@FXML private TableColumn<Project, String> projectNameColumn;
 	
-	@FXML private TableView<User> usersTable;
+	@FXML private TableView<User> usersOutOfProjectTable;
 	@FXML private TableColumn<User, String> userNameColumn;
 	@FXML private TableColumn<User, String> userLastNameColumn;
 	
@@ -49,13 +49,16 @@ public class ManagerTabAddProjectController {
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
 	
-	private final ObservableList<User> dataUsers = 
+	private final ObservableList<User> dataUsersOutOfProject = 
 			FXCollections.observableArrayList();
 	
 	private final ObservableList<User> dataUsersInProject = 
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){
+		usersInProjectTable.setPlaceholder(new Label("Brak pracowników"));
+		usersOutOfProjectTable.setPlaceholder(new Label("Brak pracowników"));
+		
 		projectNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getNameProjectProperty());		
 		projectsTable.getSelectionModel().selectedItemProperty()
@@ -87,13 +90,13 @@ public class ManagerTabAddProjectController {
 		lackProjectNameLabel2.setVisible(false);
 	}
 	
-	public void refreshAvailableUsersOnInterface(){
+	/*public void refreshAvailableUsersOnInterface(){
 		int positionInTabelView = projectsTable.getSelectionModel().getSelectedIndex();
 		readAndShowProjectsFromDataBase();
 		projectsTable.getSelectionModel().select(positionInTabelView);
 		
 		showDataOfProject(projectsTable.getSelectionModel().getSelectedItem());
-	}
+	}*/
 	
 	private void readAndShowProjectsFromDataBase(){ 	
 		projects = DAO.MMProject.list();			
@@ -128,22 +131,22 @@ public class ManagerTabAddProjectController {
 	
 	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
 		List<AbstractEntity> users = DAO.MMUser.list();	
-		dataUsers.clear();
+		dataUsersOutOfProject.clear();
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);				
 			// dodaj do TableView jeÅ›li userFromDb nie jest jeszcze przypiÄ™ty do projektu
 			if (!usersOfProject.contains(userFromDb))
-				dataUsers.add(userFromDb);
+				dataUsersOutOfProject.add(userFromDb);
 		}		
-		usersTable.setItems(dataUsers);
+		usersOutOfProjectTable.setItems(dataUsersOutOfProject);
 	}
 	
 	
 	@FXML private void addUserToProject(){
-		if (usersTable.getSelectionModel().getSelectedIndex() > -1){	
-			User userToAdd = usersTable.getSelectionModel().selectedItemProperty().get();
+		if (usersOutOfProjectTable.getSelectionModel().getSelectedIndex() > -1){	
+			User userToAdd = usersOutOfProjectTable.getSelectionModel().selectedItemProperty().get();
 			dataUsersInProject.add(userToAdd);
-			dataUsers.remove(userToAdd);
+			dataUsersOutOfProject.remove(userToAdd);
 		}
 	}
 	
@@ -151,7 +154,7 @@ public class ManagerTabAddProjectController {
 		if (usersInProjectTable.getSelectionModel().getSelectedIndex() > -1){	
 			User userToRemove = usersInProjectTable.getSelectionModel().selectedItemProperty().get();
 			dataUsersInProject.remove(userToRemove);			
-			dataUsers.add(userToRemove);
+			dataUsersOutOfProject.add(userToRemove);
 		}
 	}
 	
@@ -209,11 +212,6 @@ public class ManagerTabAddProjectController {
 		}
 	}
 	
-	private void clearFields(){
-		projectsTable.getSelectionModel().clearSelection();
-		usersTable.setItems(null);
-		usersInProjectTable.setItems(null);
-	}
 	
 	private boolean isNewProjectNameFieldsFull(){
 		if (newProjectNameField.getText().equals("")) {
@@ -254,5 +252,9 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 
-	
+	public void clearFields(){
+		projectsTable.getSelectionModel().clearSelection();
+		dataUsersOutOfProject.clear();
+		dataUsersInProject.clear();
+	}
 }

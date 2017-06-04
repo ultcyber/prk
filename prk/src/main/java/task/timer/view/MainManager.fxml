@@ -23,7 +23,7 @@
             </HBox>
             <TabPane prefHeight="567.0" prefWidth="760.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab text="Projekty">
+                <Tab onSelectionChanged="#clearTabProjects" text="Projekty">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="256.0" prefWidth="329.0">
                            <children>
@@ -31,15 +31,15 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab onSelectionChanged="#changedUsersAndProjects" text="Pracownicy">
+                  <Tab onSelectionChanged="#clearTabEmployeer" text="Pracownicy">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <fx:include source="ManagerTabAddEmployeer.fxml" />
+                              <fx:include fx:id="employeer" source="ManagerTabAddEmployeer.fxml" />
                            </children></AnchorPane>
                     </content>
                   </Tab>
-                  <Tab onSelectionChanged="#changedUsersAndProjects" text="Szukaj">
+                  <Tab onSelectionChanged="#readUsersAndProjects" text="Szukaj">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <padding>
