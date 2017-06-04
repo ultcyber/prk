@@ -33,7 +33,7 @@ public class User extends AbstractEntity {
 	 @Column (name="permissions")
 	 private String permissions;
 	 
-	 @ManyToMany(mappedBy="users")  
+	 @ManyToMany(fetch = FetchType.EAGER, mappedBy="users", cascade = CascadeType.ALL)  
 	 private Set<Project> projects = new HashSet<Project>();
 	 
 	 	

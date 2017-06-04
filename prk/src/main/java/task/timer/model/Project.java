@@ -21,7 +21,7 @@ public class Project extends AbstractEntity {
 	@Column(name = "name")
 	private String name;
 	
-	@ManyToMany()
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "PROJECT_USER", 
 			joinColumns = { @JoinColumn(name = "PROJECT_ID") }, 
 			inverseJoinColumns = { @JoinColumn(name = "USER_ID") })	
