@@ -11,6 +11,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
 import task.timer.model.Record;
@@ -48,22 +49,25 @@ public class ManagerTabSearchController {
 		recordTable.setPlaceholder(new Label("Dla wybranych kryteriów - brak danych do wyświetlenia"));
 		
 		userNameColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getUserName());
+			cellData.getValue().getUserName());
 		
 		projectNameColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getProjectName());
+			cellData.getValue().getProjectName());
 		
 		descriptionColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getDescriptionProperty());
+			cellData.getValue().getDescriptionProperty());
+		descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		
 		dateColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getDateProperty());
+			cellData.getValue().getDateProperty());
 		
 		startTimeColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getTimeStartProperty());
+			cellData.getValue().getTimeStartProperty());
+		startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		
 		stopTimeColumn.setCellValueFactory(cellData ->
-		cellData.getValue().getTimeStopProperty());
+			cellData.getValue().getTimeStopProperty());
+		stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 	}
 	
 	private List<String> readUsersFromDataBase(){
@@ -105,17 +109,30 @@ public class ManagerTabSearchController {
 		recordTable.setItems(dataRecords);
 	}
 	
-	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	// umożliwia edycję opisu w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
-		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
-		updateRecordToDataBase(recordTable.getSelectionModel().getSelectedItem());
-		
+		recordTable.getSelectionModel()
+			.getSelectedItem()
+			.setDescription(descriptionEditEvent.getNewValue());
+		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
 	}
 	
-	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
-		DAO.MMRecord.update(recordToUpdate);
-		//readAndShowRecordsFromDataBase();
+	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	@FXML private void onEditStartTime(TableColumn.CellEditEvent<Record, String> timeStartEditEvent) throws ClassNotFoundException{	
+		recordTable.getSelectionModel()
+			.getSelectedItem()
+			.setTimeStart(java.time.LocalTime.parse(timeStartEditEvent.getNewValue()));
+		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
 	}
+	
+	// umożliwia edycję konca pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	@FXML private void onEditStopTime(TableColumn.CellEditEvent<Record, String> timeStopEditEvent) throws ClassNotFoundException{	
+		recordTable.getSelectionModel()
+			.getSelectedItem()
+			.setTimeStop(java.time.LocalTime.parse(timeStopEditEvent.getNewValue()));
+		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+	}
+	
 	
 	public void refreshChooseUser(){
 		chooseUser.getItems().clear();
