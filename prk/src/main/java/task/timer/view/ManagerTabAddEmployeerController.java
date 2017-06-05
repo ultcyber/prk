@@ -183,9 +183,9 @@ public class ManagerTabAddEmployeerController {
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
 			userPasswordField.setText(usr.getPassword());
-			if (usr.getPermissions().equals("A")) userPermissionsBox.getSelectionModel().select(0);
-			if (usr.getPermissions().equals("rw")) userPermissionsBox.getSelectionModel().select(1);
-			if (usr.getPermissions().equals("r")) userPermissionsBox.getSelectionModel().select(2);
+			if (usr.getPermissions().equals("administrator")) userPermissionsBox.getSelectionModel().select(0);
+			if (usr.getPermissions().equals("manager")) userPermissionsBox.getSelectionModel().select(1);
+			if (usr.getPermissions().equals("pracownik")) userPermissionsBox.getSelectionModel().select(2);
 			updateUser.setDisable(false);
 			deleteUser.setDisable(false);
 		}
