@@ -89,10 +89,11 @@ public class ManagerTabSearchController {
 			cellData.getValue().getTimeStopProperty());
 		stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		
-		// Total time columns
-		
+		// Total time columns	
 		hoursTotalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey().toString()));
+		hoursTotalColumn.setSortable(false);
 		minutesTotalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().toString()));
+		minutesTotalColumn.setSortable(false);
 		
 	}
 	
