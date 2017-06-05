@@ -37,7 +37,7 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
-		loggedUser = login(password.getText());
+		loggedUser = login(username.getText());
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
 			

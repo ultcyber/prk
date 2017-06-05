@@ -115,9 +115,9 @@ public User getUserForLogin(String login){
     
     try {
     	String hql = "from User U where U.login = :user_login";
-    	Query query = session.createQuery(hql);
+    	Query<User> query = session.createQuery(hql);
     	query.setParameter("user_login", login);
-    	List results = query.list();
+    	List<User> results = query.list();
     	
     	if (results.size() == 1){
     		return (User) results.get(0);
@@ -151,7 +151,7 @@ public List<Record> listRecords(User user, Project project, LocalDate date){
 			} else {
 				sql = "from Record";
 			}	
-		Query query = session.createQuery(sql, Record.class);
+		Query<Record> query = session.createQuery(sql, Record.class);
     	entities = query.list();
        
        return entities;

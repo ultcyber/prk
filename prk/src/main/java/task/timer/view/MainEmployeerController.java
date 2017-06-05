@@ -20,7 +20,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -31,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
+import task.timer.helper.AlertDialog;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
@@ -197,12 +200,14 @@ public class MainEmployeerController {
 	@FXML void deleteRecord() throws ClassNotFoundException{
 		if (recordTable.getSelectionModel().getSelectedIndex() > -1)
 		{
+			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie wpisu", "Czy na pewno chcesz usunąć wpis?", AlertType.CONFIRMATION);
+			if (dialog.getResult() == ButtonType.OK) {
 			DAO.MMRecord.delete(recordTable.getSelectionModel().getSelectedItem().getId());
-			
 			dataRecords.remove(recordTable.getSelectionModel().getSelectedItem());
+			new AlertDialog("Operacja zakończona", "Wpis został usunięty", AlertType.INFORMATION);
+			}
 			// readAndShowRecordsFromDataBase();
 		}
-		System.out.println("usuwam rekord w panelu pracownika i w bazie");
 	}
 	
 	private void addRecord(){
