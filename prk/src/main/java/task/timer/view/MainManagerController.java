@@ -33,7 +33,8 @@ public class MainManagerController {
 	
 	@FXML private void readUsersAndProjects(){
 		searchController.refreshChooseUser();
-		searchController.refreshChooseProject();		
+		searchController.refreshChooseProject();	
+		searchController.clearFields();
 	}
 
 	

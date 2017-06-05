@@ -38,6 +38,8 @@ public class ManagerTabSearchController {
 	@FXML private TableColumn<Record, String> stopTimeColumn;
 	
 	@FXML private DatePicker date;
+	private List<String> listUsers;
+	private List<String> listProjects;
 	private List<AbstractEntity> users;
 	private List<AbstractEntity> projects;
 	
@@ -76,7 +78,6 @@ public class ManagerTabSearchController {
 	}
 	
 	private List<String> readUsersFromDataBase(){
-		List<String> listUsers;
 		listUsers = new LinkedList<String>();		
 		users = DAO.MMUser.list();	
 		listUsers.add("Wszyscy");
@@ -88,7 +89,6 @@ public class ManagerTabSearchController {
 	}
 	
 	private List<String> readProjectsFromDataBase(){
-		List<String> listProjects;
 		listProjects = new LinkedList<String>();		
 		projects = DAO.MMProject.list();	
 		listProjects.add("Wszystkie");
@@ -158,14 +158,21 @@ public class ManagerTabSearchController {
 		recordTable.refresh();
 	}
 	
+	public void clearFields(){
+		recordTable.getSelectionModel().clearSelection();
+		dataRecords.clear();
+	}
+	
 	
 	public void refreshChooseUser(){
 		chooseUser.getItems().clear();
-		chooseUser.getItems().addAll(readUsersFromDataBase());
+		//chooseUser.getItems().addAll(readUsersFromDataBase());
+		chooseUser.getItems().addAll(listUsers);
 	}
 	
 	public void refreshChooseProject(){
 		chooseProject.getItems().clear();
-		chooseProject.getItems().addAll(readProjectsFromDataBase());
+		//chooseProject.getItems().addAll(readProjectsFromDataBase());
+		chooseProject.getItems().addAll(listProjects);
 	}
 }
