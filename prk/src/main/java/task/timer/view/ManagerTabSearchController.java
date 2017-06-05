@@ -5,9 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,10 +20,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Pair;
 import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.User;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
+import static java.time.temporal.ChronoUnit.HOURS;
 
 public class ManagerTabSearchController {
 //	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
@@ -36,6 +43,12 @@ public class ManagerTabSearchController {
 	@FXML private TableColumn<Record, String> dateColumn;
 	@FXML private TableColumn<Record, String> startTimeColumn;
 	@FXML private TableColumn<Record, String> stopTimeColumn;
+	
+	@FXML private TableView<Pair<Long,Long>> totalTimeTable;
+	@FXML private TableColumn<Pair<Long,Long>, String> hoursTotalColumn;
+	@FXML private TableColumn<Pair<Long,Long>, String> minutesTotalColumn;
+	
+	private ObservableList<Pair<Long,Long>> dataTotalTime = FXCollections.observableArrayList();
 	
 	@FXML private DatePicker date;
 	private List<String> listUsers;
@@ -54,6 +67,7 @@ public class ManagerTabSearchController {
 		chooseProject.getSelectionModel().select(0);
 		
 		recordTable.setPlaceholder(new Label("Dla wybranych kryteriów - brak danych do wyświetlenia"));
+		totalTimeTable.setPlaceholder(new Label("")); // don't want a placeholder;
 		
 		userNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getUserName());
@@ -74,6 +88,12 @@ public class ManagerTabSearchController {
 		stopTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStopProperty());
 		stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
+		
+		// Total time columns
+		
+		hoursTotalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey().toString()));
+		minutesTotalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue().toString()));
+		
 	}
 	
 	private List<String> readUsersFromDataBase(){
@@ -111,6 +131,12 @@ public class ManagerTabSearchController {
 			}
 		
 		recordTable.setItems(dataRecords);
+		
+		dataTotalTime.clear();
+		if (listRecords.size() >0){
+			dataTotalTime.add(calculateTotalTime(listRecords));
+		}
+		totalTimeTable.setItems(dataTotalTime);
 	}
 	
 	public void clearFields(){
@@ -131,5 +157,19 @@ public class ManagerTabSearchController {
 		//chooseProject.getItems().addAll(readProjectsFromDataBase());
 		chooseProject.getItems().addAll(listProjects);
 		chooseProject.getSelectionModel().select(0);
+	}
+	
+	public Pair<Long,Long> calculateTotalTime(List<Record> records){
+		
+		Long hours = 0L;
+		Long minutes = 0L;
+		
+		for (Record r : records){
+			hours += MINUTES.between(r.getTimeStart(), r.getTimeStop());
+			minutes += HOURS.between(r.getTimeStart(), r.getTimeStop());
+		}
+		
+		return new Pair<Long, Long>(minutes,hours);
+		
 	}
 }
