@@ -51,6 +51,8 @@ public class ManagerTabSearchController {
 	private ObservableList<Pair<Long,Long>> dataTotalTime = FXCollections.observableArrayList();
 	
 	@FXML private DatePicker date;
+	@FXML private DatePicker dateEnd;
+	
 	private List<String> listUsers;
 	private List<String> listProjects;
 	private List<AbstractEntity> users;
@@ -119,11 +121,11 @@ public class ManagerTabSearchController {
 		return listProjects;
 	}
 	
-	@FXML private void searchAndShowRecords(){ 
+	@FXML private void searchAndShowRecords(){
 		List<Record> listRecords = DAO.MMRecord.listRecords(
 				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()-1) : null,
 				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()-1) : null, 
-				date.getValue());
+				date.getValue(), dateEnd.getValue());
 		
 		dataRecords.clear();
 			for (int i = 0; i < listRecords.size(); i++) {

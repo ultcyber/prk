@@ -131,6 +131,24 @@ public User getUserForLogin(String login){
 	
 }
 
+public List<Record> listRecordsForDateRange(String dateStart, String dateEnd){
+	Session session = factory.openSession();
+	
+	try {
+    	String hql = "from Records R where R.date between :date_start and :date_end";
+    	Query<Record> query = session.createQuery(hql);
+    	query.setParameter("date_start", dateStart);
+    	query.setParameter("date_end", dateEnd);
+    	List<Record> results = query.list();
+    	
+    	return results;
+    }
+    finally{
+    	session.close();
+    }
+		
+}
+
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
     List<Record> entities = null;
@@ -164,5 +182,45 @@ public List<Record> listRecords(User user, Project project, LocalDate date){
     }
     return entities;
  }
+
+public List<Record> listRecords(User user, Project project, LocalDate dateStart, LocalDate dateEnd){
+    if (dateEnd == null){
+    	return listRecords(user, project, dateStart);
+    }
+	
+	Session session = factory.openSession();
+    List<Record> entities = null;
+    
+    // Creating a string and removing all null values
+    String[] data = new String[4];
+    
+    data[0] = user != null ? "R.user = " + String.valueOf(user.getId()) : null;
+    data[1] = project != null ? "R.project = " + String.valueOf(project.getId()) : null;
+    data[2] = dateStart != null ? "R.date between " + String.format("'%s'", dateStart) : null;
+    data[3] = dateEnd != null ? String.format("'%s'", dateEnd) : null;
+   
+    data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
+    
+    try{
+			String sql;
+			if (data.length > 0) {
+				sql = "from Record R where " + String.join(" and ", data);
+			} else {
+				sql = "from Record";
+			}	
+		Query<Record> query = session.createQuery(sql, Record.class);
+    	entities = query.list();
+       
+       return entities;
+       
+    }catch (HibernateException e) {
+		new AlertDialog("Error", "Błąd połączenia z bazą danych.", "Wystąpił błąd z połączeniem z bazą danych. Spróbuj ponownie uruchomić aplikację. \n\nW razie częstego występowania błędu, skontaktuj się z administratorem podając poniższe szczegóły błędu.", AlertType.ERROR, e);
+       e.printStackTrace(); 
+    }finally {
+  	  session.close(); 
+    }
+    return entities;
+ }
+
 
 }

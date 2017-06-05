@@ -48,8 +48,17 @@
                         </VBox>
                         <VBox alignment="BOTTOM_CENTER" prefHeight="64.0" prefWidth="171.0">
                            <children>
-                              <Label text="Wybierz dzień" />
+                              <Label text="Data początkowa" />
                               <DatePicker fx:id="date" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="64.0" prefWidth="171.0">
+                           <children>
+                              <Label text="Data końcowa" />
+                              <DatePicker fx:id="dateEnd" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
