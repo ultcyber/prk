@@ -15,7 +15,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -46,6 +48,8 @@ public class ManagerTabAddProjectController {
 	@FXML private Label lackProjectNameLabel1;
 	@FXML private Label lackProjectNameLabel2;
 	
+	@FXML private MenuItem deleteMenuItem;
+	
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
 	
@@ -56,8 +60,8 @@ public class ManagerTabAddProjectController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){
-		usersInProjectTable.setPlaceholder(new Label("Brak pracownik�w"));
-		usersOutOfProjectTable.setPlaceholder(new Label("Brak pracownik�w"));
+		usersInProjectTable.setPlaceholder(new Label("Brak pracowników"));
+		usersOutOfProjectTable.setPlaceholder(new Label("Brak pracowników"));
 		
 		projectNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getNameProjectProperty());		
@@ -77,9 +81,7 @@ public class ManagerTabAddProjectController {
 		lackProjectNameLabel1.setVisible(false);
 		lackProjectNameLabel2.setVisible(false);
 		
-		readAndShowProjectsFromDataBase();	
-		
-		showDataOfProject(null);
+		readData();
 	}
 	
 	@FXML private void hideLackProjectNameLabel1(){
@@ -90,13 +92,11 @@ public class ManagerTabAddProjectController {
 		lackProjectNameLabel2.setVisible(false);
 	}
 	
-	/*public void refreshAvailableUsersOnInterface(){
-		int positionInTabelView = projectsTable.getSelectionModel().getSelectedIndex();
-		readAndShowProjectsFromDataBase();
-		projectsTable.getSelectionModel().select(positionInTabelView);
-		
-		showDataOfProject(projectsTable.getSelectionModel().getSelectedItem());
-	}*/
+	@FXML private void readData(){
+		clearFields();
+		readAndShowProjectsFromDataBase();			
+		showDataOfProject(null);
+	}
 	
 	private void readAndShowProjectsFromDataBase(){ 	
 		projects = DAO.MMProject.list();			
@@ -175,7 +175,6 @@ public class ManagerTabAddProjectController {
 						));
 				readAndShowProjectsFromDataBase();
 				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
-				MainManagerController.changedProjectsData = true;
 			}
 			else {
 				lackProjectNameLabel2.setText("taki projekt już istnieje");
@@ -191,7 +190,6 @@ public class ManagerTabAddProjectController {
 					new Project(
 							newProjectNameField.getText()));	
 					newProjectNameField.setText("");
-					MainManagerController.changedProjectsData = true;
 				}	
 				else {
 					lackProjectNameLabel1.setText("taki projekt już istnieje");
@@ -208,7 +206,6 @@ public class ManagerTabAddProjectController {
 			DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowProjectsFromDataBase();
 			clearFields();
-			MainManagerController.changedProjectsData = true;
 		}
 	}
 	
@@ -251,7 +248,7 @@ public class ManagerTabAddProjectController {
 		}	
 		return true;
 	}
-
+	
 	public void clearFields(){
 		projectsTable.getSelectionModel().clearSelection();
 		dataUsersOutOfProject.clear();
