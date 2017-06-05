@@ -17,7 +17,7 @@
 
 <AnchorPane prefHeight="800.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.MainEmployeerController">
    <children>
-      <Pane prefHeight="800.0" prefWidth="710.0">
+      <Pane prefHeight="800.0" prefWidth="710.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#37ff2100" height="789.0" layoutX="4.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="699.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="90.0" layoutX="11.0" layoutY="46.0" stroke="BLACK" strokeType="INSIDE" width="683.0" />
@@ -48,7 +48,7 @@
                                           <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <ChoiceBox fx:id="projectChoice" prefHeight="27.0" prefWidth="321.0" />
+                                    <ChoiceBox fx:id="projectChoice" prefHeight="27.0" prefWidth="300.0" />
                                  </children>
                                  <VBox.margin>
                                     <Insets />
@@ -61,7 +61,7 @@
                                           <Insets left="20.0" right="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <TextField fx:id="descriptionName" prefHeight="33.0" prefWidth="375.0" />
+                                    <TextField fx:id="descriptionName" prefHeight="33.0" prefWidth="368.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -69,7 +69,7 @@
                               <Insets />
                            </HBox.margin>
                         </VBox>
-                        <Button fx:id="startStopTime" mnemonicParsing="false" onAction="#timing" prefHeight="73.0" prefWidth="89.0" text="START">
+                        <Button fx:id="startStopTime" mnemonicParsing="false" onAction="#timing" prefHeight="73.0" prefWidth="96.0" text="START">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -124,8 +124,8 @@
                   <TableColumn fx:id="descriptionColumn" onEditCommit="#onEditDescription" prefWidth="284.0" resizable="false" text="Opis" />
                   <TableColumn prefWidth="143.0" resizable="false" text="Czas pracy">
                      <columns>
-                      <TableColumn fx:id="startTimeColumn" prefWidth="85.0" resizable="false" text="Początek" />
-                        <TableColumn fx:id="stopTimeColumn" prefWidth="85.0" text="Koniec" />
+                      <TableColumn fx:id="startTimeColumn" onEditCommit="#onEditStartTime" prefWidth="85.0" resizable="false" text="Początek" />
+                        <TableColumn fx:id="stopTimeColumn" onEditCommit="#onEditStopTime" prefWidth="85.0" text="Koniec" />
                      </columns>
                   </TableColumn>
               </columns>
