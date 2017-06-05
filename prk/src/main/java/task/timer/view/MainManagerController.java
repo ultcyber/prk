@@ -6,8 +6,8 @@ import javafx.fxml.FXML;
 import task.timer.model.User;
 
 public class MainManagerController {
-	public static boolean changedUsersData;
-	public static boolean changedProjectsData;
+/*	public static boolean changedUsersData;
+	public static boolean changedProjectsData;*/
 	
 	
 	@FXML private Label loggedUserName;
