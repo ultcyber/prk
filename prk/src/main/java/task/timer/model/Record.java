@@ -51,6 +51,7 @@ public class Record extends AbstractEntity {
 		this.timeStart = timeStart;
 		this.timeStop = timeStop;
 	}
+
 	
 	public Record(){
 	
@@ -133,7 +134,9 @@ public class Record extends AbstractEntity {
 	}
 	
 	public StringProperty getTimeStopProperty(){
-		SimpleStringProperty timeStopProperty = new SimpleStringProperty(timeStop.toString());
+		SimpleStringProperty timeStopProperty = null;
+		if (timeStop != null)
+			timeStopProperty = new SimpleStringProperty(timeStop.toString());
 		return timeStopProperty;
 	}
 	
