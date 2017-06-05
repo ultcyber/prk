@@ -63,7 +63,6 @@ public class ManagerTabSearchController {
 		
 		descriptionColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getDescriptionProperty());
-		descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		
 		dateColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getDateProperty());
@@ -114,50 +113,6 @@ public class ManagerTabSearchController {
 		recordTable.setItems(dataRecords);
 	}
 	
-	// umożliwia edycję opisu w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
-	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
-		recordTable.getSelectionModel()
-			.getSelectedItem()
-			.setDescription(descriptionEditEvent.getNewValue());
-		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
-	}
-	
-	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
-	@FXML private void onEditStartTime(TableColumn.CellEditEvent<Record, String> timeStartEditEvent) throws ClassNotFoundException{	
-		LocalTime time;
-		try{
-			time = java.time.LocalTime.parse(timeStartEditEvent.getNewValue());			
-			recordTable.getSelectionModel()
-			.getSelectedItem()
-			.setTimeStart(time);
-		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
-		}
-		catch (DateTimeParseException e){
-			time = java.time.LocalTime.parse(timeStartEditEvent.getOldValue());
-			System.out.println(time);
-			recordTable.getSelectionModel()
-			.getSelectedItem()
-			.setTimeStart(time);
-			recordTable.refresh();
-		}		
-	}
-	
-	// umożliwia edycję konca pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
-	@FXML private void onEditStopTime(TableColumn.CellEditEvent<Record, String> timeStopEditEvent) throws ClassNotFoundException{	
-		LocalTime time;
-		try{
-			time = java.time.LocalTime.parse(timeStopEditEvent.getNewValue());	
-			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);
-			DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
-		}
-		catch (DateTimeParseException e){
-			time = java.time.LocalTime.parse(timeStopEditEvent.getOldValue());
-			System.out.println(time);
-			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);		
-		}
-		recordTable.refresh();
-	}
-	
 	public void clearFields(){
 		recordTable.getSelectionModel().clearSelection();
 		dataRecords.clear();
@@ -168,11 +123,13 @@ public class ManagerTabSearchController {
 		chooseUser.getItems().clear();
 		//chooseUser.getItems().addAll(readUsersFromDataBase());
 		chooseUser.getItems().addAll(listUsers);
+		chooseUser.getSelectionModel().select(0);
 	}
 	
 	public void refreshChooseProject(){
 		chooseProject.getItems().clear();
 		//chooseProject.getItems().addAll(readProjectsFromDataBase());
 		chooseProject.getItems().addAll(listProjects);
+		chooseProject.getSelectionModel().select(0);
 	}
 }
