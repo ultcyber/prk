@@ -18,14 +18,19 @@ public class Project extends AbstractEntity {
 	@Column(name = "id")
 	private int id;
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy="project", cascade = CascadeType.REMOVE)
+	private Set<Record> records;
+	
 	@Column(name = "name")
 	private String name;
+
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(name = "PROJECT_USER", 
 			joinColumns = { @JoinColumn(name = "PROJECT_ID") }, 
 			inverseJoinColumns = { @JoinColumn(name = "USER_ID") })	
 	private Set<User> users = new HashSet<User>();
+	
 
 	public Project(int id, String name, Set<User> users){
 		this.id = id;
@@ -80,5 +85,6 @@ public class Project extends AbstractEntity {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+	
 
 }

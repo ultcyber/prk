@@ -36,6 +36,8 @@ public class User extends AbstractEntity {
 	 @ManyToMany(fetch = FetchType.EAGER, mappedBy="users", cascade = CascadeType.MERGE)  
 	 private Set<Project> projects = new HashSet<Project>();
 	 
+	 @OneToMany(fetch = FetchType.EAGER, mappedBy="user", cascade = CascadeType.REMOVE)
+		private Set<Record> records;
 	 	
 	public User(String login, String password, String firstName, String lastName, String permissions) {
 		this.login = login;

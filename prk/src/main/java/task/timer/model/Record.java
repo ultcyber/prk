@@ -6,6 +6,10 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,11 +27,12 @@ public class Record extends AbstractEntity {
 	private int id;
 
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)	
 	@JoinColumn(name="user")
+	
 	private User user;	
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)	
 	@JoinColumn(name="project")
 	private Project project;
 	
@@ -43,6 +48,7 @@ public class Record extends AbstractEntity {
 	@Column(name="timeStop")
 	private LocalTime timeStop;
 	 
+	
 	public Record(User user, Project project, String description, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
 		this.user = user;
 		this.project = project;
