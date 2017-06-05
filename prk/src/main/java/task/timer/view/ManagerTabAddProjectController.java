@@ -103,7 +103,7 @@ public class ManagerTabAddProjectController {
 		dataProjects.clear();
 		for (int i=0; i<projects.size(); i++){				
 			Project projectFromDb =   (Project) projects.get(i);	
-			dataProjects.add(projectFromDb);					
+			dataProjects.add(projectFromDb);	
 		}		
 		projectsTable.setItems(dataProjects);
 	}
@@ -201,7 +201,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	@FXML private void deleteProject() throws ClassNotFoundException{
-		if (projectsTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony projekt	
+		if (projectsTable.getSelectionModel().getSelectedIndex() > -1)
 		{
 			DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
 			readAndShowProjectsFromDataBase();
