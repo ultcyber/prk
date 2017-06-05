@@ -37,7 +37,7 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
-		loggedUser = login();
+		loggedUser = login(password.getText());
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
 			
@@ -70,13 +70,11 @@ public class LoginWindowController {
 	}
 	
 	@FXML
-	public User login() throws NoSuchAlgorithmException{
-		List<AbstractEntity> users = DAO.MMUser.list();
-		for (AbstractEntity user : users){
-			User thisUser = (User) user;
-			
-			if (thisUser.getLogin().equals(username.getText()) && thisUser.getPassword().equals(Helper.encryptPassword(password.getText()))){
-				return thisUser;
+	public User login(String login) throws NoSuchAlgorithmException{
+		User user = DAO.MMUser.getUserForLogin(login);
+		if (user != null){
+			if (user.getPassword().equals(Helper.encryptPassword(password.getText()))){
+				return user;
 			}
 		}
 		return null;

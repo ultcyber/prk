@@ -109,9 +109,27 @@ public List<AbstractEntity> list(){
     return entities;
  }
 
-
-
-
+public User getUserForLogin(String login){
+	
+    Session session = factory.openSession();
+    
+    try {
+    	String hql = "from User U where U.login = :user_login";
+    	Query query = session.createQuery(hql);
+    	query.setParameter("user_login", login);
+    	List results = query.list();
+    	
+    	if (results.size() == 1){
+    		return (User) results.get(0);
+    	}
+    }
+    finally{
+    	session.close();
+    }
+	
+	return null;
+	
+}
 
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
@@ -146,4 +164,5 @@ public List<Record> listRecords(User user, Project project, LocalDate date){
     }
     return entities;
  }
+
 }
