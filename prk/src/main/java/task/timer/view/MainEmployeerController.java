@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,6 +40,8 @@ import task.timer.model.User;
 
 public class MainEmployeerController {
 	@FXML private Label loggedUserName;
+	
+	List<Record> records;
 	
 	@FXML private TableView<Record> recordTable;
 	@FXML private TableColumn<Record, String> dateColumn;
@@ -56,6 +59,8 @@ public class MainEmployeerController {
 	@FXML private DatePicker date;
 	@FXML private Label dataLabel;
 	
+	@FXML private MenuItem deleteMenuItem;
+	
 	private final String patternDate = "yyyy-MM-dd";
 	private final String patternTime = "HH:mm:ss";
 	private LocalDate currentDate;
@@ -70,10 +75,13 @@ public class MainEmployeerController {
 	private long rest;	
 
 	private int indexOfCurrentProject;
-	Record newRecord;
+	//Record newRecord;
 	
-	ObservableList<Project> listOfProjects = FXCollections.observableArrayList();
-	ObservableList<String> listOfProjectsName = FXCollections.observableArrayList();
+	private final ObservableList<Project> listOfProjects = 
+			FXCollections.observableArrayList();
+	
+	private final ObservableList<String> listOfProjectsName = 
+			FXCollections.observableArrayList();
 	
 	private final ObservableList<Record> dataRecords = 
 			FXCollections.observableArrayList();
@@ -83,8 +91,7 @@ public class MainEmployeerController {
 				LoginWindowController.loggedUser.getFirstName() 
 				+ " " 
 				+ LoginWindowController.loggedUser.getLastName());
-	
-	
+		
 		setDatePicker();
 		
 		currentDate = date.getValue();
@@ -118,7 +125,7 @@ public class MainEmployeerController {
 				disableElements();						
 				timeStart = LocalTime.now();
 				startTimeMeaserement();			
-				addNewRecordToDataBase();	
+				addRecord();	
 				currentPositionInTableView = recordTable.getItems().size();
 				readAndShowRecordsFromDataBase();		
 				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
@@ -137,7 +144,7 @@ public class MainEmployeerController {
 
 
 	@FXML private void readAndShowRecordsFromDataBase(){	
-		List<Record> records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);		
+		records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);		
 		if (records.size() > 0){
 			dataRecords.clear();			
 			dataRecords.addAll(records);					
@@ -186,7 +193,34 @@ public class MainEmployeerController {
 		}
 		recordTable.refresh();
 	}
-
+	
+	@FXML void deleteRecord() throws ClassNotFoundException{
+		if (recordTable.getSelectionModel().getSelectedIndex() > -1)
+		{
+			DAO.MMRecord.delete(recordTable.getSelectionModel().getSelectedItem().getId());
+			
+			dataRecords.remove(recordTable.getSelectionModel().getSelectedItem());
+			// readAndShowRecordsFromDataBase();
+		}
+		System.out.println("usuwam rekord w panelu pracownika i w bazie");
+	}
+	
+	private void addRecord(){
+		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		
+		Project currentProject = listOfProjects.get(indexOfCurrentProject);
+  
+	    Record newRecord = new Record(
+	    		LoginWindowController.loggedUser, 
+				currentProject, 
+				descriptionName.getText(),
+				currentDate,
+				timeStart,
+				null
+				);	    
+	    Integer recordID = DAO.MMRecord.add(newRecord);
+	}
+	
 	private void disableElements(){
 		startStopTime.setText("STOP");	
 		projectChoice.setDisable(true);
@@ -205,27 +239,6 @@ public class MainEmployeerController {
 		date.setDisable(false);
 		recordTable.setDisable(false);
 	}
-	
-	private void addNewRecordToDataBase(){
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
-		
-		Project currentProject = listOfProjects.get(indexOfCurrentProject);
-  
-	    Record newRecord = new Record(
-	    		LoginWindowController.loggedUser, 
-				currentProject, 
-				descriptionName.getText(),
-				currentDate,
-				timeStart,
-				timeStart
-				);	    
-	    Integer recordID = DAO.MMRecord.add(newRecord);
-	}
-	
-/*	private void updateRecordToDataBase(Record recordToUpdate) throws ClassNotFoundException{
-		DAO.MMRecord.update(recordToUpdate);
-		//readAndShowRecordsFromDataBase();
-	}*/
 
 	private void setDatePicker(){
 		date.setValue(LocalDate.now());

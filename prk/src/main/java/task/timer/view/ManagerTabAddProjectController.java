@@ -48,6 +48,8 @@ public class ManagerTabAddProjectController {
 	@FXML private Label lackProjectNameLabel1;
 	@FXML private Label lackProjectNameLabel2;
 	
+	@FXML private MenuItem deleteMenuItem;
+	
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
 	
