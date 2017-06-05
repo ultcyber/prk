@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -98,12 +99,12 @@ public class MainEmployeerController {
 		descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola	
 		startTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStartProperty());	
+		startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola		
 		stopTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStopProperty());		
-
+		stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		readProjectsFromDataBase();
-		projectChoice.setItems(listOfProjectsName);
-    
+		projectChoice.setItems(listOfProjectsName);    
 		readAndShowRecordsFromDataBase();
 	}
 	
@@ -118,19 +119,16 @@ public class MainEmployeerController {
 				timeStart = LocalTime.now();
 				startTimeMeaserement();			
 				addNewRecordToDataBase();	
-				
 				currentPositionInTableView = recordTable.getItems().size();
 				readAndShowRecordsFromDataBase();		
 				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 			}				
 			else {
 				enableElements();
-				timeStop = LocalTime.now().withNano(0);
-			      				
+				timeStop = LocalTime.now().withNano(0);			      				
 				stopTimeMeaserement();
 				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);				
-				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
-				
+				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());				
 				recordTable.refresh();
 				descriptionName.clear();
 			}
@@ -138,10 +136,8 @@ public class MainEmployeerController {
 	}
 
 
-	@FXML private void readAndShowRecordsFromDataBase(){
-	
-		List<Record> records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);	
-		
+	@FXML private void readAndShowRecordsFromDataBase(){	
+		List<Record> records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);		
 		if (records.size() > 0){
 			dataRecords.clear();			
 			dataRecords.addAll(records);					
@@ -153,6 +149,42 @@ public class MainEmployeerController {
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
 		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
 		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());		
+	}
+	
+	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	@FXML private void onEditStartTime(TableColumn.CellEditEvent<Record, String> timeStartEditEvent) throws ClassNotFoundException{	
+		LocalTime time;
+		try{
+			time = java.time.LocalTime.parse(timeStartEditEvent.getNewValue());			
+			recordTable.getSelectionModel()
+			.getSelectedItem()
+			.setTimeStart(time);
+		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+		}
+		catch (DateTimeParseException e){
+			time = java.time.LocalTime.parse(timeStartEditEvent.getOldValue());
+			System.out.println(time);
+			recordTable.getSelectionModel()
+			.getSelectedItem()
+			.setTimeStart(time);
+			recordTable.refresh();
+		}		
+	}
+	
+	// umożliwia edycję konca pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
+	@FXML private void onEditStopTime(TableColumn.CellEditEvent<Record, String> timeStopEditEvent) throws ClassNotFoundException{	
+		LocalTime time;
+		try{
+			time = java.time.LocalTime.parse(timeStopEditEvent.getNewValue());	
+			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);
+			DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+		}
+		catch (DateTimeParseException e){
+			time = java.time.LocalTime.parse(timeStopEditEvent.getOldValue());
+			System.out.println(time);
+			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);		
+		}
+		recordTable.refresh();
 	}
 
 	private void disableElements(){
