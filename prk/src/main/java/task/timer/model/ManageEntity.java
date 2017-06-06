@@ -197,7 +197,10 @@ public List<Record> listRecords(User user, Project project, LocalDate dateStart,
     data[0] = user != null ? "R.user = " + String.valueOf(user.getId()) : null;
     data[1] = project != null ? "R.project = " + String.valueOf(project.getId()) : null;
     data[2] = dateStart != null ? "R.date between " + String.format("'%s'", dateStart) : null;
-    data[3] = dateEnd != null ? String.format("'%s'", dateEnd) : null;
+    if (data[2] != null)
+    	data[3] = dateEnd != null ? String.format("'%s'", dateEnd) : null;
+    else
+    	data[3] = dateEnd != null ? String.format("R.date <= '%s'", dateEnd) : null;
    
     data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
     
