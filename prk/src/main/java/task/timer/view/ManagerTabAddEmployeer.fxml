@@ -3,7 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -16,12 +18,12 @@
 <AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="419.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="439.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="570.0" prefWidth="740.0">
          <children>
             <HBox prefHeight="54.0" prefWidth="720.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Odśwież dane" textAlignment="CENTER">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="40.0" prefWidth="120.0" text="Odśwież dane" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -40,7 +42,7 @@
                <children>
                   <VBox prefHeight="381.0" prefWidth="279.0">
                      <children>
-                        <TableView fx:id="usersTable" maxWidth="280.0" prefHeight="492.0" prefWidth="279.0">
+                        <TableView fx:id="usersTable" editable="true" maxWidth="280.0" prefHeight="492.0" prefWidth="279.0">
                           <columns>
                             <TableColumn minWidth="285.0" prefWidth="285.0" resizable="false" text="Pracownik">
                                  <columns>
@@ -49,94 +51,135 @@
                                  </columns>
                               </TableColumn>
                           </columns>
+                           <contextMenu>
+                              <ContextMenu>
+                                <items>
+                                  <MenuItem fx:id="deleteMenuItem" mnemonicParsing="false" onAction="#deleteUser" text="usuń pracownika" />
+                                </items>
+                              </ContextMenu>
+                           </contextMenu>
                         </TableView>
                      </children>
                   </VBox>
-                  <VBox prefHeight="300.0" prefWidth="440.0">
+                  <VBox prefHeight="300.0" prefWidth="440.0" spacing="10.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                            <children>
                               <Label text="Imię:">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
-                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                    <Insets bottom="10.0" right="42.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <VBox prefHeight="40.0" prefWidth="380.0">
+                              <VBox prefHeight="50.0" prefWidth="337.0">
                                  <children>
                                     <Label fx:id="lackUserNameLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userNameField" maxWidth="370.0" minWidth="370.0" onKeyTyped="#hideLackUserNameLabel" prefHeight="27.0" prefWidth="370.0" />
+                                    <TextField fx:id="userNameField" maxWidth="370.0" minWidth="265.0" onKeyTyped="#hideLackUserNameLabel" prefHeight="27.0" prefWidth="333.0" />
                                  </children>
                               </VBox>
                            </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                            <children>
                               <Label text="Nazwisko:">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
-                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                    <Insets bottom="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="200.0" prefWidth="337.0">
                                  <children>
                                     <Label fx:id="lackUserLastNameLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userLastNameField" maxWidth="337.0" minWidth="337.0" onKeyTyped="#hideLackUserLastNameLabel" prefHeight="27.0" prefWidth="337.0" />
+                                    <TextField fx:id="userLastNameField" maxWidth="337.0" minWidth="337.0" onKeyTyped="#hideLackUserLastNameLabel" prefHeight="27.0" prefWidth="333.0" />
                                  </children>
                               </VBox>
                            </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                            <children>
                               <Label text="Login:">
                                  <padding>
-                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                    <Insets bottom="10.0" right="35.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="50.0" prefWidth="337.0">
                                  <children>
                                     <Label fx:id="lackUserLoginLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userLoginField" minWidth="363.0" onKeyTyped="#hideLackUserLoginLabel" prefHeight="27.0" prefWidth="362.0" />
+                                    <TextField fx:id="userLoginField" minWidth="286.0" onKeyTyped="#hideLackUserLoginLabel" prefHeight="27.0" prefWidth="327.0" />
                                  </children>
                               </VBox>
                            </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                            <children>
-                              <Label text="Hasło:">
+                              <Label fx:id="passwordLabel" text="Hasło:">
                                  <padding>
-                                    <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                                    <Insets bottom="10.0" right="33.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              <VBox prefHeight="50.0" prefWidth="337.0">
                                  <children>
                                     <Label fx:id="lackUserPasswordLabel" text="to pole nie może być puste" textFill="RED">
                                        <font>
                                           <Font name="System Italic" size="11.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="userPasswordField" minWidth="362.0" onKeyTyped="#hideLackUserPasswordLabel" prefHeight="27.0" prefWidth="362.0" />
+                                    <TextField fx:id="userPasswordField" minWidth="310.0" onKeyTyped="#hideLackUserPasswordLabel" prefHeight="27.0" prefWidth="344.0" />
                                  </children>
                               </VBox>
                            </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="confirmPasswordLabel" prefHeight="28.0" prefWidth="102.0" text="Powtórz hasło:">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <VBox prefHeight="48.0" prefWidth="306.0">
+                                 <children>
+                                    <Label fx:id="lackUserConfirmPasswordLabel" text="to pole nie może być puste" textFill="RED">
+                                       <font>
+                                          <Font name="System Italic" size="11.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="userConfirmPasswordField" minWidth="173.0" onKeyTyped="#hideLackUserConfirmPasswordLabel" prefHeight="27.0" prefWidth="173.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
                            <children>
                               <Label text="Uprawnienia:">
                                  <padding>
@@ -160,25 +203,20 @@
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="updateUser" mnemonicParsing="false" onAction="#updateUser" prefHeight="50.0" prefWidth="130.0" text="Aktualizuj dane">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button alignment="CENTER" mnemonicParsing="false" onAction="#addUser" prefHeight="50.0" prefWidth="130.0" text="Dodaj jako nowy pracownik" textAlignment="CENTER" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="deleteUser" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="130.0" text="Usuń pracownika">
+                              <Button fx:id="saveUser" mnemonicParsing="false" onAction="#saveUser" prefHeight="50.0" prefWidth="130.0" text="Zapisz">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
                         </HBox>
+                        <Button fx:id="setNewUser" alignment="CENTER" mnemonicParsing="false" onAction="#setToNewUser" prefHeight="50.0" prefWidth="130.0" text="Dodaj pracownika" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Button>
                      </children>
                      <HBox.margin>
                         <Insets top="10.0" />
