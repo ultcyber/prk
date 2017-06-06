@@ -51,6 +51,7 @@ public class ManagerTabAddEmployeerController {
 	
 	@FXML private Button saveUser;
 	@FXML private Button setNewUser;
+	@FXML private Button changeButton;
 	
 	@FXML private MenuItem deleteMenuItem;
 	
@@ -140,6 +141,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void setToNewUser(){
 		showPassword();
 		clearFields();
+		changeButton.setDisable(true);
 		newUser = true;
 	}
 	
@@ -165,7 +167,7 @@ public class ManagerTabAddEmployeerController {
  }
 
 	
-	void addUser() throws NoSuchAlgorithmException{
+	private void addUser() throws NoSuchAlgorithmException{
 		int currentPositionInTableView;
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny i hasło jest takie, jak powtórzone hasło; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
@@ -210,6 +212,7 @@ public class ManagerTabAddEmployeerController {
 	
 		if (usr != null){
 			hidePassword();
+			changeButton.setDisable(false);
 			newUser = false;
 			userNameField.setText(usr.getFirstName());
 			userLastNameField.setText(usr.getLastName());
@@ -229,7 +232,7 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
-	private void hidePassword(){
+	public void hidePassword(){
 		passwordLabel.setVisible(false);
 		confirmPasswordLabel.setVisible(false);
 		userPasswordField.setVisible(false);
