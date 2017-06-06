@@ -84,18 +84,18 @@ public class ManagerTabAddProjectController {
 		readData();
 	}
 	
+	@FXML private void readData(){
+		clearFields();
+		readAndShowProjectsFromDataBase();			
+		showDataOfProject(null);
+	}
+	
 	@FXML private void hideLackProjectNameLabel1(){
 		lackProjectNameLabel1.setVisible(false);
 	}
 	
 	@FXML private void hideLackProjectNameLabel2(){
 		lackProjectNameLabel2.setVisible(false);
-	}
-	
-	@FXML private void readData(){
-		clearFields();
-		readAndShowProjectsFromDataBase();			
-		showDataOfProject(null);
 	}
 	
 	private void readAndShowProjectsFromDataBase(){ 	

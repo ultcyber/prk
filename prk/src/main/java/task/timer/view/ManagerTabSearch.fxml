@@ -15,7 +15,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabSearchController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="575.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="575.0" prefWidth="740.0">
          <children>
             <HBox prefHeight="42.0" prefWidth="720.0">
@@ -72,7 +72,7 @@
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#searchAndShowRecords" prefHeight="50.0" prefWidth="120.0" text="Szukaj" />
                </children>
             </HBox>
-            <TableView fx:id="recordTable" prefHeight="359.0" prefWidth="720.0">
+            <TableView fx:id="recordTable" prefHeight="351.0" prefWidth="720.0">
               <columns>
                   <TableColumn fx:id="userNameColumn" prefWidth="75.0" text="Pracownik" />
                 <TableColumn fx:id="projectNameColumn" prefWidth="123.0" text="Projekt" />
