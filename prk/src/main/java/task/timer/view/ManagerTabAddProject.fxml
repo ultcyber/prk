@@ -58,7 +58,7 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#addProject" prefHeight="50.0" prefWidth="86.0" text="Dodaj">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProject" prefHeight="50.0" prefWidth="86.0" text="Dodaj">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -159,7 +159,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="42.0" prefWidth="455.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#updateProject" prefHeight="50.0" prefWidth="130.0" text="Zapisz zmiany">
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateProject" prefHeight="50.0" prefWidth="130.0" text="Zapisz zmiany">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
