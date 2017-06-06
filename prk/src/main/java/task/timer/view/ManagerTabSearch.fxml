@@ -51,7 +51,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="64.0" prefWidth="171.0">
+                  <VBox alignment="CENTER" prefHeight="64.0" prefWidth="140.0">
                      <children>
                         <Label prefHeight="17.0" prefWidth="121.0" text="Data początkowa" />
                         <DatePicker fx:id="date" />
@@ -60,7 +60,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="CENTER" prefHeight="64.0" prefWidth="171.0">
+                  <VBox alignment="CENTER" prefHeight="64.0" prefWidth="140.0">
                      <children>
                         <Label prefHeight="17.0" prefWidth="118.0" text="Data końcowa" />
                         <DatePicker fx:id="dateEnd" />
