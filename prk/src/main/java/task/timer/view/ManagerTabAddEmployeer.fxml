@@ -211,11 +211,12 @@
                                     <ChoiceBox fx:id="userPermissionsBox" onMouseDragEntered="#hideLackUserPermissionsLabel" prefHeight="27.0" prefWidth="130.0" />
                                  </children>
                               </VBox>
-                              <CheckBox mnemonicParsing="false" text="edycja czasu pracy">
-                                 <HBox.margin>
-                                    <Insets top="20.0" />
-                                 </HBox.margin>
-                              </CheckBox>
+                              <VBox alignment="CENTER_LEFT" minHeight="40.0" prefHeight="50.0" prefWidth="186.0" spacing="10.0">
+                                 <children>
+                                    <CheckBox mnemonicParsing="false" text="edycja czasu pracy" />
+                                    <CheckBox mnemonicParsing="false" text="przypominaj o aktywności" />
+                                 </children>
+                              </VBox>
                            </children>
                            <padding>
                               <Insets left="20.0" />
