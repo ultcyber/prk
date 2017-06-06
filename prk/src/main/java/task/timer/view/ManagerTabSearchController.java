@@ -48,13 +48,14 @@ public class ManagerTabSearchController {
 	@FXML private TableColumn<Pair<Long,Long>, String> hoursTotalColumn;
 	@FXML private TableColumn<Pair<Long,Long>, String> minutesTotalColumn;
 	
-	private ObservableList<Pair<Long,Long>> dataTotalTime = FXCollections.observableArrayList();
+	private ObservableList<Pair<Long,Long>> dataTotalTime = 
+			FXCollections.observableArrayList();
 	
 	@FXML private DatePicker date;
 	@FXML private DatePicker dateEnd;
 	
-	private List<String> listUsers;
-	private List<String> listProjects;
+	private List<String> listUsersNames;
+	private List<String> listProjectsNames;
 	private List<AbstractEntity> users;
 	private List<AbstractEntity> projects;
 	
@@ -62,12 +63,15 @@ public class ManagerTabSearchController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){	
+		listProjectsNames = new LinkedList<String>();
+		listUsersNames = new LinkedList<String>();
+		
 		chooseUser.getItems().addAll(readUsersFromDataBase());
 		chooseProject.getItems().addAll(readProjectsFromDataBase());
 		
 		chooseUser.getSelectionModel().select(0);
 		chooseProject.getSelectionModel().select(0);
-		
+				
 		recordTable.setPlaceholder(new Label("Dla wybranych kryteriów - brak danych do wyświetlenia"));
 		totalTimeTable.setPlaceholder(new Label("")); // don't want a placeholder;
 		
@@ -99,26 +103,12 @@ public class ManagerTabSearchController {
 		
 	}
 	
-	private List<String> readUsersFromDataBase(){
-		listUsers = new LinkedList<String>();		
-		users = DAO.MMUser.list();	
-		listUsers.add("Wszyscy");
-		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);		
-			listUsers.add(userFromDb.getFirstName()+ " " + userFromDb.getLastName());
-		}		
-		return listUsers;
-	}
-	
-	private List<String> readProjectsFromDataBase(){
-		listProjects = new LinkedList<String>();		
-		projects = DAO.MMProject.list();	
-		listProjects.add("Wszystkie");
-		for (int i=0; i<projects.size(); i++){
-			Project projectFromDb =   (Project) projects.get(i);		
-			listProjects.add(projectFromDb.getName());
-		}		
-		return listProjects;
+	@FXML private void readData(){
+		clearFields();
+		readUsersFromDataBase();
+		readProjectsFromDataBase();
+		refreshChooseUser();
+		refreshChooseProject();
 	}
 	
 	@FXML private void searchAndShowRecords(){
@@ -142,37 +132,53 @@ public class ManagerTabSearchController {
 		totalTimeTable.setItems(dataTotalTime);
 	}
 	
-	public void clearFields(){
-		recordTable.getSelectionModel().clearSelection();
-		dataRecords.clear();
+	private List<String> readUsersFromDataBase(){
+		listUsersNames.clear();		
+		users = DAO.MMUser.list();	
+		listUsersNames.add("Wszyscy");
+		for (int i=0; i<users.size(); i++){
+			User userFromDb =   (User) users.get(i);		
+			listUsersNames.add(userFromDb.getFirstName()+ " " + userFromDb.getLastName());
+		}		
+		return listUsersNames;
 	}
 	
+	private List<String> readProjectsFromDataBase(){
+		listProjectsNames.clear();		
+		projects = DAO.MMProject.list();	
+		listProjectsNames.add("Wszystkie");
+		for (int i=0; i<projects.size(); i++){
+			Project projectFromDb =   (Project) projects.get(i);		
+			listProjectsNames.add(projectFromDb.getName());
+		}		
+		return listProjectsNames;
+	}
 	
 	public void refreshChooseUser(){
 		chooseUser.getItems().clear();
-		//chooseUser.getItems().addAll(readUsersFromDataBase());
-		chooseUser.getItems().addAll(listUsers);
+		chooseUser.getItems().addAll(listUsersNames);
 		chooseUser.getSelectionModel().select(0);
 	}
 	
 	public void refreshChooseProject(){
 		chooseProject.getItems().clear();
-		//chooseProject.getItems().addAll(readProjectsFromDataBase());
-		chooseProject.getItems().addAll(listProjects);
+		chooseProject.getItems().addAll(listProjectsNames);
 		chooseProject.getSelectionModel().select(0);
 	}
 	
-	public Pair<Long,Long> calculateTotalTime(List<Record> records){
-		
+	public Pair<Long,Long> calculateTotalTime(List<Record> records){		
 		Long hours = 0L;
-		Long minutes = 0L;
-		
+		Long minutes = 0L;		
 		for (Record r : records){
 			hours += MINUTES.between(r.getTimeStart(), r.getTimeStop());
 			minutes += HOURS.between(r.getTimeStart(), r.getTimeStop());
-		}
-		
-		return new Pair<Long, Long>(minutes,hours);
-		
+		}		
+		return new Pair<Long, Long>(minutes,hours);		
 	}
+	
+	public void clearFields(){
+		recordTable.getSelectionModel().clearSelection();
+		dataRecords.clear();
+	}
+	
 }
