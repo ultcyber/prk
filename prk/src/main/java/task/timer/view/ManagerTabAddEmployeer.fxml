@@ -13,31 +13,45 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="490.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
+<AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="450.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="321.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
-      <VBox layoutX="10.0" layoutY="20.0" prefHeight="444.0" prefWidth="740.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="419.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
+      <VBox layoutX="10.0" layoutY="20.0" prefHeight="570.0" prefWidth="740.0">
          <children>
-            <Label text="Pracownicy">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" right="10.0" top="10.0" />
-               </VBox.margin></Label>
-            <HBox prefHeight="390.0" prefWidth="720.0">
+            <HBox prefHeight="54.0" prefWidth="720.0">
                <children>
-                  <TableView fx:id="usersTable" maxWidth="280.0" prefHeight="271.0" prefWidth="280.0">
-                    <columns>
-                      <TableColumn minWidth="285.0" prefWidth="285.0" resizable="false" text="Pracownik">
-                           <columns>
-                              <TableColumn fx:id="userNameColumn" prefWidth="140.0" text="Imie" />
-                              <TableColumn fx:id="userLastNameColumn" prefWidth="140.0" text="Nazwisko" />
-                           </columns>
-                        </TableColumn>
-                    </columns>
-                  </TableView>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Odśwież dane" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Label prefWidth="120.0" text="Pracownicy">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="495.0" prefWidth="720.0">
+               <children>
+                  <VBox prefHeight="381.0" prefWidth="279.0">
+                     <children>
+                        <TableView fx:id="usersTable" maxWidth="280.0" prefHeight="492.0" prefWidth="279.0">
+                          <columns>
+                            <TableColumn minWidth="285.0" prefWidth="285.0" resizable="false" text="Pracownik">
+                                 <columns>
+                                    <TableColumn fx:id="userNameColumn" prefWidth="140.0" text="Imie" />
+                                    <TableColumn fx:id="userLastNameColumn" prefWidth="140.0" text="Nazwisko" />
+                                 </columns>
+                              </TableColumn>
+                          </columns>
+                        </TableView>
+                     </children>
+                  </VBox>
                   <VBox prefHeight="300.0" prefWidth="440.0">
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
@@ -148,7 +162,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="updateUser" disable="true" mnemonicParsing="false" onAction="#updateUser" prefHeight="50.0" prefWidth="130.0" text="Aktualizuj dane">
+                              <Button fx:id="updateUser" mnemonicParsing="false" onAction="#updateUser" prefHeight="50.0" prefWidth="130.0" text="Aktualizuj dane">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
@@ -158,7 +172,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="deleteUser" disable="true" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="130.0" text="Usuń pracownika">
+                              <Button fx:id="deleteUser" mnemonicParsing="false" onAction="#deleteUser" prefHeight="50.0" prefWidth="130.0" text="Usuń pracownika">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
@@ -166,6 +180,9 @@
                            </children>
                         </HBox>
                      </children>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
                   </VBox>
                </children>
             </HBox>
