@@ -29,6 +29,7 @@ public class MainManagerController {
 	
 	@FXML private void clearTabEmployeer(){
 		employeerController.clearFields();
+		employeerController.hidePassword();
 	}
 	
 	@FXML private void readUsersAndProjects(){
