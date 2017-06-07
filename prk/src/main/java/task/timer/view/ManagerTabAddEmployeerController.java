@@ -55,7 +55,7 @@ public class ManagerTabAddEmployeerController {
 	
 	@FXML private Button saveUser;
 	@FXML private Button setNewUser;
-	@FXML private Button changeButton;
+	@FXML private Button changeCancelButton;
 	
 	@FXML private CheckBox editingCheck;
 	@FXML private CheckBox reminderCheck;
@@ -64,6 +64,7 @@ public class ManagerTabAddEmployeerController {
 	
 	private String permission;
 	private boolean newUser;
+	private boolean changePassword;
     
 	private final ObservableList<User> dataUsers = 
 			FXCollections.observableArrayList();
@@ -152,27 +153,79 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void setToNewUser(){
 		showPassword();
 		clearFields();
-		changeButton.setDisable(true);
+		hideLackMessages();
+		changeCancelButton.setText("Anuluj");
 		newUser = true;
+	}
+	
+	@FXML private void passwordCancelButton(){
+		if (newUser) cancel();
+		else changePassword();
+	}
+	
+	private void cancel(){
+		refreshInformationsFromTableView(null);
+		hidePassword();
+		changeCancelButton.setText("Zmień hasło");
+		newUser = false;
+	}
+	
+	private void changePassword(){
+		if (changeCancelButton.getText().equals("Anuluj")){
+			hidePassword();
+			changeCancelButton.setText("Zmień hasło");	
+		}	
+		else {
+			if (usersTable.getSelectionModel().getSelectedIndex() > -1) {
+				changePassword = true;
+				changeCancelButton.setText("Anuluj");
+				userPasswordField.setText("");
+				userConfirmPasswordField.setText("");
+				lackUserPasswordLabel.setVisible(false);
+				lackUserConfirmPasswordLabel.setVisible(false);				
+				showPassword();
+			}
+		}
 	}
 	
 	private void updateUser() throws ClassNotFoundException, NoSuchAlgorithmException{
 		int currentPositionInTableView;
+		String newPassword;
 		
 		// jeśli wszystkie pola są wypełnione i jeśli login jest unikalny
 		// metoda isLoginUnique przeszuka wszystkich userów poza bieżącym
-		if ((isAllFieldsAreFull()) && (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
+		if ((isAllFieldsAreFull()) 
+				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
 					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
-					DAO.MMUser.update(				 
-							new User(
-									usersTable.getSelectionModel().getSelectedItem().getId(),
-									userLoginField.getText(), 
-									Helper.encryptPassword(userPasswordField.getText()), 
-									userNameField.getText(), 
-									userLastNameField.getText(), 
-									permission,
-									editingCheck.isSelected(),
-									reminderCheck.isSelected()));
+					
+					if (!changePassword) {
+						DAO.MMUser.update(				 
+								new User(
+										usersTable.getSelectionModel().getSelectedItem().getId(),
+										userLoginField.getText(), 
+										usersTable.getSelectionModel().getSelectedItem().getPassword(), 
+										userNameField.getText(), 
+										userLastNameField.getText(), 
+										permission,
+										editingCheck.isSelected(),
+										reminderCheck.isSelected()));
+						
+					}
+					else {
+						if (isTheSamePassword()){
+							DAO.MMUser.update(				 
+									new User(
+											usersTable.getSelectionModel().getSelectedItem().getId(),
+											userLoginField.getText(), 
+											Helper.encryptPassword(userPasswordField.getText()), 
+											userNameField.getText(), 
+											userLastNameField.getText(), 
+											permission,
+											editingCheck.isSelected(),
+											reminderCheck.isSelected()));
+						}
+						
+					}
 					// pokaż aktualny stan bazy pracowników
 					readAndShowUsersFromDataBase();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
@@ -197,7 +250,8 @@ public class ManagerTabAddEmployeerController {
 			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
 			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
-		}		
+		}	
+		newUser = false;
 	}
 	
 	private void readAndShowUsersFromDataBase(){
@@ -218,17 +272,12 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void refreshInformationsFromTableView(User usr){
-		lackUserNameLabel.setVisible(false);
-		lackUserLastNameLabel.setVisible(false);
-		lackUserLoginLabel.setVisible(false);
-		lackUserPasswordLabel.setVisible(false);
-		lackUserConfirmPasswordLabel.setVisible(false);
-		lackUserPermissionsLabel.setVisible(false);
+		hideLackMessages();
+		newUser = false;
 	
 		if (usr != null){
 			hidePassword();
-			changeButton.setDisable(false);
-			newUser = false;
+			changeCancelButton.setText("Zmień hasło");
 			userNameField.setText(usr.getFirstName());
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
@@ -251,6 +300,15 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	private void hideLackMessages(){
+		lackUserNameLabel.setVisible(false);
+		lackUserLastNameLabel.setVisible(false);
+		lackUserLoginLabel.setVisible(false);
+		lackUserPasswordLabel.setVisible(false);
+		lackUserConfirmPasswordLabel.setVisible(false);
+		lackUserPermissionsLabel.setVisible(false);
+	}
+	
 	public void hidePassword(){
 		passwordLabel.setVisible(false);
 		confirmPasswordLabel.setVisible(false);
@@ -265,8 +323,6 @@ public class ManagerTabAddEmployeerController {
 		confirmPasswordLabel.setVisible(true);
 		userPasswordField.setVisible(true);
 		userConfirmPasswordField.setVisible(true);
-		lackUserPasswordLabel.setVisible(true);
-		lackUserConfirmPasswordLabel.setVisible(true);	
 	}
 	
 	private boolean isAllFieldsAreFull(){
