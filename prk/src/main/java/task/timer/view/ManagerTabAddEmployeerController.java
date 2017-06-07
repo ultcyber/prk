@@ -189,7 +189,7 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void updateUser() throws ClassNotFoundException, NoSuchAlgorithmException{
-		int currentPositionInTableView;
+		int currentPositionInTableView = 0;
 		String newPassword;
 		
 		// jeśli wszystkie pola są wypełnione i jeśli login jest unikalny
@@ -198,26 +198,14 @@ public class ManagerTabAddEmployeerController {
 				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
 					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
 					
-					if (!changePassword) {
-						DAO.MMUser.update(				 
-								new User(
-										usersTable.getSelectionModel().getSelectedItem().getId(),
-										userLoginField.getText(), 
-										usersTable.getSelectionModel().getSelectedItem().getPassword(), 
-										userNameField.getText(), 
-										userLastNameField.getText(), 
-										permission,
-										editingCheck.isSelected(),
-										reminderCheck.isSelected()));
-						
-					}
-					else {
+					String passwordToSet = !changePassword ? usersTable.getSelectionModel().getSelectedItem().getPassword() : Helper.encryptPassword(userPasswordField.getText());
+									
 						if (isTheSamePassword()){
 							DAO.MMUser.update(				 
 									new User(
 											usersTable.getSelectionModel().getSelectedItem().getId(),
 											userLoginField.getText(), 
-											Helper.encryptPassword(userPasswordField.getText()), 
+											passwordToSet, 
 											userNameField.getText(), 
 											userLastNameField.getText(), 
 											permission,
@@ -230,7 +218,6 @@ public class ManagerTabAddEmployeerController {
 					readAndShowUsersFromDataBase();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
 				}
- }
 
 	
 	private void addUser() throws NoSuchAlgorithmException{
