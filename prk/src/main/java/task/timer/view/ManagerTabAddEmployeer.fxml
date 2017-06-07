@@ -213,8 +213,8 @@
                               </VBox>
                               <VBox alignment="CENTER_LEFT" minHeight="40.0" prefHeight="50.0" prefWidth="186.0" spacing="10.0">
                                  <children>
-                                    <CheckBox mnemonicParsing="false" text="edycja czasu pracy" />
-                                    <CheckBox mnemonicParsing="false" text="przypominaj o aktywności" />
+                                    <CheckBox fx:id="editingCheck" mnemonicParsing="false" text="edycja czasu pracy" />
+                                    <CheckBox fx:id="reminderCheck" mnemonicParsing="false" text="przypominaj o aktywności" />
                                  </children>
                               </VBox>
                            </children>

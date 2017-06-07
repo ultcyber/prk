@@ -109,10 +109,12 @@ public class MainEmployeerController {
 		descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola	
 		startTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStartProperty());	
-		startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola		
+		if (LoginWindowController.loggedUser.getEditing())
+			startTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola		
 		stopTimeColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getTimeStopProperty());		
-		stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
+		if (LoginWindowController.loggedUser.getEditing()) 
+			stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 		readProjectsFromDataBase();
 		projectChoice.setItems(listOfProjectsName);    
 		readAndShowRecordsFromDataBase();
@@ -163,38 +165,40 @@ public class MainEmployeerController {
 	
 	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditStartTime(TableColumn.CellEditEvent<Record, String> timeStartEditEvent) throws ClassNotFoundException{	
-		LocalTime time;
-		try{
-			time = java.time.LocalTime.parse(timeStartEditEvent.getNewValue());			
-			recordTable.getSelectionModel()
-			.getSelectedItem()
-			.setTimeStart(time);
-		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+		if (LoginWindowController.loggedUser.getEditing()){
+			LocalTime time;
+			try{
+				time = java.time.LocalTime.parse(timeStartEditEvent.getNewValue());			
+				recordTable.getSelectionModel()
+				.getSelectedItem()
+				.setTimeStart(time);
+			DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+			}
+			catch (DateTimeParseException e){
+				time = java.time.LocalTime.parse(timeStartEditEvent.getOldValue());
+				recordTable.getSelectionModel()
+				.getSelectedItem()
+				.setTimeStart(time);
+				recordTable.refresh();
+			}	
 		}
-		catch (DateTimeParseException e){
-			time = java.time.LocalTime.parse(timeStartEditEvent.getOldValue());
-			System.out.println(time);
-			recordTable.getSelectionModel()
-			.getSelectedItem()
-			.setTimeStart(time);
-			recordTable.refresh();
-		}		
 	}
 	
 	// umożliwia edycję konca pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditStopTime(TableColumn.CellEditEvent<Record, String> timeStopEditEvent) throws ClassNotFoundException{	
-		LocalTime time;
-		try{
-			time = java.time.LocalTime.parse(timeStopEditEvent.getNewValue());	
-			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);
-			DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+		if (LoginWindowController.loggedUser.getEditing()){
+			LocalTime time;
+			try{
+				time = java.time.LocalTime.parse(timeStopEditEvent.getNewValue());	
+				recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);
+				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+			}
+			catch (DateTimeParseException e){
+				time = java.time.LocalTime.parse(timeStopEditEvent.getOldValue());
+				recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);		
+			}
+			recordTable.refresh();
 		}
-		catch (DateTimeParseException e){
-			time = java.time.LocalTime.parse(timeStopEditEvent.getOldValue());
-			System.out.println(time);
-			recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);		
-		}
-		recordTable.refresh();
 	}
 	
 	@FXML void deleteRecord() throws ClassNotFoundException{

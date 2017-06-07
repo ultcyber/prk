@@ -1,15 +1,7 @@
 package task.timer.view;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -170,8 +162,10 @@ public class ManagerTabSearchController {
 		Long hours = 0L;
 		Long minutes = 0L;		
 		for (Record r : records){
-			hours += MINUTES.between(r.getTimeStart(), r.getTimeStop());
-			minutes += HOURS.between(r.getTimeStart(), r.getTimeStop());
+			if (r.getTimeStop() != null){
+				hours += MINUTES.between(r.getTimeStart(), r.getTimeStop());
+				minutes += HOURS.between(r.getTimeStart(), r.getTimeStop());
+			}
 		}		
 		return new Pair<Long, Long>(minutes,hours);		
 	}
