@@ -189,6 +189,7 @@ public class ManagerTabSearchController {
 	public void clearFields(){
 		recordTable.getSelectionModel().clearSelection();
 		dataRecords.clear();
+		dataTotalTime.clear();
 	}
 	
 }
