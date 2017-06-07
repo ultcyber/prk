@@ -36,6 +36,7 @@ public class AlertDialog {
 	
 	public AlertDialog(String title, String headerText, String contextText, AlertType alertType) {
 		Alert alert = new Alert(alertType);
+		
 		alert.setContentText(contextText);
 		alert.setTitle(title);
 		alert.setHeaderText(headerText);

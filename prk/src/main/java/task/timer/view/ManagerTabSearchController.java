@@ -2,6 +2,9 @@ package task.timer.view;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.text.DateFormatter;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +23,12 @@ import task.timer.model.User;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.SECONDS;
+
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+
+
 
 public class ManagerTabSearchController {
 //	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
@@ -160,14 +169,21 @@ public class ManagerTabSearchController {
 	
 	public Pair<Long,Long> calculateTotalTime(List<Record> records){		
 		Long hours = 0L;
-		Long minutes = 0L;		
+		Long minutes = 0L;
+		Long seconds = 0L;
 		for (Record r : records){
-			if (r.getTimeStop() != null){
-				hours += MINUTES.between(r.getTimeStart(), r.getTimeStop());
-				minutes += HOURS.between(r.getTimeStart(), r.getTimeStop());
-			}
+				LocalTime start = r.getTimeStart();
+				if (r.getTimeStop() == null) continue;
+				LocalTime stop = r.getTimeStop();
+				
+				hours += HOURS.between(start,stop);
+				minutes += MINUTES.between(start,stop);
+				seconds += SECONDS.between(start,stop);
+				
+				minutes += (long) Math.floor(seconds/60);
+			
 		}		
-		return new Pair<Long, Long>(minutes,hours);		
+		return new Pair<Long, Long>(hours,minutes);		
 	}
 	
 	public void clearFields(){
