@@ -171,18 +171,20 @@ public class ManagerTabSearchController {
 		Long hours = 0L;
 		Long minutes = 0L;
 		Long seconds = 0L;
+		
 		for (Record r : records){
 				LocalTime start = r.getTimeStart();
 				if (r.getTimeStop() == null) continue;
 				LocalTime stop = r.getTimeStop();
 				
-				hours += HOURS.between(start,stop);
-				minutes += MINUTES.between(start,stop);
-				seconds += SECONDS.between(start,stop);
-				
-				minutes += (long) Math.floor(seconds/60);
-			
-		}		
+				Long diff = SECONDS.between(start,stop);
+				// Accounting for day change (the operation is ADD as the number is negative)
+				seconds += diff < 0 ? (24*3600)+diff : diff;			
+		}
+	
+		hours += seconds / 3600;
+		minutes = (seconds % 3600) / 60;
+		
 		return new Pair<Long, Long>(hours,minutes);		
 	}
 	

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -19,6 +20,7 @@ public class AlertDialog {
 	
 		
 	public AlertDialog(String headerText, String contextText, AlertType alertType) {
+		
 		Alert alert = new Alert(alertType);
 		alert.setContentText(contextText);
 		alert.setTitle("");
@@ -27,6 +29,11 @@ public class AlertDialog {
 		alert.setResizable(true);
 		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		if (alertType == AlertType.CONFIRMATION){
+			Button btnOk = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+			Button btnCancel = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+			btnOk.setText("TAK");
+			btnCancel.setText("NIE");
+			
 			setResult(alert.showAndWait());			
 		}
 		else {
@@ -44,6 +51,11 @@ public class AlertDialog {
 		alert.setResizable(true);
 		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		if (alertType == AlertType.CONFIRMATION){
+			Button btnOk = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+			Button btnCancel = (Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL);
+			btnOk.setText("TAK");
+			btnCancel.setText("NIE");
+			
 			setResult(alert.showAndWait());			
 		}
 		else {
