@@ -28,13 +28,13 @@ public class ManageUsers {
    }
    
    /* Method to CREATE an employee in the database */
-   public Integer addUser(String login, String password, String fname, String lname, String permissions){
+   public Integer addUser(String login, String password, String fname, String lname, String permissions, boolean editing, boolean reminder){
       Session session = factory.openSession();
       Transaction tx = null;
       Integer userID = null;
       try{
          tx = session.beginTransaction();
-         User user = new User(login, password, fname, lname, permissions);
+         User user = new User(login, password, fname, lname, permissions, editing, reminder);
          userID = (Integer) session.save(user); 
          tx.commit();
       }catch (HibernateException e) {

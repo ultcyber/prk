@@ -36,7 +36,7 @@ public class UsersTest {
 	
 	@Test
 	public void when_I_save_a_new_user_I_get_his_id_from_database(){
-		  Integer userID = MM.add(new User("zara89", "testpass", "Zara", "Ali", "rw"));
+		  Integer userID = MM.add(new User("zara89", "testpass", "Zara", "Ali", "rw", true, true));
 	      List<AbstractEntity> users = MM.list();
 	      int lastIndex = users.size()-1;
 	      int lastUserID = ((User) users.get(lastIndex)).getId();
@@ -47,7 +47,7 @@ public class UsersTest {
 	@Test
 	public void MEFactory_save_a_user_to_a_database(){
 		  ManageEntity UEM = new MEFactory(sessionFactory).getUserEntityManager();
-		  Integer userID = UEM.add(new User("zara89", "testpass", "Zara", "Ali", "rw"));
+		  Integer userID = UEM.add(new User("zara89", "testpass", "Zara", "Ali", "rw", true, true));
 		  List<AbstractEntity> users = MM.list();
 	      int lastIndex = users.size()-1;
 	      int lastUserID = ((User) users.get(lastIndex)).getId();
@@ -57,7 +57,7 @@ public class UsersTest {
 	
 	@Test
 	public void when_adding_a_user_then_I_can_retrieve_his_data(){
-	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw");
+	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw", true, true);
 		  List<AbstractEntity> users = MM.list();
 		  User userFromDb = (User) users.get(users.size()-1);
 		  
@@ -67,7 +67,7 @@ public class UsersTest {
 	@Test
 	public void when_adding_a_user_I_can_delete_him_from_the_database(){
 		  ManageEntity UEM = new MEFactory(sessionFactory).getUserEntityManager();
-		  User testUser = new User("tommy", "testpass", "Thomas", "Shelby", "r");
+		  User testUser = new User("tommy", "testpass", "Thomas", "Shelby", "r", true, true);
 		  Integer userID = UEM.add(testUser);
 		  try {
 			UEM.delete(userID);

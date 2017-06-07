@@ -32,14 +32,14 @@ public class USERSTableTest {
 	
 	@Test
 	public void when_I_save_a_new_user_I_get_his_id_from_database(){
-		  Integer user = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw");
+		  Integer user = MM.addUser("zara89", "testpass", "Zara", "Ali", "rw", true, true);
 	      List<User> users = MM.listUsers();
 		  assertEquals(Integer.valueOf(users.size()), user);	            
 	}
 	
 	@Test
 	public void when_adding_a_user_then_I_can_retrieve_his_data(){
-	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw");
+	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw", true, true);
 		  List<User> users = MM.listUsers();
 		  User userFromDb = users.get(users.size()-1);
 		  

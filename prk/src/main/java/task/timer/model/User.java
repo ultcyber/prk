@@ -33,27 +33,37 @@ public class User extends AbstractEntity {
 	 @Column (name="permissions")
 	 private String permissions;
 	 
+	 @Column (name="editing")
+	 private boolean editing;
+	 
+	 @Column (name="reminder")
+	 private boolean reminder;
+	 
 	 @ManyToMany(fetch = FetchType.EAGER, mappedBy="users", cascade = CascadeType.MERGE)  
 	 private Set<Project> projects = new HashSet<Project>();
 	 
 	 @OneToMany(fetch = FetchType.EAGER, mappedBy="user", cascade = CascadeType.REMOVE)
 		private Set<Record> records;
 	 	
-	public User(String login, String password, String firstName, String lastName, String permissions) {
+	public User(String login, String password, String firstName, String lastName, String permissions, boolean editing, boolean reminder) {
 		this.login = login;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.permissions = permissions;
+		this.editing = editing;
+		this.reminder = reminder;
 	}
 	
-	public User(int id, String login, String password, String firstName, String lastName, String permissions) {
+	public User(int id, String login, String password, String firstName, String lastName, String permissions, boolean editing, boolean reminder) {
 		this.id = id;
 		this.login = login;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.permissions = permissions;
+		this.editing = editing;
+		this.reminder = reminder;
 	}
 	
 	public User(){
@@ -64,12 +74,7 @@ public class User extends AbstractEntity {
 	public int getId() {
 		return id;
 	}
-	
-	public IntegerProperty getIdProperty(){
-		SimpleIntegerProperty idProperty = new SimpleIntegerProperty(id);
-		return idProperty;
-	}
-
+		
 	public String getLogin() {
 		return login;
 	}
@@ -78,26 +83,39 @@ public class User extends AbstractEntity {
 		return firstName;
 	}
 	
-	public StringProperty getFirstNameProperty(){
-		SimpleStringProperty firstNameProperty = new SimpleStringProperty(firstName);
-		return firstNameProperty;
-	}
-
 	public String getLastName() {
 		return lastName;
 	}
 	
-	public StringProperty getLastNameProperty(){
-		SimpleStringProperty lastNameProperty = new SimpleStringProperty(lastName);
-		return lastNameProperty;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
 	public String getPermissions() {
 		return permissions;
+	}
+	
+	public boolean getEditing(){
+		return editing;
+	}
+	
+	public boolean getReminder(){
+		return reminder;
+	}
+	
+	public IntegerProperty getIdProperty(){
+		SimpleIntegerProperty idProperty = new SimpleIntegerProperty(id);
+		return idProperty;
+	}
+
+	public StringProperty getFirstNameProperty(){
+		SimpleStringProperty firstNameProperty = new SimpleStringProperty(firstName);
+		return firstNameProperty;
+	}
+
+	public StringProperty getLastNameProperty(){
+		SimpleStringProperty lastNameProperty = new SimpleStringProperty(lastName);
+		return lastNameProperty;
 	}
 
 	public void setId(int id) {
@@ -123,6 +141,14 @@ public class User extends AbstractEntity {
 	public void setPermissions(String permissions) {
 		this.permissions = permissions;
 	}
+	
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+	
+	public void setReminder(boolean reminder){
+		this.reminder = reminder;
+	}
 	 
 	public Set<Project> getProjects() {
 	    return projects;
@@ -142,12 +168,9 @@ public class User extends AbstractEntity {
 				getPassword().equals(user.getPassword()) &&
 				getFirstName().equals(user.getFirstName()) &&
 				getLastName().equals(user.getLastName()) &&
-				getPermissions().equals(user.getPermissions());
-
-				
+				getPermissions().equals(user.getPermissions());				
 	}
-	
-	
+		
 	@Override
 	public int hashCode() {
 		final int prime = 31;
