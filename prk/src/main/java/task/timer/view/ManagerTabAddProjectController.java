@@ -15,12 +15,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import task.timer.helper.AlertDialog;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
@@ -203,9 +206,13 @@ public class ManagerTabAddProjectController {
 	@FXML private void deleteProject() throws ClassNotFoundException{
 		if (projectsTable.getSelectionModel().getSelectedIndex() > -1)
 		{
-			DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
-			readAndShowProjectsFromDataBase();
-			clearFields();
+			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie projektu", "Czy na pewno chcesz usunąć projekt?", AlertType.CONFIRMATION);
+			if (dialog.getResult() == ButtonType.OK) {
+				DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
+				readAndShowProjectsFromDataBase();
+				clearFields();
+				new AlertDialog("Operacja zakończona", "Projekt został usunięty", AlertType.INFORMATION);
+			}
 		}
 	}
 	
