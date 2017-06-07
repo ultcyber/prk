@@ -57,10 +57,7 @@ public class LoginWindowController {
 				return;
 			}
 			
-			Scene scene = new Scene(viewLoader.getLayout());
-			Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-			appStage.setScene(scene);
-            appStage.show();
+			Helper.changeStage(viewLoader, event);
 		
 		}
 		// If incorrect login, display error message
