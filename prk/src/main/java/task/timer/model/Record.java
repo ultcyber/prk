@@ -127,7 +127,7 @@ public class Record extends AbstractEntity {
 	}
 	
 	public StringProperty getTimeStartProperty(){
-		SimpleStringProperty timeStartProperty = new SimpleStringProperty(timeStart.toString());
+		SimpleStringProperty timeStartProperty = new SimpleStringProperty(String.format("%02d:%02d:%02d", timeStart.getHour(), timeStart.getMinute(), timeStart.getSecond()));
 		return timeStartProperty;
 	}
 	
@@ -142,7 +142,7 @@ public class Record extends AbstractEntity {
 	public StringProperty getTimeStopProperty(){
 		SimpleStringProperty timeStopProperty = null;
 		if (timeStop != null)
-			timeStopProperty = new SimpleStringProperty(timeStop.toString());
+			timeStopProperty = new SimpleStringProperty(String.format("%02d:%02d:%02d", timeStop.getHour(), timeStop.getMinute(), timeStop.getSecond()));
 		return timeStopProperty;
 	}
 	
