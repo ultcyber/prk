@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.Timer;
@@ -118,6 +119,11 @@ public class MainEmployeerController {
 		readProjectsFromDataBase();
 		projectChoice.setItems(listOfProjectsName);    
 		readAndShowRecordsFromDataBase();
+		
+		if (LoginWindowController.loggedUser.getReminder()){
+			launchReminder();
+		}
+		
 	}
 	
 	@FXML private void timing() throws ClassNotFoundException{
@@ -307,6 +313,43 @@ public class MainEmployeerController {
 					listOfProjectsName.add(project.getName());
 				}
 		}
+	}
+	
+private void launchReminder(){
+		
+		final int randDelay = new Random().nextInt(60)*60000+30;
+				
+		new Thread() {
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(randDelay);
+					} catch (InterruptedException e) {
+
+						e.printStackTrace();
+					}
+					Platform.runLater(new Runnable() {
+						public void run() {
+							AlertDialog dg;
+													
+							if (time != null && time.isRunning()) {
+								dg = new AlertDialog("Przypomnienie!", "Czy nadal pracujesz nad zadaniem?",
+										AlertType.CONFIRMATION);
+								if (dg.getResult() != ButtonType.OK) {
+									startStopTime.fire();
+								}
+
+							} else 
+								new AlertDialog("Przypomnienie!",
+										"Proszę pamiętać o wciśnięciu START przed rozpoczęciem pracy nad zadaniem",
+										AlertType.INFORMATION);
+							
+						}
+					});
+				}
+			}
+		}.start();
+		
 	}
 	
 
