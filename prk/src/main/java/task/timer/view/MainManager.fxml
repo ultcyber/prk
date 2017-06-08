@@ -28,7 +28,7 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                  <HBox onMouseClicked="#logout" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Zalogowano:" />
                         <Label fx:id="loggedUserName" text="NAZWA UŻYTKOWNIKA" />
@@ -37,16 +37,16 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <Button mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                  <Button mnemonicParsing="false" onMouseClicked="#logout" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                      <graphic>
-                        <ImageView blendMode="SRC_ATOP" fitHeight="68.0" fitWidth="30.0" onMouseClicked="#logout" pickOnBounds="true" preserveRatio="true">
+                        <ImageView blendMode="SRC_ATOP" fitHeight="68.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../helper/exit1600.png" />
                            </image>
                         </ImageView>
                      </graphic>
                      <tooltip>
-                        <Tooltip text="logout" />
+                        <Tooltip text="wyloguj" />
                      </tooltip>
                   </Button>
                </children>
