@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -21,26 +22,29 @@
 <AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="439.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="453.0" layoutY="-11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="570.0" prefWidth="740.0">
          <children>
-            <HBox prefHeight="54.0" prefWidth="720.0">
+            <HBox prefHeight="34.0" prefWidth="720.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="40.0" prefWidth="30.0" textAlignment="CENTER">
+                  <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="20.0" prefWidth="20.0" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                      <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../helper/strzalki.png" />
+                              <Image url="@../helper/arrows.png" />
                            </image>
                         </ImageView>
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="odśwież dane" />
+                     </tooltip>
                   </Button>
                   <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="615.0">
                      <children>
-                        <Label prefWidth="120.0" text="Pracownicy">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="166.0" text="PRACOWNICY">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -52,11 +56,11 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox prefHeight="495.0" prefWidth="720.0">
+            <HBox prefHeight="522.0" prefWidth="720.0">
                <children>
                   <VBox prefHeight="381.0" prefWidth="279.0">
                      <children>
-                        <TableView fx:id="usersTable" editable="true" maxWidth="280.0" prefHeight="492.0" prefWidth="279.0">
+                        <TableView fx:id="usersTable" editable="true" maxWidth="280.0" prefHeight="521.0" prefWidth="279.0">
                           <columns>
                             <TableColumn minWidth="285.0" prefWidth="285.0" resizable="false" text="Pracownik">
                                  <columns>
