@@ -1,4 +1,6 @@
 package task.timer.model;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +12,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session; 
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.jdbc.Work;
 import org.hibernate.query.Query;
 
 import javafx.scene.control.Alert.AlertType;
@@ -130,6 +133,13 @@ public void delete(int id) throws ClassNotFoundException {
 @Override
 public List<AbstractEntity> list(){
     Session session = factory.openSession();
+	
+	session.doWork(new Work() {
+    public void execute(Connection connection) throws SQLException {
+        assert(connection.isClosed());
+        };
+    });
+	
     Transaction tx = null;
     List<AbstractEntity> entities = null;
     try{
@@ -286,7 +296,7 @@ public List<Record> listRecords(User user, Project project, LocalDate dateStart,
        
     }catch (HibernateException e) {
 		new AlertDialog("Error", "Błąd połączenia z bazą danych.", "Wystąpił błąd z połączeniem z bazą danych. Spróbuj ponownie uruchomić aplikację. \n\nW razie częstego występowania błędu, skontaktuj się z administratorem podając poniższe szczegóły błędu.", AlertType.ERROR, e);
-       e.printStackTrace(); 
+       e.printStackTrace();
     }finally {
   	  session.close(); 
     }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import task.timer.Main;
 import task.timer.ViewLoader;
 import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
@@ -59,6 +61,7 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
+		
 		loggedUser = login(username.getText());
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
@@ -97,12 +100,14 @@ public class LoginWindowController {
 	 */
 	@FXML
 	public User login(String login) throws NoSuchAlgorithmException{
-		User user = DAO.MMUser.getUserForLogin(login);
+		
+		User user = Main.getMMUser().getUserForLogin(login);
 		if (user != null){
 			if (user.getPassword().equals(Helper.encryptPassword(password.getText()))){
 				return user;
 			}
 		}
 		return null;
+		}
+
 	}
-}
