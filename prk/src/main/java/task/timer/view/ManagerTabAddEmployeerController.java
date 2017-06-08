@@ -22,6 +22,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
@@ -56,6 +58,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private Button saveUser;
 	@FXML private Button setNewUser;
 	@FXML private Button changeCancelButton;
+	@FXML private Button refreshButton;
 	
 	@FXML private CheckBox editingCheck;
 	@FXML private CheckBox reminderCheck;
@@ -94,8 +97,6 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void readData(){
 		clearFields();
 		readAndShowUsersFromDataBase();
-/*		readAndShowProjectsFromDataBase();			
-		showDataOfProject(null);*/
 	}
 	
 	@FXML private void hideLackUserNameLabel(){
@@ -132,11 +133,6 @@ public class ManagerTabAddEmployeerController {
 		userPermissionsBox.getSelectionModel().select(null);
 	}
 	
-	@FXML private void saveUser() throws ClassNotFoundException, NoSuchAlgorithmException{
-		if (newUser) addUser();
-			else updateUser();
-	}
-	
 	@FXML private void deleteUser() throws ClassNotFoundException{
 		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
 		{
@@ -149,6 +145,12 @@ public class ManagerTabAddEmployeerController {
 			}
 		}
 	}
+	
+	@FXML private void saveUser() throws ClassNotFoundException, NoSuchAlgorithmException{
+		if (newUser) addUser();
+			else updateUser();
+	}
+	
 	
 	@FXML private void setToNewUser(){
 		showPassword();
@@ -166,6 +168,7 @@ public class ManagerTabAddEmployeerController {
 	private void cancel(){
 		refreshInformationsFromTableView(null);
 		hidePassword();
+		clearFields();
 		changeCancelButton.setText("Zmień hasło");
 		newUser = false;
 	}
@@ -173,7 +176,8 @@ public class ManagerTabAddEmployeerController {
 	private void changePassword(){
 		if (changeCancelButton.getText().equals("Anuluj")){
 			hidePassword();
-			changeCancelButton.setText("Zmień hasło");	
+			changeCancelButton.setText("Zmień hasło");
+			changePassword = false;
 		}	
 		else {
 			if (usersTable.getSelectionModel().getSelectedIndex() > -1) {
@@ -189,48 +193,57 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void updateUser() throws ClassNotFoundException, NoSuchAlgorithmException{
-		int currentPositionInTableView;
-		String newPassword;
-		
-		// jeśli wszystkie pola są wypełnione i jeśli login jest unikalny
-		// metoda isLoginUnique przeszuka wszystkich userów poza bieżącym
+		if (usersTable.getSelectionModel().getSelectedIndex() > -1) {
+			if (changePassword) updateUserWithNewPassword();
+			else updateUserWithoutPassword();	
+		}
+	}
+	
+	private void updateUserWithNewPassword() throws ClassNotFoundException, NoSuchAlgorithmException{
+		int currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
 		if ((isAllFieldsAreFull()) 
+				&& (isTheSamePassword())
 				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
 					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
-					
-					if (!changePassword) {
-						DAO.MMUser.update(				 
-								new User(
-										usersTable.getSelectionModel().getSelectedItem().getId(),
-										userLoginField.getText(), 
-										usersTable.getSelectionModel().getSelectedItem().getPassword(), 
-										userNameField.getText(), 
-										userLastNameField.getText(), 
-										permission,
-										editingCheck.isSelected(),
-										reminderCheck.isSelected()));
-						
-					}
-					else {
-						if (isTheSamePassword()){
-							DAO.MMUser.update(				 
-									new User(
-											usersTable.getSelectionModel().getSelectedItem().getId(),
-											userLoginField.getText(), 
-											Helper.encryptPassword(userPasswordField.getText()), 
-											userNameField.getText(), 
-											userLastNameField.getText(), 
-											permission,
-											editingCheck.isSelected(),
-											reminderCheck.isSelected()));
-						}
-						
-					}
+					DAO.MMUser.update(				 
+							new User(
+									usersTable.getSelectionModel().getSelectedItem().getId(),
+									userLoginField.getText(), 
+									Helper.encryptPassword(userPasswordField.getText()), 
+									userNameField.getText(), 
+									userLastNameField.getText(), 
+									permission,
+									editingCheck.isSelected(),
+									reminderCheck.isSelected()));
 					// pokaż aktualny stan bazy pracowników
 					readAndShowUsersFromDataBase();
-					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
-				}
- }
+					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz
+					new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
+					changePassword = false;
+		}
+	}
+	
+	private void updateUserWithoutPassword() throws ClassNotFoundException, NoSuchAlgorithmException{
+		int currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
+		if ((isAllFieldsAreFull()) 
+				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
+					DAO.MMUser.update(				 
+							new User(
+									usersTable.getSelectionModel().getSelectedItem().getId(),
+									userLoginField.getText(), 
+									usersTable.getSelectionModel().getSelectedItem().getPassword(), 
+									userNameField.getText(), 
+									userLastNameField.getText(), 
+									permission,
+									editingCheck.isSelected(),
+									reminderCheck.isSelected()));
+					// pokaż aktualny stan bazy pracowników
+					readAndShowUsersFromDataBase();
+					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz
+					new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
+		}
+	}
+
 	
 	private void addUser() throws NoSuchAlgorithmException{
 		int currentPositionInTableView;
@@ -249,8 +262,9 @@ public class ManagerTabAddEmployeerController {
 			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
 			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+			new AlertDialog("Operacja zakończona", "Dodano pracownika", AlertType.INFORMATION);
+			newUser = false;
 		}	
-		newUser = false;
 	}
 	
 	private void readAndShowUsersFromDataBase(){
@@ -345,12 +359,13 @@ public class ManagerTabAddEmployeerController {
 			lack = false;
 		}
 		
-		if (newUser){
+		if ((newUser) || (changePassword)){
 			if (userPasswordField.getText().equals("")) {
 				lackUserPasswordLabel.setVisible(true);
 				lack = false;
 			}
 			if (userConfirmPasswordField.getText().equals("")) {
+				lackUserConfirmPasswordLabel.setText("to pole nie może być puste");
 				lackUserConfirmPasswordLabel.setVisible(true);
 				lack = false;
 			}
@@ -377,7 +392,7 @@ public class ManagerTabAddEmployeerController {
 	
 	private boolean isTheSamePassword(){
 		if (!userPasswordField.getText().equals(userConfirmPasswordField.getText())) {
-			lackUserConfirmPasswordLabel.setText("Hasło i powtórzone hasło muszą być takie same");
+			lackUserConfirmPasswordLabel.setText("hasło i powtórzone hasło muszą być takie same");
 			lackUserConfirmPasswordLabel.setVisible(true);
 			return false;
 		}
