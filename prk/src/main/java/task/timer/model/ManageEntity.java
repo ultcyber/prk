@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.jdbc.Work;
 import org.hibernate.query.Query;
+import org.junit.Assert;
 
 import javafx.scene.control.Alert.AlertType;
 import task.timer.helper.AlertDialog;
@@ -133,16 +134,10 @@ public void delete(int id) throws ClassNotFoundException {
 @Override
 public List<AbstractEntity> list(){
     Session session = factory.openSession();
-	
-	session.doWork(new Work() {
-    public void execute(Connection connection) throws SQLException {
-        assert(connection.isClosed());
-        };
-    });
-	
+    
     Transaction tx = null;
     List<AbstractEntity> entities = null;
-    try{
+    try{   
        tx = session.beginTransaction();
        entities = session.createQuery("from " + entityType).list(); 
       

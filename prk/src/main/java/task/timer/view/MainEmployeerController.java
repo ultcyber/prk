@@ -36,6 +36,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import task.timer.Main;
 import task.timer.ViewLoader;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
@@ -150,7 +151,7 @@ public class MainEmployeerController {
 				timeStop = LocalTime.now().withNano(0);			      				
 				stopTimeMeaserement();
 				recordTable.getSelectionModel().getSelectedItem().setTimeStop(timeStop);				
-				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());				
+				Main.getMMRecord().update(recordTable.getSelectionModel().getSelectedItem());				
 				recordTable.refresh();
 				descriptionName.clear();
 			}
@@ -158,7 +159,7 @@ public class MainEmployeerController {
 	}
 
 	@FXML private void readAndShowRecordsFromDataBase(){	
-		records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);		
+		records = Main.getMMRecord().listRecords(LoginWindowController.loggedUser, null, currentDate);		
 		if (records.size() > 0){
 			dataRecords.clear();			
 			dataRecords.addAll(records);					
@@ -169,7 +170,7 @@ public class MainEmployeerController {
 	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
 		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
-		DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());		
+		Main.getMMRecord().update(recordTable.getSelectionModel().getSelectedItem());		
 	}
 	
 	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
@@ -181,7 +182,7 @@ public class MainEmployeerController {
 				recordTable.getSelectionModel()
 				.getSelectedItem()
 				.setTimeStart(time);
-			DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+			Main.getMMRecord().update(recordTable.getSelectionModel().getSelectedItem());
 			}
 			catch (DateTimeParseException e){
 				time = java.time.LocalTime.parse(timeStartEditEvent.getOldValue());
@@ -200,7 +201,7 @@ public class MainEmployeerController {
 			try{
 				time = java.time.LocalTime.parse(timeStopEditEvent.getNewValue());	
 				recordTable.getSelectionModel().getSelectedItem().setTimeStop(time);
-				DAO.MMRecord.update(recordTable.getSelectionModel().getSelectedItem());
+				Main.getMMRecord().update(recordTable.getSelectionModel().getSelectedItem());
 			}
 			catch (DateTimeParseException e){
 				time = java.time.LocalTime.parse(timeStopEditEvent.getOldValue());
@@ -215,7 +216,7 @@ public class MainEmployeerController {
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie wpisu", "Czy na pewno chcesz usunąć wpis?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
-			DAO.MMRecord.delete(recordTable.getSelectionModel().getSelectedItem().getId());
+			Main.getMMRecord().delete(recordTable.getSelectionModel().getSelectedItem().getId());
 			dataRecords.remove(recordTable.getSelectionModel().getSelectedItem());
 			new AlertDialog("Operacja zakończona", "Wpis został usunięty", AlertType.INFORMATION);
 			}
@@ -241,7 +242,7 @@ public class MainEmployeerController {
 				timeStart,
 				null
 				);	    
-	    Integer recordID = DAO.MMRecord.add(newRecord);
+	    Integer recordID = Main.getMMRecord().add(newRecord);
 	}
 	
 	private void disableElements(){

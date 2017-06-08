@@ -24,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
@@ -138,7 +139,7 @@ public class ManagerTabAddEmployeerController {
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie loginu", "Czy na pewno chcesz usunąć login?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
-				DAO.MMUser.delete(usersTable.getSelectionModel().getSelectedItem().getId());
+				Main.getMMUser().delete(usersTable.getSelectionModel().getSelectedItem().getId());
 				readAndShowUsersFromDataBase();
 				clearFields();
 				new AlertDialog("Operacja zakończona", "Login został usunięty", AlertType.INFORMATION);
@@ -205,7 +206,7 @@ public class ManagerTabAddEmployeerController {
 				&& (isTheSamePassword())
 				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
 					currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
-					DAO.MMUser.update(				 
+					Main.getMMUser().update(				 
 							new User(
 									usersTable.getSelectionModel().getSelectedItem().getId(),
 									userLoginField.getText(), 
@@ -227,7 +228,7 @@ public class ManagerTabAddEmployeerController {
 		int currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
 		if ((isAllFieldsAreFull()) 
 				&& (isLoginUnique(usersTable.getSelectionModel().getSelectedItem().getId()))){	
-					DAO.MMUser.update(				 
+					Main.getMMUser().update(				 
 							new User(
 									usersTable.getSelectionModel().getSelectedItem().getId(),
 									userLoginField.getText(), 
@@ -250,7 +251,7 @@ public class ManagerTabAddEmployeerController {
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny i hasło jest takie, jak powtórzone hasło; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
 		if (isAllFieldsAreFull() && isTheSamePassword() && isLoginUnique(-1)){		
-			Integer userID = DAO.MMUser.add(
+			Integer userID = Main.getMMUser().add(
 				new User(
 						userLoginField.getText(), 
 						Helper.encryptPassword(userPasswordField.getText()), 
@@ -268,7 +269,7 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void readAndShowUsersFromDataBase(){
-		List<AbstractEntity> users = DAO.MMUser.list();	
+		List<AbstractEntity> users = Main.getMMUser().list();	
 		dataUsers.clear();
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);		
@@ -377,7 +378,7 @@ public class ManagerTabAddEmployeerController {
 	
 	// metoda sprawdza czy login jest unikalny bez uwzględniania bieżacego usera
 	private boolean isLoginUnique(int currentUserId){
-		List<AbstractEntity> users = DAO.MMUser.list();	
+		List<AbstractEntity> users = Main.getMMUser().list();	
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);
 			if (currentUserId == userFromDb.getId()) continue;

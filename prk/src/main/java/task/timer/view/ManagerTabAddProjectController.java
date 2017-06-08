@@ -23,6 +23,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
@@ -102,7 +103,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	private void readAndShowProjectsFromDataBase(){ 	
-		projects = DAO.MMProject.list();			
+		projects = Main.getMMProject().list();			
 		dataProjects.clear();
 		for (int i=0; i<projects.size(); i++){				
 			Project projectFromDb =   (Project) projects.get(i);	
@@ -133,7 +134,7 @@ public class ManagerTabAddProjectController {
 	}
 	
 	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
-		List<AbstractEntity> users = DAO.MMUser.list();	
+		List<AbstractEntity> users = Main.getMMUser().list();	
 		dataUsersOutOfProject.clear();
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);				
@@ -170,7 +171,7 @@ public class ManagerTabAddProjectController {
 					userToUpdate.add(dataUsersInProject.get(i));							
 				usersInProjectTable.setItems(dataUsersInProject);
 				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
-				DAO.MMProject.update(
+				Main.getMMProject().update(
 					new Project(
 						projectsTable.getSelectionModel().getSelectedItem().getId(),
 						projectNameField.getText(),
@@ -189,7 +190,7 @@ public class ManagerTabAddProjectController {
 		int currentPositionInTableView;
 		if (isNewProjectNameFieldsFull()) 
 			if (isNewProjectUnique(newProjectNameField.getText())){
-				Integer projectID = DAO.MMProject.add(
+				Integer projectID = Main.getMMProject().add(
 					new Project(
 							newProjectNameField.getText()));	
 					newProjectNameField.setText("");
@@ -208,7 +209,7 @@ public class ManagerTabAddProjectController {
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie projektu", "Czy na pewno chcesz usunąć projekt?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
-				DAO.MMProject.delete(projectsTable.getSelectionModel().getSelectedItem().getId());
+				Main.getMMProject().delete(projectsTable.getSelectionModel().getSelectedItem().getId());
 				readAndShowProjectsFromDataBase();
 				clearFields();
 				new AlertDialog("Operacja zakończona", "Projekt został usunięty", AlertType.INFORMATION);

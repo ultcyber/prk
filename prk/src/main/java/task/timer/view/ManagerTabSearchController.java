@@ -8,14 +8,20 @@ import javax.swing.text.DateFormatter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Pair;
+import task.timer.Main;
+import task.timer.helper.ExcelCreator;
 import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
 import task.timer.model.Record;
@@ -25,6 +31,10 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
@@ -113,7 +123,7 @@ public class ManagerTabSearchController {
 	}
 	
 	@FXML private void searchAndShowRecords(){
-		List<Record> listRecords = DAO.MMRecord.listRecords(
+		List<Record> listRecords = Main.getMMRecord().listRecords(
 				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()-1) : null,
 				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()-1) : null, 
 				date.getValue(), dateEnd.getValue());
@@ -135,7 +145,7 @@ public class ManagerTabSearchController {
 	
 	private List<String> readUsersFromDataBase(){
 		listUsersNames.clear();		
-		users = DAO.MMUser.list();	
+		users = Main.getMMUser().list();	
 		listUsersNames.add("Wszyscy");
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);		
@@ -146,7 +156,7 @@ public class ManagerTabSearchController {
 	
 	private List<String> readProjectsFromDataBase(){
 		listProjectsNames.clear();		
-		projects = DAO.MMProject.list();	
+		projects = Main.getMMProject().list();	
 		listProjectsNames.add("Wszystkie");
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb =   (Project) projects.get(i);		
@@ -192,6 +202,23 @@ public class ManagerTabSearchController {
 		recordTable.getSelectionModel().clearSelection();
 		dataRecords.clear();
 		dataTotalTime.clear();
+	}
+	
+	@FXML public void exportXls(ActionEvent event) throws IOException{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		File file = fileChooser.showSaveDialog(stage);
+		
+		byte[] data = new ExcelCreator(dataRecords).getOutputData();
+		FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+		try {
+			fos.write(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		fos.close();
+
 	}
 	
 }
