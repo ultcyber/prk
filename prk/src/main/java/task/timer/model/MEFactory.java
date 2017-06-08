@@ -30,11 +30,11 @@ public class MEFactory {
 	 *
 	 * @return the user entity manager
 	 */
-	public ManageEntity getUserEntityManager(){
+	public ManageEntity<User> getUserEntityManager(){
 		if (sessionFactory != null)
-			return new ManageEntity(sessionFactory, EntityType.User);
+			return new ManageEntity<User>(sessionFactory, EntityType.User);
 		else
-			return new ManageEntity(EntityType.User);
+			return new ManageEntity<User>(EntityType.User);
 	}
 	
 	/**
@@ -42,11 +42,11 @@ public class MEFactory {
 	 *
 	 * @return the project entity manager
 	 */
-	public ManageEntity getProjectEntityManager(){
+	public ManageEntity<Project> getProjectEntityManager(){
 		if (sessionFactory != null)
-			return new ManageEntity(sessionFactory, EntityType.Project);
+			return new ManageEntity<Project>(sessionFactory, EntityType.Project);
 		else
-			return new ManageEntity(EntityType.Project);
+			return new ManageEntity<Project>(EntityType.Project);
 	}
 	
 	/**
@@ -54,23 +54,12 @@ public class MEFactory {
 	 *
 	 * @return the record entity manager
 	 */
-	public ManageEntity getRecordEntityManager(){
+	public ManageEntity<Record> getRecordEntityManager(){
 		if (sessionFactory != null)
-			return new ManageEntity(sessionFactory, EntityType.Record);
+			return new ManageEntity<Record>(sessionFactory, EntityType.Record);
 		else
-			return new ManageEntity(EntityType.Record);
+			return new ManageEntity<Record>(EntityType.Record);
 	}
 	
-	/**
-	 * Gets the task entity manager.
-	 *
-	 * @return the task entity manager
-	 */
-	public ManageEntity getTaskEntityManager(){
-		if (sessionFactory != null)
-			return new ManageEntity(sessionFactory, EntityType.Task);
-		else
-			return new ManageEntity(EntityType.Task);
-	}
 	
 }

@@ -5,14 +5,18 @@ import org.hibernate.SessionFactory;
 import task.timer.model.FactoryCreator;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
+import task.timer.model.Project;
+import task.timer.model.Record;
+import task.timer.model.User;
 
 public class DAO {
 	private static SessionFactory sessionFactory = new FactoryCreator().getFactory();
 	
-	protected static ManageEntity MMUser = new MEFactory(sessionFactory).getUserEntityManager();
-	protected static ManageEntity MMRecord = new MEFactory(sessionFactory).getRecordEntityManager();
-	protected static ManageEntity MMProject = new MEFactory(sessionFactory).getProjectEntityManager();
-	protected static ManageEntity MMTask = new MEFactory(sessionFactory).getTaskEntityManager();
+	private static MEFactory manageEntity = new MEFactory(sessionFactory);
+	
+	protected static ManageEntity<User> MMUser = manageEntity.getUserEntityManager();
+	protected static ManageEntity<Record> MMRecord = manageEntity.getRecordEntityManager();
+	protected static ManageEntity<Project> MMProject = manageEntity.getProjectEntityManager();
 	
 	public DAO(){
 	}

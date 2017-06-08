@@ -20,8 +20,10 @@ import org.hibernate.SessionFactory;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ManageEntity.
+ *
+ * @param <T> the generic type
  */
-public class ManageEntity implements IEntityManager {
+public class ManageEntity<T> implements IEntityManager {
    
    /** The factory. */
    private SessionFactory factory;
