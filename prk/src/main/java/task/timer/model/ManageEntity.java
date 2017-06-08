@@ -17,26 +17,53 @@ import task.timer.helper.AlertDialog;
 
 import org.hibernate.SessionFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ManageEntity.
+ */
 public class ManageEntity implements IEntityManager {
+   
+   /** The factory. */
    private SessionFactory factory;
+   
+   /** The entity type. */
    private EntityType entityType;
    
+   /**
+    * Instantiates a new manage entity.
+    *
+    * @param entityType the entity type
+    */
    public ManageEntity(EntityType entityType){
 	   this.entityType = entityType;
 	   
 	   factory = new FactoryCreator().getFactory();
    }
    
+   /**
+    * Instantiates a new manage entity.
+    *
+    * @param factory the factory
+    */
    public ManageEntity(SessionFactory factory){
 	   this.factory = factory;
    }
    
+   /**
+    * Instantiates a new manage entity.
+    *
+    * @param factory the factory
+    * @param entityType the entity type
+    */
    public ManageEntity(SessionFactory factory, EntityType entityType){
 	   this.factory = factory;
 	   this.entityType = entityType;
    }
    
 
+/* (non-Javadoc)
+ * @see task.timer.model.IEntityManager#add(task.timer.model.AbstractEntity)
+ */
 @Override
 public Integer add(AbstractEntity entity) {
 	Session session = factory.openSession();
@@ -55,6 +82,9 @@ public Integer add(AbstractEntity entity) {
     return entityID;
 }
 
+/* (non-Javadoc)
+ * @see task.timer.model.IEntityManager#update(task.timer.model.AbstractEntity)
+ */
 @Override
 public void update(AbstractEntity newEntity) throws ClassNotFoundException {
 	Session session = factory.openSession();
@@ -71,6 +101,9 @@ public void update(AbstractEntity newEntity) throws ClassNotFoundException {
     }	
 }
 
+/* (non-Javadoc)
+ * @see task.timer.model.IEntityManager#delete(int)
+ */
 @Override
 public void delete(int id) throws ClassNotFoundException {
 	Session session = factory.openSession();
@@ -89,6 +122,9 @@ public void delete(int id) throws ClassNotFoundException {
     }	
 }
 
+/* (non-Javadoc)
+ * @see task.timer.model.IEntityManager#list()
+ */
 @Override
 public List<AbstractEntity> list(){
     Session session = factory.openSession();
@@ -109,6 +145,12 @@ public List<AbstractEntity> list(){
     return entities;
  }
 
+/**
+ * Gets the user for login.
+ *
+ * @param login the login
+ * @return the user for login
+ */
 public User getUserForLogin(String login){
 	
     Session session = factory.openSession();
@@ -131,6 +173,13 @@ public User getUserForLogin(String login){
 	
 }
 
+/**
+ * List records for date range.
+ *
+ * @param dateStart the date start
+ * @param dateEnd the date end
+ * @return the list
+ */
 public List<Record> listRecordsForDateRange(String dateStart, String dateEnd){
 	Session session = factory.openSession();
 	
@@ -149,6 +198,14 @@ public List<Record> listRecordsForDateRange(String dateStart, String dateEnd){
 		
 }
 
+/**
+ * List records.
+ *
+ * @param user the user
+ * @param project the project
+ * @param date the date
+ * @return the list
+ */
 public List<Record> listRecords(User user, Project project, LocalDate date){
     Session session = factory.openSession();
     List<Record> entities = null;
@@ -183,6 +240,15 @@ public List<Record> listRecords(User user, Project project, LocalDate date){
     return entities;
  }
 
+/**
+ * List records.
+ *
+ * @param user the user
+ * @param project the project
+ * @param dateStart the date start
+ * @param dateEnd the date end
+ * @return the list
+ */
 public List<Record> listRecords(User user, Project project, LocalDate dateStart, LocalDate dateEnd){
     if (dateEnd == null){
     	return listRecords(user, project, dateStart);

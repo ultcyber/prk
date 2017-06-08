@@ -1,3 +1,7 @@
+/*
+ * A FXML controller for the Login Window stage. Exposes methods for controlling the login process.
+ * 
+ */
 package task.timer.view;
 
 import java.io.IOException;
@@ -22,18 +26,36 @@ import task.timer.model.ManageEntity;
 import task.timer.model.User;
 import task.timer.model.FactoryCreator;
 
+
+/**
+ * Class LoginWindowController.
+ * @author Mateusz Trybulec
+ */
 public class LoginWindowController {
 	
+	/** Currently logged in	user. Exposed statically for other controllers. */
 	public static User loggedUser;
 	
 	
+	/** Username field. */
 	@FXML
 	private TextField username;	
+	
+	/** Password field. */
 	@FXML
 	private TextField password;
+	
+	/** Error box. */
 	@FXML
 	private Label errorBox;
 	
+	/**
+	 * Process login. Log user or display appropriate text in the error box.
+	 *
+	 * @param ActionEvent on the clicked button.
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws NoSuchAlgorithmException signals the no such algorithm exception.
+	 */
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
@@ -66,6 +88,13 @@ public class LoginWindowController {
 		}
 	}
 	
+	/**
+	 * Gets user for given login, checks password match and returns a User object
+	 *
+	 * @param login name
+	 * @return User object
+	 * @throws NoSuchAlgorithmException the no such algorithm exception for encryption handler.
+	 */
 	@FXML
 	public User login(String login) throws NoSuchAlgorithmException{
 		User user = DAO.MMUser.getUserForLogin(login);

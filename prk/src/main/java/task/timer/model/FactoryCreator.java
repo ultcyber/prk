@@ -6,10 +6,19 @@ import org.hibernate.cfg.Configuration;
 import javafx.scene.control.Alert.AlertType;
 import task.timer.helper.AlertDialog;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FactoryCreator.
+ */
 public class FactoryCreator {
-	   private SessionFactory factory;
 	   
-	   public FactoryCreator(){
+   	/** The factory. */
+   	private SessionFactory factory;
+	   
+	   /**
+   	 * Instantiates a new factory creator.
+   	 */
+   	public FactoryCreator(){
 		   
 		   try {
 				factory=new Configuration().configure().buildSessionFactory();
@@ -23,8 +32,10 @@ public class FactoryCreator {
 	   }
 	   
 	   /**
-	    * @return current session factory
-	    */
+   	 * Gets the factory.
+   	 *
+   	 * @return current session factory
+   	 */
 	   public SessionFactory getFactory() {
 	   	return factory;
 	   }

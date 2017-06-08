@@ -14,11 +14,23 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AlertDialog.
+ */
 public class AlertDialog {
 	
+	/** The result. */
 	private Optional<ButtonType> result;
 	
 		
+	/**
+	 * Instantiates a new alert dialog.
+	 *
+	 * @param headerText the header text
+	 * @param contextText the context text
+	 * @param alertType the alert type
+	 */
 	public AlertDialog(String headerText, String contextText, AlertType alertType) {
 		
 		Alert alert = new Alert(alertType);
@@ -41,6 +53,14 @@ public class AlertDialog {
 		}
 	}
 	
+	/**
+	 * Instantiates a new alert dialog.
+	 *
+	 * @param title the title
+	 * @param headerText the header text
+	 * @param contextText the context text
+	 * @param alertType the alert type
+	 */
 	public AlertDialog(String title, String headerText, String contextText, AlertType alertType) {
 		Alert alert = new Alert(alertType);
 		
@@ -64,6 +84,15 @@ public class AlertDialog {
 	}
 	
 	
+	/**
+	 * Instantiates a new alert dialog.
+	 *
+	 * @param title the title
+	 * @param headerText the header text
+	 * @param contextText the context text
+	 * @param alertType the alert type
+	 * @param ex the ex
+	 */
 	public AlertDialog(String title, String headerText, String contextText, AlertType alertType, Throwable ex) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
@@ -99,6 +128,14 @@ public class AlertDialog {
 		
 	}
 	
+	/**
+	 * Instantiates a new alert dialog.
+	 *
+	 * @param headerText the header text
+	 * @param contextText the context text
+	 * @param alertType the alert type
+	 * @param ex the ex
+	 */
 	public AlertDialog(String headerText, String contextText, AlertType alertType, Throwable ex) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle("");
@@ -135,10 +172,20 @@ public class AlertDialog {
 	}
 	
 
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	public ButtonType getResult() {
 		return result.get();
 	}
 
+	/**
+	 * Sets the result.
+	 *
+	 * @param result the new result
+	 */
 	public void setResult(Optional<ButtonType> result) {
 		this.result = result;
 	}
