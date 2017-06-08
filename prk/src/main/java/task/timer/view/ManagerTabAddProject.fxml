@@ -8,6 +8,9 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -17,20 +20,34 @@
 <AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddProjectController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="451.0" layoutX="-21.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="455.0" x="310.0" y="100.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="459.0" layoutX="-21.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="455.0" x="310.0" y="100.0" />
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="570.0" prefWidth="740.0">
          <children>
-            <HBox prefHeight="42.0" prefWidth="720.0">
+            <HBox prefHeight="31.0" prefWidth="720.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="40.0" prefWidth="120.0" text="Odśwież dane" textAlignment="CENTER" />
-                  <Label text="Projekty">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="5.0" />
-                     </HBox.margin>
-                  </Label>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="30.0" prefWidth="30.0" textAlignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../helper/arrows.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="odśwież dane" />
+                     </tooltip></Button>
+                  <HBox alignment="TOP_CENTER" prefHeight="31.0" prefWidth="645.0">
+                     <children>
+                        <Label text="PROJEKTY">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="720.0" spacing="10.0">
@@ -58,9 +75,9 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProject" prefHeight="50.0" prefWidth="86.0" text="Dodaj">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addProject" prefHeight="25.0" prefWidth="86.0" text="Dodaj">
                      <HBox.margin>
-                        <Insets />
+                        <Insets top="15.0" />
                      </HBox.margin>
                   </Button>
                </children>
@@ -68,9 +85,9 @@
                   <Insets bottom="10.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="459.0" prefWidth="720.0">
+            <HBox prefHeight="474.0" prefWidth="720.0">
                <children>
-                  <TableView fx:id="projectsTable" maxWidth="285.0" minWidth="264.0" prefHeight="456.0" prefWidth="264.0">
+                  <TableView fx:id="projectsTable" maxWidth="285.0" minWidth="264.0" prefHeight="474.0" prefWidth="264.0">
                     <columns>
                       <TableColumn fx:id="projectNameColumn" prefWidth="285.0" text="Lista projektów" />
                     </columns>
@@ -159,7 +176,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="42.0" prefWidth="455.0">
                            <children>
-                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateProject" prefHeight="50.0" prefWidth="130.0" text="Zapisz zmiany">
+                              <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#updateProject" prefHeight="25.0" prefWidth="130.0" text="Zapisz zmiany">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
