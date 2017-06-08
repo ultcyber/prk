@@ -10,6 +10,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -24,12 +26,19 @@
          <children>
             <HBox prefHeight="54.0" prefWidth="720.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="40.0" prefWidth="120.0" text="Odśwież dane" textAlignment="CENTER">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="40.0" prefWidth="30.0" textAlignment="CENTER">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../helper/strzalki.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
-                  <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="601.0">
+                  <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="615.0">
                      <children>
                         <Label prefWidth="120.0" text="Pracownicy">
                            <font>
