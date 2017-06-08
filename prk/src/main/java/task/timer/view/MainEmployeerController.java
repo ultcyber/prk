@@ -33,8 +33,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+import task.timer.ViewLoader;
 import task.timer.helper.AlertDialog;
+import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
@@ -153,7 +157,6 @@ public class MainEmployeerController {
 		}
 	}
 
-
 	@FXML private void readAndShowRecordsFromDataBase(){	
 		records = DAO.MMRecord.listRecords(LoginWindowController.loggedUser, null, currentDate);		
 		if (records.size() > 0){
@@ -218,6 +221,11 @@ public class MainEmployeerController {
 			}
 			// readAndShowRecordsFromDataBase();
 		}
+	}
+	
+	@FXML private void logout(MouseEvent event){	
+		ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
+		Helper.changeStage(viewLoader, event);
 	}
 	
 	private void addRecord(){
@@ -351,6 +359,7 @@ private void launchReminder(){
 		}.start();
 		
 	}
-	
+
+
 
 }
