@@ -1,12 +1,19 @@
 package task.timer.helper;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import task.timer.model.AbstractEntity;
+import task.timer.model.MEFactory;
 import task.timer.model.Record;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,7 +29,7 @@ import org.apache.poi.ss.usermodel.CreationHelper;
  */
 public class ExcelCreator {
 	
-	
+
 	private HSSFWorkbook wb;
 	private HSSFSheet sheet;
     private CellStyle dateStyle;
@@ -40,7 +47,7 @@ public class ExcelCreator {
 	public ExcelCreator(ObservableList<AbstractEntity> dataArray){
 		this.dataArray = dataArray;
 		instantiateWorkbook();
-		createRows();
+		createHeadings();
 		populateData();
 		
 		try {
@@ -82,45 +89,15 @@ private void populateData() {
 		};
 	}
 
-private void createRows() {
-	String[] headings = {"ID Pracy", "ID projektu", "Pracownik", "Data rozpoczęcia zadania", "Opis zadania", "Godzina rozpoczęcia", "Godzina zakończenia"};
-	HSSFRow headingsrow = sheet.createRow((short)0);
-	for (int i = 0; i < 7; i++ ){
-		headingsrow.createCell(0).setCellValue(headings[i]);
-    }
-		
+	private void createHeadings() {
+		String[] headings = { "ID Pracy", "ID projektu", "Pracownik", "Data rozpoczęcia zadania", "Opis zadania",
+				"Godzina rozpoczęcia", "Godzina zakończenia" };
+		HSSFRow headingsrow = sheet.createRow((short) 0);
+		for (int i = 0; i < 7; i++) {
+			headingsrow.createCell(0).setCellValue(headings[i]);
+		}
+
 	}
-
-//CREATE ROWS FOR EACH ELEMENT IN VALUESMAP
-    /*
-    dataArray.forEach(element -> {
-    HSSFRow dataRow = sheet.createRow(1);
-    createXlsCell(dataRow, 0, it.submissionTrackingNumber);
-    createXlsCell(dataRow, 1, it.country);
-    createXlsCell(dataRow, 2, it.legalEntity);;
-       createXlsCell(dataRow, 3, it.campaignStartDate, dateStyle)
-    createXlsCell(dataRow, 5, it.campaignType);
-    createXlsCell(dataRow, 6, it.dateSubmitted, dateStyle);
-    createXlsCell(dataRow, 8, it.changesByCustomer);
-    createXlsCell(dataRow, 9, it.referrer);
-    createXlsCell(dataRow, 10, it.taskAccessed);
-    createXlsCell(dataRow, 11, it.taskSubmitted);
-    createXlsCell(dataRow, 12, it.submissionTime, dateStyle);
-
-    HSSFCell sTime = dataRow.createCell(9);
-    sTime.setCellValue(it.submissionTime);
-    sTime.setCellStyle(dateStyle);
-
-
-	});
-
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    wb.write(baos);
-    baos.close();
-    byte[] bytes = baos.toByteArray();
-	}
-	*/
-	
 	
 	private void instantiateWorkbook(){
 		wb = new HSSFWorkbook();
@@ -134,13 +111,41 @@ private void createRows() {
 	          createHelper.createDataFormat().getFormat("0.00"));
 	}
 	
+
+	/**
+	 * @return the outputData
+	 */
+	public byte[] getOutputData() {
+		return outputData;
+	}
+	
 	/**
      * The main method.
      *
      * @param args the arguments
+	 * @throws IOException 
      */
-    public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    public static void main(String[] args) throws IOException {
+		List<AbstractEntity> testData = new MEFactory().getRecordEntityManager().list();
+		
+		ObservableList<AbstractEntity> dataRecords = 
+				FXCollections.observableArrayList();
+		
+		for (AbstractEntity r : testData){
+			dataRecords.add((Record) r);
+		}
+		
+		byte[] data = new ExcelCreator(dataRecords).getOutputData();
+		
+		FileOutputStream fos = new FileOutputStream("testFile.xls");
+		try {
+			fos.write(data);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fos.close();
+		
 
 	}
 	
