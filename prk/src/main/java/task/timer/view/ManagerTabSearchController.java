@@ -1,9 +1,6 @@
 package task.timer.view;
 
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.text.DateFormatter;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -27,16 +24,12 @@ import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.User;
 
-import static java.time.temporal.ChronoUnit.MINUTES;
-import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 
 
 
@@ -44,8 +37,8 @@ public class ManagerTabSearchController {
 //	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
 
 	
-	@FXML private ChoiceBox chooseUser;
-	@FXML private ChoiceBox chooseProject;
+	@FXML private ChoiceBox<AbstractEntity> chooseUser;
+	@FXML private ChoiceBox<AbstractEntity> chooseProject;
 	
 	@FXML private TableView<Record> recordTable;
 	@FXML private TableColumn<Record, String> userNameColumn;
@@ -65,8 +58,6 @@ public class ManagerTabSearchController {
 	@FXML private DatePicker date;
 	@FXML private DatePicker dateEnd;
 	
-	private List<String> listUsersNames;
-	private List<String> listProjectsNames;
 	private List<AbstractEntity> users;
 	private List<AbstractEntity> projects;
 	
@@ -74,8 +65,6 @@ public class ManagerTabSearchController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){	
-		listProjectsNames = new LinkedList<String>();
-		listUsersNames = new LinkedList<String>();
 		
 		chooseUser.getItems().addAll(readUsersFromDataBase());
 		chooseProject.getItems().addAll(readProjectsFromDataBase());
@@ -83,7 +72,7 @@ public class ManagerTabSearchController {
 		chooseUser.getSelectionModel().select(0);
 		chooseProject.getSelectionModel().select(0);
 				
-		recordTable.setPlaceholder(new Label("Dla wybranych kryteriów - brak danych do wyświetlenia"));
+		recordTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		totalTimeTable.setPlaceholder(new Label("")); // don't want a placeholder;
 		
 		userNameColumn.setCellValueFactory(cellData ->
@@ -123,9 +112,10 @@ public class ManagerTabSearchController {
 	}
 	
 	@FXML private void searchAndShowRecords(){
-		List<Record> listRecords = Main.getMMRecord().listRecords(
-				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()-1) : null,
-				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()-1) : null, 
+		System.out.println("Pozycja w rozwijanej liście: " + chooseUser.getSelectionModel().getSelectedIndex());
+		List<Record> listRecords = Main.getMMRecord().listRecords(			
+				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()) : null,
+				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()) : null, 
 				date.getValue(), dateEnd.getValue());
 		
 		dataRecords.clear();
@@ -143,37 +133,27 @@ public class ManagerTabSearchController {
 		totalTimeTable.setItems(dataTotalTime);
 	}
 	
-	private List<String> readUsersFromDataBase(){
-		listUsersNames.clear();		
+	private List<AbstractEntity> readUsersFromDataBase(){
 		users = Main.getMMUser().list();	
-		listUsersNames.add("Wszyscy");
-		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);		
-			listUsersNames.add(userFromDb.getFirstName()+ " " + userFromDb.getLastName());
-		}		
-		return listUsersNames;
+		users.add(0, new User("", "", "Wszyscy", "", "", false, false));	
+		return users;
 	}
 	
-	private List<String> readProjectsFromDataBase(){
-		listProjectsNames.clear();		
+	private List<AbstractEntity> readProjectsFromDataBase(){	
 		projects = Main.getMMProject().list();	
-		listProjectsNames.add("Wszystkie");
-		for (int i=0; i<projects.size(); i++){
-			Project projectFromDb =   (Project) projects.get(i);		
-			listProjectsNames.add(projectFromDb.getName());
-		}		
-		return listProjectsNames;
+		projects.add(0, new Project("Wszystkie"));			
+		return projects;
 	}
 	
 	public void refreshChooseUser(){
 		chooseUser.getItems().clear();
-		chooseUser.getItems().addAll(listUsersNames);
+		chooseUser.getItems().addAll(users);
 		chooseUser.getSelectionModel().select(0);
 	}
 	
 	public void refreshChooseProject(){
 		chooseProject.getItems().clear();
-		chooseProject.getItems().addAll(listProjectsNames);
+		chooseProject.getItems().addAll(projects);
 		chooseProject.getSelectionModel().select(0);
 	}
 	
