@@ -1,22 +1,13 @@
 package task.timer.view;
 
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import task.timer.ViewLoader;
 import task.timer.helper.Helper;
-import task.timer.model.User;
 
 public class MainManagerController {
-/*	public static boolean changedUsersData;
-	public static boolean changedProjectsData;*/
-	
 	
 	@FXML private Label loggedUserName;
 	
@@ -37,6 +28,7 @@ public class MainManagerController {
 	
 	@FXML private void clearTabEmployeer(){
 		employeerController.clearFields();
+		employeerController.hideLackMessages();
 		employeerController.hidePassword();
 	}
 	
