@@ -1,23 +1,17 @@
 package task.timer.view;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 import javax.swing.Timer;
-
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,7 +25,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -40,17 +33,14 @@ import task.timer.Main;
 import task.timer.ViewLoader;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
-import task.timer.model.AbstractEntity;
-import task.timer.model.MEFactory;
-import task.timer.model.ManageEntity;
 import task.timer.model.Project;
 import task.timer.model.Record;
-import task.timer.model.User;
 
 public class MainEmployeerController {
 	@FXML private Label loggedUserName;
 	
 	List<Record> records;
+	@FXML private ChoiceBox<Project> chooseProject;
 	
 	@FXML private TableView<Record> recordTable;
 	@FXML private TableColumn<Record, String> dateColumn;
@@ -63,7 +53,7 @@ public class MainEmployeerController {
 	@FXML private Label measuredTimeHoursLabel;
 	@FXML private Label measuredTimeMinutesLabel;
 	@FXML private Label measuredTimeSecondsLabel;
-	@FXML private ChoiceBox projectChoice;
+
 	@FXML private TextField descriptionName;
 	@FXML private DatePicker date;
 	@FXML private Label dataLabel;
@@ -71,7 +61,6 @@ public class MainEmployeerController {
 	@FXML private MenuItem deleteMenuItem;
 	
 	private final String patternDate = "yyyy-MM-dd";
-	private final String patternTime = "HH:mm:ss";
 	private LocalDate currentDate;
 	
 	private LocalTime timeStart;
@@ -84,13 +73,8 @@ public class MainEmployeerController {
 	private long rest;	
 
 	private int indexOfCurrentProject;
-	//Record newRecord;
 	
-	private final ObservableList<Project> listOfProjects = 
-			FXCollections.observableArrayList();
-	
-	private final ObservableList<String> listOfProjectsName = 
-			FXCollections.observableArrayList();
+	private List<Project> projects;
 	
 	private final ObservableList<Record> dataRecords = 
 			FXCollections.observableArrayList();
@@ -102,6 +86,7 @@ public class MainEmployeerController {
 				+ LoginWindowController.loggedUser.getLastName());
 		
 		setDatePicker();
+		projects = new ArrayList<Project>();
 		
 		currentDate = date.getValue();
 		dataLabel.setText(currentDate.toString());
@@ -121,8 +106,10 @@ public class MainEmployeerController {
 			cellData.getValue().getTimeStopProperty());		
 		if (LoginWindowController.loggedUser.getEditing()) 
 			stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
+
 		readProjectsFromDataBase();
-		projectChoice.setItems(listOfProjectsName);    
+		
+		chooseProject.getItems().addAll(projects);    
 		readAndShowRecordsFromDataBase();
 		
 		if (LoginWindowController.loggedUser.getReminder()){
@@ -132,7 +119,7 @@ public class MainEmployeerController {
 	}
 	
 	@FXML private void timing() throws ClassNotFoundException{
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		indexOfCurrentProject = chooseProject.getSelectionModel().getSelectedIndex();
 		
 		// zareaguj gdy jest wybrany projekt
 		if (indexOfCurrentProject>-1){	
@@ -220,7 +207,6 @@ public class MainEmployeerController {
 			dataRecords.remove(recordTable.getSelectionModel().getSelectedItem());
 			new AlertDialog("Operacja zakończona", "Wpis został usunięty", AlertType.INFORMATION);
 			}
-			// readAndShowRecordsFromDataBase();
 		}
 	}
 	
@@ -230,9 +216,9 @@ public class MainEmployeerController {
 	}
 	
 	private void addRecord(){
-		indexOfCurrentProject = projectChoice.getSelectionModel().getSelectedIndex();
+		indexOfCurrentProject = chooseProject.getSelectionModel().getSelectedIndex();
 		
-		Project currentProject = listOfProjects.get(indexOfCurrentProject);
+		Project currentProject = (Project) projects.get(indexOfCurrentProject);
   
 	    Record newRecord = new Record(
 	    		LoginWindowController.loggedUser, 
@@ -242,12 +228,12 @@ public class MainEmployeerController {
 				timeStart,
 				null
 				);	    
-	    Integer recordID = Main.getMMRecord().add(newRecord);
+	    Main.getMMRecord().add(newRecord);
 	}
 	
 	private void disableElements(){
 		startStopTime.setText("STOP");	
-		projectChoice.setDisable(true);
+		chooseProject.setDisable(true);
 		descriptionName.setDisable(true);
 		date.setDisable(true);	
 		recordTable.setDisable(true);
@@ -258,7 +244,7 @@ public class MainEmployeerController {
 	
 	private void enableElements(){
 		startStopTime.setText("START");
-		projectChoice.setDisable(false);
+		chooseProject.setDisable(false);
 		descriptionName.setDisable(false);
 		date.setDisable(false);
 		recordTable.setDisable(false);
@@ -266,7 +252,7 @@ public class MainEmployeerController {
 
 	private void setDatePicker(){
 		date.setValue(LocalDate.now());
-		StringConverter converter = new StringConverter<LocalDate>() {
+		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
 	        DateTimeFormatter dateFormatter = 
 	            DateTimeFormatter.ofPattern(patternDate);
 	        
@@ -310,21 +296,12 @@ public class MainEmployeerController {
 	}
 
 	private void readProjectsFromDataBase(){		
-		Set<Project> projects = LoginWindowController.loggedUser.getProjects();
-		Project project;
-				
-		if (!projects.isEmpty()){		
-			Iterator<Project> wskaznik = projects.iterator();					
-			for (Project i : projects)
-				if (wskaznik.hasNext()) {
-					project = wskaznik.next();
-					listOfProjects.add(project);
-					listOfProjectsName.add(project.getName());
-				}
-		}
+		Set<Project> projectsFromDataBase = LoginWindowController.loggedUser.getProjects();
+		Iterator<Project> wskaznik = projectsFromDataBase.iterator();
+		wskaznik.forEachRemaining(project -> projects.add(project));
 	}
 	
-private void launchReminder(){
+	private void launchReminder(){
 		
 		final int randDelay = new Random().nextInt(60)*60000+30;
 				
