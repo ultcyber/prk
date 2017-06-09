@@ -73,8 +73,8 @@ private void populateData() {
 			Record rec = (Record) a;
 			HSSFRow dataRow = sheet.createRow(++rowNum);
 			dataRow.createCell(0).setCellValue(rec.getId());
-			dataRow.createCell(1).setCellValue(rec.getProject().getId());
-			dataRow.createCell(2).setCellValue(rec.getUser().getId());
+			dataRow.createCell(1).setCellValue(rec.getProject().getName());
+			dataRow.createCell(2).setCellValue(rec.getUser().getFirstName() + " " + rec.getUser().getLastName());
 			
 			HSSFCell date = dataRow.createCell(3);
 			date.setCellValue(String.valueOf(rec.getDate()));
@@ -93,7 +93,7 @@ private void populateData() {
 	}
 
 	private void createHeadings() {
-		String[] headings = { "ID pracy", "ID projektu", "ID pracownika", "Data rozpoczęcia zadania", "Opis zadania",
+		String[] headings = { "ID pracy", "Projekt", "Pracownik", "Data rozpoczęcia zadania", "Opis zadania",
 				"Godzina rozpoczęcia", "Godzina zakończenia" };
 		HSSFRow headingsrow = sheet.createRow(0);
 		for (int i = 0; i < 7; i++) {
