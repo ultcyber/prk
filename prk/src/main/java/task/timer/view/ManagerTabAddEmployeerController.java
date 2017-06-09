@@ -3,11 +3,6 @@ package task.timer.view;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import arch.task.timer.model.ManageUsers;
-import arch.task.timer.model.UserFx;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,16 +16,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
-import task.timer.model.MEFactory;
-import task.timer.model.ManageEntity;
-import task.timer.model.RecordFx;
 import task.timer.model.User;
 
 public class ManagerTabAddEmployeerController {
@@ -74,18 +63,13 @@ public class ManagerTabAddEmployeerController {
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){	
+		usersTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		userNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getFirstNameProperty());
 		userLastNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getLastNameProperty());		
 		usersTable.getSelectionModel().selectedItemProperty()
 			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTableView(newValue));
-/*				
-		lackUserNameLabel.setVisible(false);
-		lackUserLastNameLabel.setVisible(false);
-		lackUserLoginLabel.setVisible(false);
-		lackUserPasswordLabel.setVisible(false);
-		lackUserPermissionsLabel.setVisible(false);*/
 		
 		readAndShowUsersFromDataBase();		
 		refreshInformationsFromTableView(null);
@@ -251,7 +235,7 @@ public class ManagerTabAddEmployeerController {
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny i hasło jest takie, jak powtórzone hasło; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
 		if (isAllFieldsAreFull() && isTheSamePassword() && isLoginUnique(-1)){		
-			Integer userID = Main.getMMUser().add(
+			Main.getMMUser().add(
 				new User(
 						userLoginField.getText(), 
 						Helper.encryptPassword(userPasswordField.getText()), 

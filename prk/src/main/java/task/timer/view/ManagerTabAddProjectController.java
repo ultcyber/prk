@@ -5,18 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
@@ -26,8 +18,6 @@ import javafx.scene.control.Alert.AlertType;
 import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.model.AbstractEntity;
-import task.timer.model.MEFactory;
-import task.timer.model.ManageEntity;
 import task.timer.model.Project;
 import task.timer.model.User;
 
@@ -64,8 +54,8 @@ public class ManagerTabAddProjectController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){
-		usersInProjectTable.setPlaceholder(new Label("Brak pracowników"));
-		usersOutOfProjectTable.setPlaceholder(new Label("Brak pracowników"));
+		usersInProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
+		usersOutOfProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		
 		projectNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getNameProjectProperty());		
@@ -90,7 +80,7 @@ public class ManagerTabAddProjectController {
 	
 	@FXML private void readData(){
 		clearFields();
-		readAndShowProjectsFromDataBase();			
+		showProjects();			
 		showDataOfProject(null);
 	}
 	
@@ -101,51 +91,7 @@ public class ManagerTabAddProjectController {
 	@FXML private void hideLackProjectNameLabel2(){
 		lackProjectNameLabel2.setVisible(false);
 	}
-	
-	private void readAndShowProjectsFromDataBase(){ 	
-		projects = Main.getMMProject().list();			
-		dataProjects.clear();
-		for (int i=0; i<projects.size(); i++){				
-			Project projectFromDb =   (Project) projects.get(i);	
-			dataProjects.add(projectFromDb);	
-		}		
-		projectsTable.setItems(dataProjects);
-	}
 		
-	private void showDataOfProject(Project project){
-		if (project != null){
-			projectNameField.setText(project.getName());			
-			dataUsersInProject.clear();
-			Set<User> usersOfProject = project.getUsers();			
-			if (!usersOfProject.isEmpty()){		
-				Iterator<User> wskaznik = usersOfProject.iterator();					
-				for (User i : usersOfProject)
-					if (wskaznik.hasNext()) 
-						dataUsersInProject.add(wskaznik.next());				
-			}
-			usersInProjectTable.setItems(dataUsersInProject);
-			readAndShowAvailableUsersFromDataBase(usersOfProject);
-		}
-		else {
-			projectNameField.setText("");
-		}
-		hideLackProjectNameLabel1();
-		hideLackProjectNameLabel2();
-	}
-	
-	private void readAndShowAvailableUsersFromDataBase(Set<User> usersOfProject){
-		List<AbstractEntity> users = Main.getMMUser().list();	
-		dataUsersOutOfProject.clear();
-		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);				
-			// dodaj do TableView jeśli userFromDb nie jest jeszcze przypięty do projektu
-			if (!usersOfProject.contains(userFromDb))
-				dataUsersOutOfProject.add(userFromDb);
-		}		
-		usersOutOfProjectTable.setItems(dataUsersOutOfProject);
-	}
-	
-	
 	@FXML private void addUserToProject(){
 		if (usersOutOfProjectTable.getSelectionModel().getSelectedIndex() > -1){	
 			User userToAdd = usersOutOfProjectTable.getSelectionModel().selectedItemProperty().get();
@@ -166,19 +112,20 @@ public class ManagerTabAddProjectController {
 		int currentPositionInTableView;
 		if (isProjectNameFieldFull()) 
 			if (isProjectUnique(projectsTable.getSelectionModel().getSelectedItem().getId())){
-				Set<User> userToUpdate = new HashSet<User>();			
+				Set<User> usersToUpdate = new HashSet<User>();			
 				for (int i=0; i < dataUsersInProject.size(); i++)
-					userToUpdate.add(dataUsersInProject.get(i));							
-				usersInProjectTable.setItems(dataUsersInProject);
-				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli			
+					usersToUpdate.add(dataUsersInProject.get(i));							
+				usersInProjectTable.setItems(dataUsersInProject);						
 				Main.getMMProject().update(
 					new Project(
 						projectsTable.getSelectionModel().getSelectedItem().getId(),
 						projectNameField.getText(),
-						userToUpdate
+						usersToUpdate
 						));
-				readAndShowProjectsFromDataBase();
-				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz		
+				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli	
+				showProjects();
+				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz	
+				new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
 			}
 			else {
 				lackProjectNameLabel2.setText("taki projekt już istnieje");
@@ -190,18 +137,20 @@ public class ManagerTabAddProjectController {
 		int currentPositionInTableView;
 		if (isNewProjectNameFieldsFull()) 
 			if (isNewProjectUnique(newProjectNameField.getText())){
-				Integer projectID = Main.getMMProject().add(
-					new Project(
-							newProjectNameField.getText()));	
-					newProjectNameField.setText("");
+				Main.getMMProject().add(
+					new Project(newProjectNameField.getText()));	
+				
+				newProjectNameField.setText("");
+				currentPositionInTableView = projectsTable.getItems().size();
+				showProjects();
+				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
+				
+				new AlertDialog("Operacja zakończona", "Dodano projekt", AlertType.INFORMATION);
 				}	
 				else {
 					lackProjectNameLabel1.setText("taki projekt już istnieje");
 					lackProjectNameLabel1.setVisible(true);
 				}
-		currentPositionInTableView = projectsTable.getItems().size();
-		readAndShowProjectsFromDataBase();
-		projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 	}
 	
 	@FXML private void deleteProject() throws ClassNotFoundException{
@@ -210,13 +159,57 @@ public class ManagerTabAddProjectController {
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie projektu", "Czy na pewno chcesz usunąć projekt?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
 				Main.getMMProject().delete(projectsTable.getSelectionModel().getSelectedItem().getId());
-				readAndShowProjectsFromDataBase();
+				showProjects();
 				clearFields();
 				new AlertDialog("Operacja zakończona", "Projekt został usunięty", AlertType.INFORMATION);
 			}
 		}
 	}
+		
+	private void showProjects(){ 	
+		readProjects();
+		projectsTable.setItems(dataProjects);
+	}
 	
+	private void readProjects(){
+		projects = Main.getMMProject().list();
+		dataProjects.clear();		
+		projects.forEach(projectFromDataBase -> dataProjects.add((Project) projectFromDataBase));
+	}
+		
+	private void showDataOfProject(Project project){
+		if (project != null){
+			readUsersInProject(project);
+			usersInProjectTable.setItems(dataUsersInProject);
+			
+			readUsersOutOfProject(dataUsersInProject);
+			usersOutOfProjectTable.setItems(dataUsersOutOfProject);
+		}
+		else {
+			projectNameField.setText("");
+		}
+		hideLackProjectNameLabel1();
+		hideLackProjectNameLabel2();
+	}
+	
+	private void readUsersInProject(Project project){
+		projectNameField.setText(project.getName());			
+		dataUsersInProject.clear();
+		Set<User> usersOfProject = project.getUsers();	
+		
+		Iterator<User> wskaznik = usersOfProject.iterator();	
+		wskaznik.forEachRemaining(userToAdd -> dataUsersInProject.add(userToAdd));		
+	}
+	
+	private void readUsersOutOfProject(ObservableList<User> usersOfProject){
+		List<AbstractEntity> users = Main.getMMUser().list();	
+		dataUsersOutOfProject.clear();		
+		users.forEach(userFromDataBase -> {
+			// dodaj do TableView jeśli userFromDataBase nie jest jeszcze przypięty do projektu
+			if (!usersOfProject.contains(userFromDataBase))
+				dataUsersOutOfProject.add((User) userFromDataBase);
+		});		
+	}
 	
 	private boolean isNewProjectNameFieldsFull(){
 		if (newProjectNameField.getText().equals("")) {
