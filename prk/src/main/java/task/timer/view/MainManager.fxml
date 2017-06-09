@@ -28,7 +28,7 @@
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <HBox onMouseClicked="#logout" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
+                  <HBox prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                      <children>
                         <Label text="Zalogowano:" />
                         <Label fx:id="loggedUserName" text="NAZWA UŻYTKOWNIKA" />
