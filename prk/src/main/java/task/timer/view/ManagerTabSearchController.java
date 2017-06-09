@@ -1,5 +1,6 @@
 package task.timer.view;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -34,8 +35,6 @@ import java.time.LocalTime;
 
 
 public class ManagerTabSearchController {
-//	ManageEntity MMProject = new MEFactory().getProjectEntityManager();
-
 	
 	@FXML private ChoiceBox<AbstractEntity> chooseUser;
 	@FXML private ChoiceBox<AbstractEntity> chooseProject;
@@ -64,10 +63,14 @@ public class ManagerTabSearchController {
 	private final ObservableList<Record> dataRecords = 
 			FXCollections.observableArrayList();
 
-	@FXML private void initialize(){	
+	@FXML private void initialize(){
+		projects = new ArrayList<AbstractEntity>();
+		users = new ArrayList<AbstractEntity>();
+		readUsersFromDataBase();
+		chooseUser.getItems().addAll(users);
 		
-		chooseUser.getItems().addAll(readUsersFromDataBase());
-		chooseProject.getItems().addAll(readProjectsFromDataBase());
+		readProjectsFromDataBase();
+		chooseProject.getItems().addAll(projects);
 		
 		chooseUser.getSelectionModel().select(0);
 		chooseProject.getSelectionModel().select(0);
@@ -112,7 +115,6 @@ public class ManagerTabSearchController {
 	}
 	
 	@FXML private void searchAndShowRecords(){
-		System.out.println("Pozycja w rozwijanej liście: " + chooseUser.getSelectionModel().getSelectedIndex());
 		List<Record> listRecords = Main.getMMRecord().listRecords(			
 				chooseUser.getSelectionModel().getSelectedIndex() > 0 ? (User) users.get(chooseUser.getSelectionModel().getSelectedIndex()) : null,
 				chooseProject.getSelectionModel().getSelectedIndex() > 0? (Project) projects.get(chooseProject.getSelectionModel().getSelectedIndex()) : null, 
@@ -133,10 +135,25 @@ public class ManagerTabSearchController {
 		totalTimeTable.setItems(dataTotalTime);
 	}
 	
-	private List<AbstractEntity> readUsersFromDataBase(){
+	@FXML public void exportXls(ActionEvent event) throws IOException{
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		File file = fileChooser.showSaveDialog(stage);
+		
+		byte[] data = new ExcelCreator(dataRecords).getOutputData();
+		FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+		try {
+			fos.write(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		fos.close();
+	}
+	
+	private void readUsersFromDataBase(){
 		users = Main.getMMUser().list();	
 		users.add(0, new User("", "", "Wszyscy", "", "", false, false));	
-		return users;
 	}
 	
 	private List<AbstractEntity> readProjectsFromDataBase(){	
@@ -144,20 +161,8 @@ public class ManagerTabSearchController {
 		projects.add(0, new Project("Wszystkie"));			
 		return projects;
 	}
-	
-	public void refreshChooseUser(){
-		chooseUser.getItems().clear();
-		chooseUser.getItems().addAll(users);
-		chooseUser.getSelectionModel().select(0);
-	}
-	
-	public void refreshChooseProject(){
-		chooseProject.getItems().clear();
-		chooseProject.getItems().addAll(projects);
-		chooseProject.getSelectionModel().select(0);
-	}
-	
-	public Pair<Long,Long> calculateTotalTime(List<Record> records){		
+		
+	private Pair<Long,Long> calculateTotalTime(List<Record> records){		
 		Long hours = 0L;
 		Long minutes = 0L;
 		Long seconds = 0L;
@@ -177,28 +182,22 @@ public class ManagerTabSearchController {
 		
 		return new Pair<Long, Long>(hours,minutes);		
 	}
+		
+	protected void refreshChooseUser(){
+		chooseUser.getItems().clear();
+		chooseUser.getItems().addAll(users);
+		chooseUser.getSelectionModel().select(0);
+	}
 	
-	public void clearFields(){
+	protected void refreshChooseProject(){
+		chooseProject.getItems().clear();
+		chooseProject.getItems().addAll(projects);
+		chooseProject.getSelectionModel().select(0);
+	}
+	
+	protected void clearFields(){
 		recordTable.getSelectionModel().clearSelection();
 		dataRecords.clear();
 		dataTotalTime.clear();
 	}
-	
-	@FXML public void exportXls(ActionEvent event) throws IOException{
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		File file = fileChooser.showSaveDialog(stage);
-		
-		byte[] data = new ExcelCreator(dataRecords).getOutputData();
-		FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
-		try {
-			fos.write(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		fos.close();
-
-	}
-	
 }
