@@ -19,6 +19,7 @@ THIS IS JUST A SCHEMA - REAL FILE NEEDS TO BE IN hibernate.cfg.xml
    
    <property name="hibernate.id.new_generator_mappings">false</property>
    
+   <property name="database.test.url">ADDRESS FOR TESTING CONNECTIVITY</property>
    
    <property name="hibernate.connection.url">
       DATABASEADDRESS

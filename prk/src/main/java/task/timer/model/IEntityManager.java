@@ -39,4 +39,6 @@ public interface IEntityManager {
 	 */
 	void delete(int id) throws ClassNotFoundException;
 	
+	void fail(Throwable e);
+	
 }
