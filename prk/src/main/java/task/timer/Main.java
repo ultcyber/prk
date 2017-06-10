@@ -3,11 +3,8 @@ package task.timer;
 import org.hibernate.SessionFactory;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-
 import javafx.stage.Stage;
 import task.timer.model.FactoryCreator;
 import task.timer.model.MEFactory;

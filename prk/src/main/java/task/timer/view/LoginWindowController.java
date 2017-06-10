@@ -6,27 +6,17 @@ package task.timer.view;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.util.Pair;
 import task.timer.Main;
 import task.timer.ViewLoader;
 import task.timer.helper.Helper;
-import task.timer.model.AbstractEntity;
-import task.timer.model.MEFactory;
-import task.timer.model.ManageEntity;
 import task.timer.model.User;
-import task.timer.model.FactoryCreator;
 
 
 /**
@@ -37,8 +27,7 @@ public class LoginWindowController {
 	
 	/** Currently logged in	user. Exposed statically for other controllers. */
 	public static User loggedUser;
-	
-	
+		
 	/** Username field. */
 	@FXML
 	private TextField username;	
@@ -61,8 +50,8 @@ public class LoginWindowController {
 	@FXML
 	private void processLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 		
-		
-		loggedUser = login(username.getText());
+		Pair<User,String> pair = login(username.getText());
+		loggedUser = pair.getKey();
 		// Not null means user has successfully logged in
 		if (loggedUser != null){
 			
@@ -85,9 +74,9 @@ public class LoginWindowController {
 			Helper.changeStage(viewLoader, event);
 		
 		}
-		// If incorrect login, display error message
+		// If incorrect login or database error, display error message
 		else {
-			errorBox.setText("Nieprawidłowe hasło i/lub nazwa użytkownika");
+			errorBox.setText(pair.getValue());
 		}
 	}
 	
@@ -99,15 +88,18 @@ public class LoginWindowController {
 	 * @throws NoSuchAlgorithmException the no such algorithm exception for encryption handler.
 	 */
 	@FXML
-	public User login(String login) throws NoSuchAlgorithmException{
+	public Pair<User,String> login(String login) throws NoSuchAlgorithmException{
 		
 		User user = Main.getMMUser().getUserForLogin(login);
 		if (user != null){
 			if (user.getPassword().equals(Helper.encryptPassword(password.getText()))){
-				return user;
+				return new Pair<User,String>(user,"Zalogowano");
 			}
-		}
-		return null;
+			else {
+				return new Pair<User, String>(null,"Nieprawidłowa nazwa użytkownika lub hasło");
+			}
+		}		
+		return new Pair<User, String>(null, "Błąd połączenia z bazą danych");
 		}
 
 	}

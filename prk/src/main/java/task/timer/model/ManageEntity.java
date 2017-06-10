@@ -18,7 +18,6 @@ import org.hibernate.query.Query;
 import javafx.scene.control.Alert.AlertType;
 import task.timer.helper.AlertDialog;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ManageEntity.
  *
@@ -78,10 +77,10 @@ public class ManageEntity<T> implements IEntityManager {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		Integer entityID = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			tx = session.beginTransaction();
 			entityID = (Integer) session.save(entity);
 			tx.commit();
@@ -106,10 +105,10 @@ public class ManageEntity<T> implements IEntityManager {
 	public void update(AbstractEntity newEntity) throws ClassNotFoundException {
 		Session session = factory.openSession();
 		Transaction tx = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			tx = session.beginTransaction();
 			session.update(newEntity);
 			tx.commit();
@@ -132,10 +131,11 @@ public class ManageEntity<T> implements IEntityManager {
 	public void delete(int id) throws ClassNotFoundException {
 		Session session = factory.openSession();
 		Transaction tx = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			tx = session.beginTransaction();
 			AbstractEntity existingEntity = (AbstractEntity) session.get(Class.forName(entityType.getClassType()), id);
 			session.delete(existingEntity);
@@ -159,12 +159,12 @@ public class ManageEntity<T> implements IEntityManager {
 	public List<AbstractEntity> list() {
 		Session session = factory.openSession();
 		Transaction tx = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+
 		List<AbstractEntity> entities = null;
 		try {
-
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			tx = session.beginTransaction();
 			entities = session.createQuery("from " + entityType).list();
 			tx.commit();
@@ -190,10 +190,11 @@ public class ManageEntity<T> implements IEntityManager {
 	public User getUserForLogin(String login) {
 
 		Session session = factory.openSession();
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+		
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			String hql = "from User U where U.login = :user_login";
 			Query<User> query = session.createQuery(hql);
 			query.setParameter("user_login", login);
@@ -224,10 +225,11 @@ public class ManageEntity<T> implements IEntityManager {
 	public List<Record> listRecordsForDateRange(String dateStart, String dateEnd) {
 		Session session = factory.openSession();
 		List<Record> results = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+		
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			String hql = "from Records R where R.date between :date_start and :date_end";
 			Query<Record> query = session.createQuery(hql);
 			query.setParameter("date_start", dateStart);
@@ -256,9 +258,7 @@ public class ManageEntity<T> implements IEntityManager {
 	public List<Record> listRecords(User user, Project project, LocalDate date) {
 		Session session = factory.openSession();
 		List<Record> entities = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+
 		// Creating a string and removing all null values
 		String[] data = new String[3];
 
@@ -269,6 +269,9 @@ public class ManageEntity<T> implements IEntityManager {
 		data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
 
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			String sql;
 			if (data.length > 0) {
 				sql = "from Record R where " + String.join(" and ", data);
@@ -307,9 +310,7 @@ public class ManageEntity<T> implements IEntityManager {
 
 		Session session = factory.openSession();
 		List<Record> entities = null;
-		if (!ping()) {
-			throw new HibernateException("No connection!");
-		}
+
 		// Creating a string and removing all null values
 		String[] data = new String[4];
 
@@ -324,6 +325,9 @@ public class ManageEntity<T> implements IEntityManager {
 		data = Arrays.stream(data).filter(x -> x != null && x != "null").toArray(String[]::new);
 
 		try {
+			if (!ping()) {
+				throw new HibernateException("No connection!");
+			}
 			String sql;
 			if (data.length > 0) {
 				sql = "from Record R where " + String.join(" and ", data);
