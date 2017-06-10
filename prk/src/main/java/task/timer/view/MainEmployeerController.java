@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import javax.swing.Timer;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,9 +36,14 @@ import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
 import task.timer.model.Project;
 import task.timer.model.Record;
+import javafx.scene.shape.Rectangle;
 
 public class MainEmployeerController {
 	@FXML private Label loggedUserName;
+	@FXML private AnchorPane anchorPane1;
+	@FXML private AnchorPane anchorPane2;
+	@FXML private Rectangle rectangle1;
+	@FXML private Rectangle rectangle2;
 	
 	List<Record> records;
 	@FXML private ChoiceBox<Project> chooseProject;
@@ -80,6 +86,15 @@ public class MainEmployeerController {
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){
+		rectangle1.widthProperty().bind(anchorPane2.widthProperty());
+		rectangle2.widthProperty().bind(anchorPane1.widthProperty());
+		double width = dateColumn.widthProperty().get();
+		width += startTimeColumn.widthProperty().get();
+		width += stopTimeColumn.widthProperty().get();
+
+		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
+		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
+				
 		loggedUserName.setText(
 				LoginWindowController.loggedUser.getFirstName() 
 				+ " " 
