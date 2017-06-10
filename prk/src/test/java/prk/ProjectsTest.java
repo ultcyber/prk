@@ -5,8 +5,6 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
-import arch.task.timer.model.ManageUsers;
-
 import static org.junit.Assert.*;
 
 import java.util.List;
