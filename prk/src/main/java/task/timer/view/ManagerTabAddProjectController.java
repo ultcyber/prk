@@ -23,7 +23,7 @@ import task.timer.model.User;
 
 public class ManagerTabAddProjectController {
 
-	List<AbstractEntity> projects;
+	private List<AbstractEntity> projects;
 	
 	@FXML private TableView<Project> projectsTable;
 	@FXML private TableColumn<Project, String> projectNameColumn;
@@ -250,9 +250,13 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 	
-	public void clearFields(){
+	protected void clearFields(){
 		projectsTable.getSelectionModel().clearSelection();
 		dataUsersOutOfProject.clear();
 		dataUsersInProject.clear();
+		newProjectNameField.setText("");
+		projectNameField.setText("");
+		lackProjectNameLabel1.setText("");
+		lackProjectNameLabel2.setText("");
 	}
 }

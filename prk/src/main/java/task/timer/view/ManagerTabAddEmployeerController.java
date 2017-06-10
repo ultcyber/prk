@@ -107,17 +107,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void hideLackUserPermissionsLabel(){
 		lackUserPermissionsLabel.setVisible(false);
 	}
-	
-	@FXML public void clearFields(){
-		usersTable.getSelectionModel().clearSelection();
-		userNameField.clear();;
-		userLastNameField.clear();
-		userLoginField.clear();
-		userPasswordField.clear();
-		userConfirmPasswordField.clear();
-		userPermissionsBox.getSelectionModel().select(null);
-	}
-	
+		
 	@FXML private void deleteUser() throws ClassNotFoundException{
 		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
 		{
@@ -298,7 +288,7 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
-	private void hideLackMessages(){
+	protected void hideLackMessages(){
 		lackUserNameLabel.setVisible(false);
 		lackUserLastNameLabel.setVisible(false);
 		lackUserLoginLabel.setVisible(false);
@@ -307,7 +297,7 @@ public class ManagerTabAddEmployeerController {
 		lackUserPermissionsLabel.setVisible(false);
 	}
 	
-	public void hidePassword(){
+	protected void hidePassword(){
 		passwordLabel.setVisible(false);
 		confirmPasswordLabel.setVisible(false);
 		userPasswordField.setVisible(false);
@@ -382,6 +372,16 @@ public class ManagerTabAddEmployeerController {
 			return false;
 		}
 		return true;
+	}
+	
+	protected void clearFields(){
+		usersTable.getSelectionModel().clearSelection();
+		userNameField.clear();;
+		userLastNameField.clear();
+		userLoginField.clear();
+		userPasswordField.clear();
+		userConfirmPasswordField.clear();
+		userPermissionsBox.getSelectionModel().select(null);
 	}
 
 }
