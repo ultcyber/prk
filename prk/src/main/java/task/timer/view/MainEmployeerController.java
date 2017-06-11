@@ -88,6 +88,8 @@ public class MainEmployeerController {
 	@FXML private void initialize(){
 		rectangle1.widthProperty().bind(anchorPane2.widthProperty());
 		rectangle2.widthProperty().bind(anchorPane1.widthProperty());
+		rectangle2.heightProperty().bind(anchorPane1.heightProperty().subtract(10));
+		
 		double width = dateColumn.widthProperty().get();
 		width += startTimeColumn.widthProperty().get();
 		width += stopTimeColumn.widthProperty().get();
