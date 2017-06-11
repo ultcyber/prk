@@ -16,6 +16,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.helper.Helper;
@@ -23,6 +27,12 @@ import task.timer.model.AbstractEntity;
 import task.timer.model.User;
 
 public class ManagerTabAddEmployeerController {
+	
+	@FXML private Rectangle rectangle1;
+	@FXML private Rectangle rectangle2;
+	@FXML private VBox vbox;
+	@FXML private HBox hbox;
+	@FXML private AnchorPane anchorPane;
 	
 	@FXML private TableView<User> usersTable;
 	@FXML private TableColumn<User, String> userNameColumn;
@@ -63,6 +73,14 @@ public class ManagerTabAddEmployeerController {
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){	
+		rectangle1.widthProperty().bind(vbox.widthProperty());
+		//rectangle1.heightProperty().bind(vbox.heightProperty().add(10));
+		
+		rectangle2.widthProperty().bind(hbox.widthProperty());
+		
+		userNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+		userLastNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+		
 		usersTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		userNameColumn.setCellValueFactory(cellData ->
 			cellData.getValue().getFirstNameProperty());

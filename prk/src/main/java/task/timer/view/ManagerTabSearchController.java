@@ -15,6 +15,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -35,6 +38,10 @@ import java.time.LocalTime;
 
 
 public class ManagerTabSearchController {
+	@FXML private AnchorPane anchorPane;
+	@FXML private AnchorPane search;
+	@FXML private VBox vbox;
+	@FXML private Rectangle rectangle;
 	
 	@FXML private ChoiceBox<AbstractEntity> chooseUser;
 	@FXML private ChoiceBox<AbstractEntity> chooseProject;
@@ -64,6 +71,17 @@ public class ManagerTabSearchController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){
+		rectangle.widthProperty().bind(anchorPane.widthProperty().subtract(10));
+		rectangle.heightProperty().bind(anchorPane.heightProperty());
+		
+		double width = dateColumn.widthProperty().get();
+		width += startTimeColumn.widthProperty().get();
+		width += stopTimeColumn.widthProperty().get();
+
+		userNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+		
 		projects = new ArrayList<AbstractEntity>();
 		users = new ArrayList<AbstractEntity>();
 		readUsersFromDataBase();

@@ -19,53 +19,84 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="760.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
+<AnchorPane fx:id="employeer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="573.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddEmployeerController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="570.0" layoutX="10.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" width="740.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="453.0" layoutY="-11.0" stroke="BLACK" strokeType="INSIDE" width="430.0" x="310.0" y="73.0" />
-      <VBox layoutX="10.0" layoutY="20.0" prefHeight="570.0" prefWidth="740.0">
+      <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="762.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="34.0" prefWidth="720.0">
+            <Rectangle fx:id="rectangle1" arcHeight="5.0" arcWidth="5.0" fill="#21ff302c" height="585.0" stroke="BLACK" strokeType="INSIDE" width="750.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+         </children>
+      </AnchorPane>
+      <HBox alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="609.0" prefWidth="742.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="670.0" prefWidth="285.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <AnchorPane fx:id="anchorpane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="670.0" prefWidth="457.0" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
                <children>
-                  <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#readData" prefHeight="20.0" prefWidth="20.0" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../helper/arrows.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <tooltip>
-                        <Tooltip text="odśwież dane" />
-                     </tooltip>
-                  </Button>
-                  <HBox alignment="TOP_CENTER" prefHeight="54.0" prefWidth="615.0">
+                  <HBox fx:id="hbox" layoutX="-16.0" prefHeight="656.0" prefWidth="457.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="166.0" text="PRACOWNICY">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
+                        <Rectangle fx:id="rectangle2" arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="495.0" stroke="BLACK" strokeType="INSIDE" width="453.0" x="305.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets left="5.0" />
+                              <Insets top="45.0" />
                            </HBox.margin>
-                        </Label>
+                        </Rectangle>
                      </children>
                   </HBox>
                </children>
-            </HBox>
-            <HBox prefHeight="522.0" prefWidth="720.0">
+            </AnchorPane>
+         </children>
+      </HBox>
+      <AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="762.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="575.0" prefWidth="752.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                <children>
-                  <VBox prefHeight="381.0" prefWidth="279.0">
+                  <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="740.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="usersTable" editable="true" maxWidth="280.0" prefHeight="521.0" prefWidth="279.0">
+                        <Button fx:id="refreshButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#readData" prefHeight="30.0" prefWidth="30.0" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../helper/arrows.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="odśwież dane" />
+                           </tooltip>
+                        </Button>
+                        <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="43.0" prefWidth="710.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="166.0" text="PRACOWNICY">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="528.0" prefWidth="752.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <TableView fx:id="usersTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                           <columns>
-                            <TableColumn minWidth="285.0" prefWidth="285.0" resizable="false" text="Pracownik">
+                            <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="280.0" text="Pracownik">
                                  <columns>
-                                    <TableColumn fx:id="userNameColumn" prefWidth="140.0" text="Imie" />
-                                    <TableColumn fx:id="userLastNameColumn" prefWidth="140.0" text="Nazwisko" />
+                                    <TableColumn fx:id="userNameColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="140.0" text="Imie" />
+                                    <TableColumn fx:id="userLastNameColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="140.0" text="Nazwisko" />
                                  </columns>
                               </TableColumn>
                           </columns>
@@ -76,203 +107,209 @@
                                 </items>
                               </ContextMenu>
                            </contextMenu>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
                         </TableView>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="300.0" prefWidth="440.0" spacing="10.0">
-                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                        <VBox maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="442.0" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Label prefWidth="75.0" text="Imię:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <HBox prefHeight="100.0" prefWidth="330.0">
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <VBox prefHeight="50.0" prefWidth="337.0">
-                                       <children>
-                                          <Label fx:id="lackUserNameLabel" text="to pole nie może być puste" textFill="RED">
-                                             <font>
-                                                <Font name="System Italic" size="11.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="userNameField" maxWidth="370.0" minWidth="265.0" onKeyTyped="#hideLackUserNameLabel" prefHeight="27.0" prefWidth="333.0" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                           <children>
-                              <Label prefWidth="75.0" text="Nazwisko:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <HBox prefHeight="100.0" prefWidth="330.0">
-                                 <children>
-                                    <VBox prefHeight="200.0" prefWidth="337.0">
-                                       <children>
-                                          <Label fx:id="lackUserLastNameLabel" text="to pole nie może być puste" textFill="RED">
-                                             <font>
-                                                <Font name="System Italic" size="11.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="userLastNameField" maxWidth="337.0" minWidth="292.0" onKeyTyped="#hideLackUserLastNameLabel" prefHeight="27.0" prefWidth="333.0" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                           <children>
-                              <Label prefWidth="75.0" text="Login:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <HBox prefHeight="100.0" prefWidth="330.0">
-                                 <children>
-                                    <VBox prefHeight="50.0" prefWidth="337.0">
-                                       <children>
-                                          <Label fx:id="lackUserLoginLabel" text="to pole nie może być puste" textFill="RED">
-                                             <font>
-                                                <Font name="System Italic" size="11.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="userLoginField" minWidth="286.0" onKeyTyped="#hideLackUserLoginLabel" prefHeight="27.0" prefWidth="333.0" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                           <children>
-                              <Label fx:id="passwordLabel" prefWidth="75.0" text="Hasło:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <HBox prefHeight="100.0" prefWidth="330.0">
-                                 <children>
-                                    <VBox prefHeight="50.0" prefWidth="337.0">
-                                       <children>
-                                          <Label fx:id="lackUserPasswordLabel" text="to pole nie może być puste" textFill="RED">
-                                             <font>
-                                                <Font name="System Italic" size="11.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="userPasswordField" minWidth="310.0" onKeyTyped="#hideLackUserPasswordLabel" prefHeight="27.0" prefWidth="333.0" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
-                           <children>
-                              <Label fx:id="confirmPasswordLabel" prefHeight="28.0" prefWidth="85.0" text="Powtórz hasło:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <HBox prefHeight="49.0" prefWidth="330.0">
-                                 <children>
-                                    <VBox prefHeight="49.0" prefWidth="337.0">
-                                       <children>
-                                          <Label fx:id="lackUserConfirmPasswordLabel" text="to pole nie może być puste" textFill="RED">
-                                             <font>
-                                                <Font name="System Italic" size="11.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField fx:id="userConfirmPasswordField" minWidth="173.0" onKeyTyped="#hideLackUserConfirmPasswordLabel" prefHeight="27.0" prefWidth="333.0" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
-                           <children>
-                              <Label prefHeight="28.0" prefWidth="75.0" text="Uprawnienia:">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" top="20.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <VBox maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="130.0">
-                                 <children>
-                                    <Label fx:id="lackUserPermissionsLabel" prefWidth="130.0" text="ustaw uprawnienia" textFill="RED">
-                                       <font>
-                                          <Font name="System Italic" size="11.0" />
-                                       </font>
+                                    <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" text="Imię:">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
                                     </Label>
-                                    <ChoiceBox fx:id="userPermissionsBox" onMouseDragEntered="#hideLackUserPermissionsLabel" prefHeight="27.0" prefWidth="130.0" />
+                                    <HBox prefHeight="100.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="50.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="lackUserNameLabel" text="to pole nie może być puste" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="userNameField" minWidth="-Infinity" onKeyTyped="#hideLackUserNameLabel" prefHeight="27.0" prefWidth="300.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </VBox>
-                              <VBox alignment="CENTER_LEFT" minHeight="40.0" prefHeight="50.0" prefWidth="186.0" spacing="10.0">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                  <children>
-                                    <CheckBox fx:id="editingCheck" mnemonicParsing="false" text="edycja czasu pracy" />
-                                    <CheckBox fx:id="reminderCheck" mnemonicParsing="false" text="przypominaj o aktywności" />
+                                    <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" text="Nazwisko:">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <HBox prefHeight="100.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="lackUserLastNameLabel" text="to pole nie może być puste" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="userLastNameField" minWidth="-Infinity" onKeyTyped="#hideLackUserLastNameLabel" prefHeight="27.0" prefWidth="300.0" VBox.vgrow="ALWAYS" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
                                  </children>
-                              </VBox>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" text="Login:">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <HBox prefHeight="100.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="50.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="lackUserLoginLabel" text="to pole nie może być puste" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="userLoginField" minWidth="286.0" onKeyTyped="#hideLackUserLoginLabel" prefHeight="27.0" prefWidth="333.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="passwordLabel" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" text="Hasło:">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <HBox prefHeight="100.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="50.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="lackUserPasswordLabel" text="to pole nie może być puste" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="userPasswordField" minWidth="-Infinity" onKeyTyped="#hideLackUserPasswordLabel" prefHeight="27.0" prefWidth="300.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label fx:id="confirmPasswordLabel" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="85.0" text="Powtórz &#10;hasło:">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <HBox prefHeight="49.0" prefWidth="330.0" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="49.0" prefWidth="337.0" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label fx:id="lackUserConfirmPasswordLabel" text="to pole nie może być puste" textFill="RED">
+                                                   <font>
+                                                      <Font name="System Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="userConfirmPasswordField" minWidth="-Infinity" onKeyTyped="#hideLackUserConfirmPasswordLabel" prefHeight="27.0" prefWidth="300.0" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Label maxWidth="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="85.0" text="Uprawnienia:">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" top="15.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <VBox maxHeight="40.0" minHeight="40.0" prefHeight="40.0" prefWidth="130.0">
+                                       <children>
+                                          <Label fx:id="lackUserPermissionsLabel" prefWidth="130.0" text="ustaw uprawnienia" textFill="RED">
+                                             <font>
+                                                <Font name="System Italic" size="11.0" />
+                                             </font>
+                                          </Label>
+                                          <ChoiceBox fx:id="userPermissionsBox" onMouseDragEntered="#hideLackUserPermissionsLabel" prefHeight="27.0" prefWidth="130.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_LEFT" minHeight="40.0" prefHeight="50.0" prefWidth="186.0" spacing="10.0">
+                                       <children>
+                                          <CheckBox fx:id="editingCheck" mnemonicParsing="false" text="edycja czasu pracy" />
+                                          <CheckBox fx:id="reminderCheck" mnemonicParsing="false" text="przypominaj o aktywności" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="saveUser" mnemonicParsing="false" onAction="#saveUser" prefHeight="50.0" prefWidth="130.0" text="Zapisz">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="changeCancelButton" mnemonicParsing="false" onAction="#passwordCancelButton" prefHeight="50.0" prefWidth="130.0" text="Zmień hasło">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="setNewUser" alignment="CENTER" mnemonicParsing="false" onAction="#setToNewUser" prefHeight="50.0" prefWidth="130.0" text="Dodaj pracownika" textAlignment="CENTER" wrapText="true">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="saveUser" mnemonicParsing="false" onAction="#saveUser" prefHeight="50.0" prefWidth="130.0" text="Zapisz">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="changeCancelButton" mnemonicParsing="false" onAction="#passwordCancelButton" prefHeight="50.0" prefWidth="130.0" text="Zmień hasło">
-                                 <HBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="setNewUser" alignment="CENTER" mnemonicParsing="false" onAction="#setToNewUser" prefHeight="50.0" prefWidth="130.0" text="Dodaj pracownika" textAlignment="CENTER" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets top="20.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
+                           <HBox.margin>
+                              <Insets right="15.0" top="10.0" />
+                           </HBox.margin>
+                        </VBox>
                      </children>
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </VBox>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
                </children>
-            </HBox>
+            </VBox>
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
+      </AnchorPane>
    </children>
 </AnchorPane>

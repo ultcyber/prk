@@ -15,14 +15,25 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 import task.timer.Main;
 import task.timer.helper.AlertDialog;
 import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
 import task.timer.model.User;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 public class ManagerTabAddProjectController {
 
+	@FXML private VBox vbox1;
+	@FXML private VBox vbox2;
+	@FXML private HBox hbox;
+	@FXML private AnchorPane anchorpane;
+	@FXML private Rectangle rectangle1;
+	@FXML private Rectangle rectangle2;
+	
 	private List<AbstractEntity> projects;
 	
 	@FXML private TableView<Project> projectsTable;
@@ -53,7 +64,17 @@ public class ManagerTabAddProjectController {
 	private final ObservableList<User> dataUsersInProject = 
 			FXCollections.observableArrayList();
 
-	@FXML private void initialize(){
+	@FXML private void initialize(){	
+		rectangle1.widthProperty().bind(vbox1.widthProperty());		
+		rectangle2.widthProperty().bind(hbox.widthProperty().subtract(7));
+
+		
+		userNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
+		userLastNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
+		
+		userNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
+		userLastNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
+		
 		usersInProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		usersOutOfProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		
