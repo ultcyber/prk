@@ -40,7 +40,7 @@
                <children>
                   <HBox fx:id="hbox" layoutX="-16.0" prefHeight="656.0" prefWidth="457.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Rectangle fx:id="rectangle2" arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="495.0" stroke="BLACK" strokeType="INSIDE" width="453.0" x="305.0" HBox.hgrow="ALWAYS">
+                        <Rectangle fx:id="rectangle2" arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="427.0" stroke="BLACK" strokeType="INSIDE" width="453.0" x="305.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets top="45.0" />
                            </HBox.margin>
