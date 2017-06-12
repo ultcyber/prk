@@ -33,7 +33,7 @@
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="740.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#readData" prefHeight="30.0" prefWidth="30.0" textAlignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#refreshData" prefHeight="30.0" prefWidth="30.0" textAlignment="CENTER">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

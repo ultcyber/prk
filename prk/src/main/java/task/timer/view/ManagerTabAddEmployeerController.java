@@ -26,64 +26,118 @@ import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
 import task.timer.model.User;
 
+/**
+ * The Class ManagerTabAddEmployeerController.
+ * @author Marcin Zglenicki
+ * @since JDK 1.8
+ */
 public class ManagerTabAddEmployeerController {
 	
+	/** The rectangle 1. */
 	@FXML private Rectangle rectangle1;
+	
+	/** The rectangle 2. */
 	@FXML private Rectangle rectangle2;
-	@FXML private VBox vbox;
+	
+	/** The hbox. */
 	@FXML private HBox hbox;
-	@FXML private AnchorPane anchorPane;
+	
+	/** The employeer. */
 	@FXML private AnchorPane employeer;
 	
+	/** Table with users. */
 	@FXML private TableView<User> usersTable;
+	
+	/** The user name column. */
 	@FXML private TableColumn<User, String> userNameColumn;
+	
+	/** The user last name column. */
 	@FXML private TableColumn<User, String> userLastNameColumn;
 	
+	/** The user name field. */
 	@FXML private TextField userNameField;
+	
+	/** The user last name field. */
 	@FXML private TextField userLastNameField;
+	
+	/** The user login field. */
 	@FXML private TextField userLoginField;
+	
+	/** The user password field. */
 	@FXML private TextField userPasswordField;
+	
+	/** The user confirm password field. */
 	@FXML private TextField userConfirmPasswordField;
+	
+	/** The user permissions box. */
 	@FXML private ChoiceBox<String> userPermissionsBox;
 	
+	/** The password label. */
 	@FXML private Label passwordLabel;
+	
+	/** The confirm password label. */
 	@FXML private Label confirmPasswordLabel;
 	
+	/** The lack user name label. */
 	@FXML private Label lackUserNameLabel;
+	
+	/** The lack user last name label. */
 	@FXML private Label lackUserLastNameLabel;
+	
+	/** The lack user login label. */
 	@FXML private Label lackUserLoginLabel;
+	
+	/** The lack user password label. */
 	@FXML private Label lackUserPasswordLabel;
+	
+	/** The lack user confirm password label. */
 	@FXML private Label lackUserConfirmPasswordLabel;
+	
+	/** The lack user permissions label. */
 	@FXML private Label lackUserPermissionsLabel;
 	
+	/** The save user. */
 	@FXML private Button saveUser;
+	
+	/** The set new user button. */
 	@FXML private Button setNewUser;
+	
+	/** The change cancel button. */
 	@FXML private Button changeCancelButton;
+	
+	/** The refresh button. */
 	@FXML private Button refreshButton;
 	
+	/** The editing check. */
 	@FXML private CheckBox editingCheck;
+	
+	/** The reminder check. */
 	@FXML private CheckBox reminderCheck;
 	
+	/** The delete menu item. */
 	@FXML private MenuItem deleteMenuItem;
 	
+	/** The permission. */
 	private String permission;
+	
+	/** The new user. */
 	private boolean newUser;
+	
+	/** The change password. */
 	private boolean changePassword;
+	
+	/** List of users. */
+	private List<AbstractEntity> users;
     
+	/** List of users - preparing to show in TableView. */
 	private final ObservableList<User> dataUsers = 
 			FXCollections.observableArrayList();
 	
+	/**
+	 * Initialize graphics interface.
+	 */
 	@FXML private void initialize(){	
-		rectangle1.widthProperty().bind(employeer.widthProperty().subtract(10));
-		rectangle1.heightProperty().bind(employeer.heightProperty().subtract(10));
-		
-		
-		//rectangle1.heightProperty().bind(vbox.heightProperty().add(10));
-		
-		rectangle2.widthProperty().bind(hbox.widthProperty());
-		
-		userNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
-		userLastNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+		binding();// binding selected items on graphics interface
 		
 		usersTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		userNameColumn.setCellValueFactory(cellData ->
@@ -92,63 +146,103 @@ public class ManagerTabAddEmployeerController {
 			cellData.getValue().getLastNameProperty());		
 		usersTable.getSelectionModel().selectedItemProperty()
 			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTableView(newValue));
-		
-		readAndShowUsersFromDataBase();		
-		refreshInformationsFromTableView(null);
-		
-		userPermissionsBox.getItems().addAll("administrator", "manager", "pracownik");
+
+		userPermissionsBox.getItems().addAll("manager", "pracownik");
 		userPermissionsBox.getSelectionModel().selectedIndexProperty()
 			.addListener((observable, oldValue, newValue) -> setPermission());
+		
+		refreshData();
 	}
 	
-	@FXML private void readData(){
+	/**
+	 * Preparing fields to show informations about user. 
+	 * Read users from database.
+	 * Show users in TableView.
+	 * Show details about current user
+	 */
+	@FXML private void refreshData(){
 		clearFields();
-		readAndShowUsersFromDataBase();
+		readUsers();
+		showUsers();
+		refreshInformationsFromTableView(null);
 	}
 	
+	/**
+	 * Hide lack user name label.
+	 */
 	@FXML private void hideLackUserNameLabel(){
 		lackUserNameLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide lack user last name label.
+	 */
 	@FXML private void hideLackUserLastNameLabel(){
 		lackUserLastNameLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide lack user login label.
+	 */
 	@FXML private void hideLackUserLoginLabel(){
 		lackUserLoginLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide lack user password label.
+	 */
 	@FXML private void hideLackUserPasswordLabel(){
 		lackUserPasswordLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide lack user confirm password label.
+	 */
 	@FXML private void hideLackUserConfirmPasswordLabel(){
 		lackUserConfirmPasswordLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide lack user permissions label.
+	 */
 	@FXML private void hideLackUserPermissionsLabel(){
 		lackUserPermissionsLabel.setVisible(false);
 	}
 		
+	/**
+	 * Delete user.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@FXML private void deleteUser() throws ClassNotFoundException{
 		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie loginu", "Czy na pewno chcesz usunąć login?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
 				Main.getMMUser().delete(usersTable.getSelectionModel().getSelectedItem().getId());
-				readAndShowUsersFromDataBase();
+				readUsers();
+				showUsers();
 				clearFields();
 				new AlertDialog("Operacja zakończona", "Login został usunięty", AlertType.INFORMATION);
 			}
 		}
 	}
 	
+	/**
+	 * Save user.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
 	@FXML private void saveUser() throws ClassNotFoundException, NoSuchAlgorithmException{
 		if (newUser) addUser();
 			else updateUser();
 	}
 	
 	
+	/**
+	 * Preparing data to create new user
+	 */
 	@FXML private void setToNewUser(){
 		showPassword();
 		clearFields();
@@ -157,11 +251,30 @@ public class ManagerTabAddEmployeerController {
 		newUser = true;
 	}
 	
+	/**
+	 * Change password/cancel button.
+	 */
 	@FXML private void passwordCancelButton(){
 		if (newUser) cancel();
 		else changePassword();
 	}
 	
+	/**
+	 * Binding elements on graphic interface.
+	 */
+	private void binding(){
+		rectangle1.widthProperty().bind(employeer.widthProperty().subtract(10));
+		rectangle1.heightProperty().bind(employeer.heightProperty().subtract(10));
+		
+		rectangle2.widthProperty().bind(hbox.widthProperty());
+		
+		userNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+		userLastNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+	}
+	
+	/**
+	 * Cancel - canceling create new user.
+	 */
 	private void cancel(){
 		refreshInformationsFromTableView(null);
 		hidePassword();
@@ -170,6 +283,9 @@ public class ManagerTabAddEmployeerController {
 		newUser = false;
 	}
 	
+	/**
+	 * Cancel password change or prepare to change password.
+	 */
 	private void changePassword(){
 		if (changeCancelButton.getText().equals("Anuluj")){
 			hidePassword();
@@ -189,6 +305,12 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	/**
+	 * Update user.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
 	private void updateUser() throws ClassNotFoundException, NoSuchAlgorithmException{
 		if (usersTable.getSelectionModel().getSelectedIndex() > -1) {
 			if (changePassword) updateUserWithNewPassword();
@@ -196,6 +318,12 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	/**
+	 * Update user with new password.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
 	private void updateUserWithNewPassword() throws ClassNotFoundException, NoSuchAlgorithmException{
 		int currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
 		if ((isAllFieldsAreFull()) 
@@ -213,13 +341,20 @@ public class ManagerTabAddEmployeerController {
 									editingCheck.isSelected(),
 									reminderCheck.isSelected()));
 					// pokaż aktualny stan bazy pracowników
-					readAndShowUsersFromDataBase();
+					readUsers();
+					showUsers();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz
 					new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
 					changePassword = false;
 		}
 	}
 	
+	/**
+	 * Update user without password.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
 	private void updateUserWithoutPassword() throws ClassNotFoundException, NoSuchAlgorithmException{
 		int currentPositionInTableView = usersTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli
 		if ((isAllFieldsAreFull()) 
@@ -235,18 +370,26 @@ public class ManagerTabAddEmployeerController {
 									editingCheck.isSelected(),
 									reminderCheck.isSelected()));
 					// pokaż aktualny stan bazy pracowników
-					readAndShowUsersFromDataBase();
+					readUsers();
+					showUsers();
 					usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz
 					new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
 		}
 	}
 
 	
+	/**
+	 * Adds the user.
+	 *
+	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 */
 	private void addUser() throws NoSuchAlgorithmException{
 		int currentPositionInTableView;
 		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny i hasło jest takie, jak powtórzone hasło; 
 		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
-		if (isAllFieldsAreFull() && isTheSamePassword() && isLoginUnique(-1)){		
+		if (isAllFieldsAreFull() 
+				&& isTheSamePassword() 
+				&& isLoginUnique(-1)){		
 			Main.getMMUser().add(
 				new User(
 						userLoginField.getText(), 
@@ -257,30 +400,44 @@ public class ManagerTabAddEmployeerController {
 						editingCheck.isSelected(),
 						reminderCheck.isSelected()));
 			currentPositionInTableView = usersTable.getItems().size(); // ustaw podświetlenie w tabeli na ostatni wiersz			
-			readAndShowUsersFromDataBase(); // pokaż aktualny stan bazy pracowników
+			readUsers();
+			showUsers();
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 			new AlertDialog("Operacja zakończona", "Dodano pracownika", AlertType.INFORMATION);
 			newUser = false;
 		}	
 	}
 	
-	private void readAndShowUsersFromDataBase(){
-		List<AbstractEntity> users = Main.getMMUser().list();	
+	/**
+	 * Read users.
+	 */
+	private void readUsers(){
+		users = Main.getMMUser().list();	
 		dataUsers.clear();
-		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);		
-			dataUsers.add(userFromDb);
-		}		
+		users.forEach(userFromDb -> dataUsers.add((User)userFromDb)); 
+	}
+	
+	/**
+	 * Show users.
+	 */
+	private void showUsers(){
 		usersTable.setItems(dataUsers);
 	}
 	
+	/**
+	 * Set user permissions
+	 */
 	private void setPermission(){
-		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 0) permission = "administrator";
-		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1) permission = "manager";
-		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 2) permission = "pracownik";
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 0) permission = "manager";
+		else if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1) permission = "pracownik";
 		
 	}
 	
+	/**
+	 * Refresh informations from table view.
+	 *
+	 * @param usr - current user
+	 */
 	private void refreshInformationsFromTableView(User usr){
 		hideLackMessages();
 		newUser = false;
@@ -292,9 +449,8 @@ public class ManagerTabAddEmployeerController {
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
 			userPasswordField.setText(usr.getPassword());
-			if (usr.getPermissions().equals("administrator")) userPermissionsBox.getSelectionModel().select(0);
-			if (usr.getPermissions().equals("manager")) userPermissionsBox.getSelectionModel().select(1);
-			if (usr.getPermissions().equals("pracownik")) userPermissionsBox.getSelectionModel().select(2);
+			if (usr.getPermissions().equals("manager")) userPermissionsBox.getSelectionModel().select(0);
+			if (usr.getPermissions().equals("pracownik")) userPermissionsBox.getSelectionModel().select(1);
 			editingCheck.setSelected(usr.getEditing());
 			reminderCheck.setSelected(usr.getReminder());
 		}
@@ -310,6 +466,9 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	/**
+	 * Hide lack messages.
+	 */
 	protected void hideLackMessages(){
 		lackUserNameLabel.setVisible(false);
 		lackUserLastNameLabel.setVisible(false);
@@ -319,6 +478,9 @@ public class ManagerTabAddEmployeerController {
 		lackUserPermissionsLabel.setVisible(false);
 	}
 	
+	/**
+	 * Hide fields about password.
+	 */
 	protected void hidePassword(){
 		passwordLabel.setVisible(false);
 		confirmPasswordLabel.setVisible(false);
@@ -328,6 +490,9 @@ public class ManagerTabAddEmployeerController {
 		lackUserConfirmPasswordLabel.setVisible(false);		
 	}
 	
+	/**
+	 * Show fields about password.
+	 */
 	private void showPassword(){
 		passwordLabel.setVisible(true);
 		confirmPasswordLabel.setVisible(true);
@@ -335,6 +500,11 @@ public class ManagerTabAddEmployeerController {
 		userConfirmPasswordField.setVisible(true);
 	}
 	
+	/**
+	 * Checks if is all fields are full.
+	 *
+	 * @return true, if is all fields are full
+	 */
 	private boolean isAllFieldsAreFull(){
 		boolean lack = true;
 		if (userNameField.getText().equals("")) {
@@ -367,35 +537,31 @@ public class ManagerTabAddEmployeerController {
 				lack = false;
 			}
 		}
-		
-
 		return lack;
 	}
 	
-	// metoda sprawdza czy login jest unikalny
+	/**
+	 * Checks if is login unique.
+	 *
+	 * @param currentUserId the current user id
+	 * @return true, if is login unique
+	 */
 	private boolean isLoginUnique(int currentUserId){
 		User user = Main.getMMUser().getUserForLogin(userLoginField.getText());
 		if (user == null) return true;
 		else {
 			if (user.getId() == currentUserId) return true;
-		}
-		
+		}	
 		lackUserLoginLabel.setText("taki login istnieje w bazie");
 		lackUserLoginLabel.setVisible(true);
-/*		List<AbstractEntity> users = Main.getMMUser().list();	
-		for (int i=0; i<users.size(); i++){
-			User userFromDb =   (User) users.get(i);
-			if (currentUserId == userFromDb.getId()) continue;
-			if (userFromDb.getLogin().equals(userLoginField.getText())) {
-				lackUserLoginLabel.setText("taki login już istnieje");
-				lackUserLoginLabel.setVisible(true);
-				return false;
-			}
-		}	
-		return true;*/
 		return false;
 	}
 	
+	/**
+	 * Checks if is the same password.
+	 *
+	 * @return true, if is the same password
+	 */
 	private boolean isTheSamePassword(){
 		if (!userPasswordField.getText().equals(userConfirmPasswordField.getText())) {
 			lackUserConfirmPasswordLabel.setText("hasło i powtórzone hasło muszą być takie same");
@@ -405,14 +571,26 @@ public class ManagerTabAddEmployeerController {
 		return true;
 	}
 	
+	/**
+	 * Clear fields.
+	 */
 	protected void clearFields(){
 		usersTable.getSelectionModel().clearSelection();
-		userNameField.clear();;
+		userNameField.clear();
 		userLastNameField.clear();
 		userLoginField.clear();
 		userPasswordField.clear();
 		userConfirmPasswordField.clear();
 		userPermissionsBox.getSelectionModel().select(null);
+	}
+	
+	/**
+	 * Reset setting.
+	 */
+	protected void resetSetting(){
+		newUser = false;;
+		changePassword = false;
+		changeCancelButton.setText("Zmień hasło");
 	}
 
 }

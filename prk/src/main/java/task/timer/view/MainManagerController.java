@@ -43,6 +43,7 @@ public class MainManagerController {
 		employeerController.clearFields();
 		employeerController.hideLackMessages();
 		employeerController.hidePassword();
+		employeerController.resetSetting();
 	}
 	
 	@FXML private void readUsersAndProjects(){

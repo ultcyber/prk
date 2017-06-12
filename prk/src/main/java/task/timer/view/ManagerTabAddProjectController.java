@@ -132,6 +132,7 @@ public class ManagerTabAddProjectController {
 	 * Preparing fields to show informations about projects. 
 	 * Read projects from database.
 	 * Show projects in TableView.
+	 * Show users in and out of project
 	 */
 	@FXML private void refreshData(){
 		clearFields();

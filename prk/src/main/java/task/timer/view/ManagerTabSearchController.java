@@ -155,15 +155,20 @@ public class ManagerTabSearchController {
 		totalTimeTable.setItems(dataTotalTime);
 	}
 	
-	@FXML
-	public void exportXls(ActionEvent event) throws IOException {
+	/**
+	 * Export xls with search results.
+	 * author Mateusz Trybulec
+	 *
+	 * @param event the event
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	@FXML public void exportXls(ActionEvent event) throws IOException{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
 		fileChooser.setInitialFileName("records-export.xls");
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		File file = fileChooser.showSaveDialog(stage);
-		FileOutputStream fos = null;
-
+		
 		byte[] data = new ExcelCreator(dataRecords).getOutputData();
 		try {
 			fos = new FileOutputStream(file.getAbsolutePath());
