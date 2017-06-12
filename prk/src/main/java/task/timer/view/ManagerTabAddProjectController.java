@@ -25,59 +25,84 @@ import task.timer.model.User;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 
+/**
+ * The Class ManagerTabAddProjectController.
+ * @author Marcin Zglenicki
+ * @since JDK 1.8
+ */
 public class ManagerTabAddProjectController {
-
-	@FXML private VBox vbox1;
-	@FXML private VBox vbox2;
+	
+	/** The hbox. */
 	@FXML private HBox hbox;
+	
+	/** The project. */
 	@FXML private AnchorPane project;
-	@FXML private AnchorPane anchorpane;
+	
+	/** The rectangle 1. */
 	@FXML private Rectangle rectangle1;
+	
+	/** The rectangle 2. */
 	@FXML private Rectangle rectangle2;
 	
-	private List<AbstractEntity> projects;
-	
+	/** Table with projects. */
 	@FXML private TableView<Project> projectsTable;
+	
+	/** The project name column. */
 	@FXML private TableColumn<Project, String> projectNameColumn;
 	
+	/** Table with users out of project. */
 	@FXML private TableView<User> usersOutOfProjectTable;
+	
+	/** The user name column. */
 	@FXML private TableColumn<User, String> userNameColumn;
+	
+	/** The user last name column. */
 	@FXML private TableColumn<User, String> userLastNameColumn;
 	
+	/** Table with users in project. */
 	@FXML private TableView<User> usersInProjectTable;
+	
+	/** The users name in project column. */
 	@FXML private TableColumn<User, String> userNameInProjectColumn;
+	
+	/** The users last name in project column. */
 	@FXML private TableColumn<User, String> userLastNameInProjectColumn;
 	
+	/** The project name field. */
 	@FXML private TextField projectNameField;
+	
+	/** The new project name field. */
 	@FXML private TextField newProjectNameField;
 	
+	/** Label1 - lack new project name. */
 	@FXML private Label lackProjectNameLabel1;
+	
+	/** Label2 - lack exist project name. */
 	@FXML private Label lackProjectNameLabel2;
 	
+	/** The delete menu item. */
 	@FXML private MenuItem deleteMenuItem;
 	
+	/** List of projects. */
+	private List<AbstractEntity> projects;
+	
+	/** List of projects - preparing to show in TableView. */
 	private final ObservableList<Project> dataProjects = 
 			FXCollections.observableArrayList();
 	
+	/** List of users that are out of project - preparing to show in TableView. */
 	private final ObservableList<User> dataUsersOutOfProject = 
 			FXCollections.observableArrayList();
 	
+	/** List of users that are in project - preparing to show in TableView. */
 	private final ObservableList<User> dataUsersInProject = 
 			FXCollections.observableArrayList();
 
+	/**
+	 * Initialize graphics interface.
+	 */
 	@FXML private void initialize(){	
-		rectangle1.widthProperty().bind(project.widthProperty().subtract(10));	
-		rectangle1.heightProperty().bind(project.heightProperty().subtract(10));
-		
-		rectangle2.widthProperty().bind(hbox.widthProperty().subtract(7));
-		rectangle2.heightProperty().bind(hbox.heightProperty().subtract(20));
-
-		
-		userNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
-		userLastNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
-		
-		userNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
-		userLastNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
+		binding(); // binding selected items on graphics interface
 		
 		usersInProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		usersOutOfProjectTable.setPlaceholder(new Label("Lista pusta - brak danych"));
@@ -100,23 +125,39 @@ public class ManagerTabAddProjectController {
 		lackProjectNameLabel1.setVisible(false);
 		lackProjectNameLabel2.setVisible(false);
 		
-		readData();
+		refreshData();
 	}
 	
-	@FXML private void readData(){
+	/**
+	 * Preparing fields to show informations about projects. 
+	 * Read projects from database.
+	 * Show projects in TableView.
+	 */
+	@FXML private void refreshData(){
 		clearFields();
-		showProjects();			
-		showDataOfProject(null);
+		readProjects();
+		showProjects();		
+		// shows users in/out of project
+		showDataOfProject(null); 
 	}
 	
+	/**
+	 * Hide label 1 - lack project name.
+	 */
 	@FXML private void hideLackProjectNameLabel1(){
 		lackProjectNameLabel1.setVisible(false);
 	}
 	
+	/**
+	 * Hide label 2 - lack project name.
+	 */
 	@FXML private void hideLackProjectNameLabel2(){
 		lackProjectNameLabel2.setVisible(false);
 	}
 		
+	/**
+	 * Adds the user to project.
+	 */
 	@FXML private void addUserToProject(){
 		if (usersOutOfProjectTable.getSelectionModel().getSelectedIndex() > -1){	
 			User userToAdd = usersOutOfProjectTable.getSelectionModel().selectedItemProperty().get();
@@ -125,6 +166,9 @@ public class ManagerTabAddProjectController {
 		}
 	}
 	
+	/**
+	 * Removes the user from project.
+	 */
 	@FXML private void removeUserFromProject(){
 		if (usersInProjectTable.getSelectionModel().getSelectedIndex() > -1){	
 			User userToRemove = usersInProjectTable.getSelectionModel().selectedItemProperty().get();
@@ -133,6 +177,11 @@ public class ManagerTabAddProjectController {
 		}
 	}
 	
+	/**
+	 * Update project.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@FXML private void updateProject() throws ClassNotFoundException{	
 		int currentPositionInTableView;
 		if (isProjectNameFieldFull()) 
@@ -148,6 +197,7 @@ public class ManagerTabAddProjectController {
 						usersToUpdate
 						));
 				currentPositionInTableView = projectsTable.getSelectionModel().getSelectedIndex(); // zapamiętaj bieżące podświetlenie w tabeli	
+				readProjects();
 				showProjects();
 				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na bieżący wiersz	
 				new AlertDialog("Operacja zakończona", "Zaktualizowano dane", AlertType.INFORMATION);
@@ -158,6 +208,9 @@ public class ManagerTabAddProjectController {
 			}
 	}
 	
+	/**
+	 * Adds the project.
+	 */
 	@FXML private void addProject(){
 		int currentPositionInTableView;
 		if (isNewProjectNameFieldsFull()) 
@@ -167,6 +220,7 @@ public class ManagerTabAddProjectController {
 				
 				newProjectNameField.setText("");
 				currentPositionInTableView = projectsTable.getItems().size();
+				readProjects();
 				showProjects();
 				projectsTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 				
@@ -178,30 +232,65 @@ public class ManagerTabAddProjectController {
 				}
 	}
 	
+	/**
+	 * Delete project.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@FXML private void deleteProject() throws ClassNotFoundException{
 		if (projectsTable.getSelectionModel().getSelectedIndex() > -1)
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie projektu", "Czy na pewno chcesz usunąć projekt?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
 				Main.getMMProject().delete(projectsTable.getSelectionModel().getSelectedItem().getId());
+				readProjects();
 				showProjects();
 				clearFields();
 				new AlertDialog("Operacja zakończona", "Projekt został usunięty", AlertType.INFORMATION);
 			}
 		}
 	}
+	
+	/**
+	 * Binding elements on graphic interface.
+	 */
+	private void binding(){
+		rectangle1.widthProperty().bind(project.widthProperty().subtract(10));	
+		rectangle1.heightProperty().bind(project.heightProperty().subtract(10));
 		
-	private void showProjects(){ 	
-		readProjects();
-		projectsTable.setItems(dataProjects);
+		rectangle2.widthProperty().bind(hbox.widthProperty().subtract(7));
+		rectangle2.heightProperty().bind(hbox.heightProperty().subtract(20));
+
+		
+		userNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
+		userLastNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));
+		
+		userNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
+		userLastNameInProjectColumn.prefWidthProperty().bind(usersInProjectTable.widthProperty().divide(2));
 	}
 	
+	/**
+	 * Read projects.
+	 */
 	private void readProjects(){
 		projects = Main.getMMProject().list();
 		dataProjects.clear();		
 		projects.forEach(projectFromDataBase -> dataProjects.add((Project) projectFromDataBase));
 	}
+	
+	
+	/**
+	 * Show projects.
+	*/
+	private void showProjects(){ 	
+		projectsTable.setItems(dataProjects);
+	}
 		
+	/**
+	 * Show data of project: users in and out of project
+	 *
+	 * @param project - current project
+	 */
 	private void showDataOfProject(Project project){
 		if (project != null){
 			readUsersInProject(project);
@@ -217,6 +306,11 @@ public class ManagerTabAddProjectController {
 		hideLackProjectNameLabel2();
 	}
 	
+	/**
+	 * Read users in project.
+	 *
+	 * @param project - current project
+	 */
 	private void readUsersInProject(Project project){
 		projectNameField.setText(project.getName());			
 		dataUsersInProject.clear();
@@ -226,16 +320,25 @@ public class ManagerTabAddProjectController {
 		wskaznik.forEachRemaining(userToAdd -> dataUsersInProject.add(userToAdd));		
 	}
 	
+	/**
+	 * Read a list of users and discards those that are already in the project.
+	 *
+	 * @param usersOfProject - users in project
+	 */
 	private void readUsersOutOfProject(ObservableList<User> usersOfProject){
 		List<AbstractEntity> users = Main.getMMUser().list();	
 		dataUsersOutOfProject.clear();		
 		users.forEach(userFromDataBase -> {
-			// dodaj do TableView jeśli userFromDataBase nie jest jeszcze przypięty do projektu
 			if (!usersOfProject.contains(userFromDataBase))
 				dataUsersOutOfProject.add((User) userFromDataBase);
 		});		
 	}
 	
+	/**
+	 * Checks if field of new project name is full.
+	 *
+	 * @return true, if field of new project name is full
+	 */
 	private boolean isNewProjectNameFieldsFull(){
 		if (newProjectNameField.getText().equals("")) {
 			lackProjectNameLabel1.setText("to pole nie może być puste");
@@ -245,6 +348,11 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 	
+	/**
+	 * Checks if field of project name is full.
+	 *
+	 * @return true, if field of project name is full
+	 */
 	private boolean isProjectNameFieldFull(){
 		if (projectNameField.getText().equals("")) {
 			lackProjectNameLabel2.setText("to pole nie może być puste");
@@ -254,7 +362,12 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 	
-	// metoda sprawdza czy projekt jest unikalny
+	/**
+	 * Checks if project name is unique.
+	 *
+	 * @param projectName - name of the current project
+	 * @return true, if project name is unique
+	 */
 	private boolean isNewProjectUnique(String projectName){
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb = (Project) projects.get(i);
@@ -264,7 +377,12 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 	
-	// metoda sprawdza czy projekt jest unikalny bez uwzględniania bieżacego projektu
+	/**
+	 * Checks if project name is unique except for the current project.
+	 *
+	 * @param currentProjectId the current project id
+	 * @return true, if project name is unique
+	 */
 	private boolean isProjectUnique(int currentProjectId){
 		for (int i=0; i<projects.size(); i++){
 			Project projectFromDb = (Project) projects.get(i);
@@ -275,6 +393,9 @@ public class ManagerTabAddProjectController {
 		return true;
 	}
 	
+	/**
+	 * Clear fields on the graphical interface.
+	 */
 	protected void clearFields(){
 		projectsTable.getSelectionModel().clearSelection();
 		dataUsersOutOfProject.clear();
