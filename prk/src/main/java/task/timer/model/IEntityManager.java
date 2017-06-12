@@ -3,37 +3,36 @@ package task.timer.model;
 import java.util.List;
 
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface IEntityManager.
+ * The Interface IEntityManager. Provides an abstract layer for implementing a DAO class.
  */
 public interface IEntityManager {
 	
 	
 	/**
-	 * Adds the.
+	 * Adds the entities.
 	 *
 	 * @param entity the entity
-	 * @return the integer
+	 * @return the unique id of the added AbstractEntity.
 	 */
 	Integer add(AbstractEntity entity);
 	
 	
 	/**
-	 * List.
+	 * Lists all entities.
 	 *
-	 * @return the list
+	 * @return the list of AbstractEntity from the database.
 	 */
 	List<AbstractEntity> list();
 	
 	
 	/**
-	 * Update.
+	 * Update the given entity.
 	 *
-	 * @param compareEntity the compare entity
+	 * @param newEntity the new entity to be updated.
 	 * @throws ClassNotFoundException the class not found exception
 	 */
-	void update(AbstractEntity compareEntity) throws ClassNotFoundException;
+	void update(AbstractEntity newEntity) throws ClassNotFoundException;
 	
 	
 	/**
@@ -45,7 +44,7 @@ public interface IEntityManager {
 	void delete(int id) throws ClassNotFoundException;
 	
 	/**
-	 * Fail.
+	 * The standard fail handler.
 	 *
 	 * @param e the e
 	 */

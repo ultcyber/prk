@@ -12,9 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import task.timer.Main;
 import task.timer.helper.AlertDialog;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class FactoryCreator.
+ * FactoryCreator class. Helps creating a SessionFactory object.
  */
 public class FactoryCreator {
 	   
@@ -22,7 +21,10 @@ public class FactoryCreator {
    	private SessionFactory factory;
 	   
 	   /**
-   	 * Instantiates a new factory creator.
+   	 * Instantiates a new factory creator. Takes from default location of hibernate.cfg.xml.
+   	 *  For jar packages, looks at the jar directory.
+   	 *  
+   	 *  If failed, displays an appropriate error dialog to the user.
    	 */
    	public FactoryCreator(){
 

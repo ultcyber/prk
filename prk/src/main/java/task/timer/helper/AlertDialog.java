@@ -85,13 +85,13 @@ public class AlertDialog {
 	
 	
 	/**
-	 * Instantiates a new alert dialog.
+	 * Instantiates a new alert dialog with special Exception box.
 	 *
 	 * @param title the title
 	 * @param headerText the header text
 	 * @param contextText the context text
 	 * @param alertType the alert type
-	 * @param ex the ex
+	 * @param ex the exception
 	 */
 	public AlertDialog(String title, String headerText, String contextText, AlertType alertType, Throwable ex) {
 		Alert alert = new Alert(alertType);
@@ -129,12 +129,12 @@ public class AlertDialog {
 	}
 	
 	/**
-	 * Instantiates a new alert dialog.
+	 * Instantiates a new alert dialog with special Exception box.
 	 *
 	 * @param headerText the header text
 	 * @param contextText the context text
 	 * @param alertType the alert type
-	 * @param ex the ex
+	 * @param ex the exception
 	 */
 	public AlertDialog(String headerText, String contextText, AlertType alertType, Throwable ex) {
 		Alert alert = new Alert(alertType);
@@ -173,7 +173,7 @@ public class AlertDialog {
 	
 
 	/**
-	 * Gets the result.
+	 * Gets the result - the button that was clicked. This will work only for <code>{@link AlertType}.CONFIRMATION</code> AlertDialogs.
 	 *
 	 * @return the result
 	 */

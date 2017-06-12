@@ -23,25 +23,25 @@ import task.timer.helper.AlertDialog;
 
 /**
  * This class implements a persistent Data Access Objects that 
- * allows for a machine-friendly interaction with the database.
+ * allows for a machine-friendly interaction with the database.<p>
  * 
  * It facilitates standard database table interactions 
- * (add/delete/update/list) as well as adds some utilility functions.
- * All the operations are performed on AbstractEntity supertype, which
+ * (add/delete/update/list) as well as adds some utilility functions.<p>
+ * All the operations are performed on {@link AbstractEntity} supertype, which
  * allows for generic handling of all database entities.
- * All supported entities extend from an abstract layer AbstractEntity.
+ * All supported entities extend from an abstract layer {@link AbstractEntity}.<p>
  * 
  * Specific ManageEntities are defined at construction time using
- * EntityType.
+ * EntityType.<p>
  * 
  * A ManageEnity instance will accept an existing SessionFactory or
- * create it's own at construction.
+ * create it's own at construction.<p>
  * 
  * @author Mateusz Trybulec
  * @since JDK 1.8
  * 
  * @param <T>
- *            the generic type of AbstractEntity
+ *            the generic type of {@link AbstractEntity}
  */
 public class ManageEntity<T> implements IEntityManager {
 
@@ -116,8 +116,8 @@ public class ManageEntity<T> implements IEntityManager {
 	 * 
 	 * Will ping the database before performing the operation.
 	 *
-	 * @param newEntity the updated entity.
-	 * @throws ClassNotFoundException if class for given EntityType cannot be found.
+	 * @param newEntity the updated entity. The id must match the id of the entity to be updated in the database.
+	 * @throws ClassNotFoundException if class for given {@link EntityType} cannot be found.
 	 */
 	@Override
 	public void update(AbstractEntity newEntity) throws ClassNotFoundException {
@@ -147,7 +147,7 @@ public class ManageEntity<T> implements IEntityManager {
 	 * Will ping the database before performing the operation.
 	 * 
 	 * @param id the id of the entity to delete.
-	 * @throws ClassNotFoundException if EntityType class cannot be found.
+	 * @throws ClassNotFoundException if {@link EntityType} class cannot be found.
 	 */
 	@Override
 	public void delete(int id) throws ClassNotFoundException {
@@ -174,14 +174,14 @@ public class ManageEntity<T> implements IEntityManager {
 
 	
 	/**
-	 * Returns all the entities of defined EntityType.
+	 * Returns all the entities of defined {@link EntityType}.<p>
 	 * 
 	 * When implemented for specific classes implementing AbstractEntity,
 	 * members of the list need to be cast to the target sub-class
 	 * 
 	 * Will ping the database before performing the operation.
 	 *
-	 * @return the list of AbstractEntity.
+	 * @return the list of {@link AbstractEntity}.
 	 */
 	@Override
 	public List<AbstractEntity> list() {
@@ -277,11 +277,11 @@ public class ManageEntity<T> implements IEntityManager {
 	}
 
 	/**
-	 * Lists records for a given user and/or project and/or specific date.
+	 * Lists records for a given user and/or project and/or specific date.<p>
 	 * 
 	 * When parameter passed as null, it is treated as optional, 
 	 * i.e. all are returned. Example: a null for a user 
-	 * will return records for all the users.
+	 * will return records for all the users.<p>
 	 * 
 	 * Will ping the database before performing the operation.
 	 *
@@ -329,11 +329,11 @@ public class ManageEntity<T> implements IEntityManager {
 	}
 
 	/**
-	 * Lists records for a given user and/or project and/or specific date range.
+	 * Lists records for a given user and/or project and/or specific date range.<p>
 	 * 
 	 * When parameter passed as null, it is treated as optional, 
 	 * i.e. all are returned. Example: a null for a user 
-	 * will return records for all the users.
+	 * will return records for all the users.<p>
 	 * 
 	 * Will ping the database before performing the operation.
 	 *
@@ -396,7 +396,7 @@ public class ManageEntity<T> implements IEntityManager {
 	/**
 	 * Ping the database using the ping url from the SessionFactory configuration file.
 	 *
-	 * @return true, if successful
+	 * @return the result of the ping operation
 	 */
 	public boolean ping() {
 		SessionFactoryImpl sessionFactoryImpl = (SessionFactoryImpl) factory;
