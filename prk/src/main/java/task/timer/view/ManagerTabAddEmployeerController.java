@@ -372,9 +372,17 @@ public class ManagerTabAddEmployeerController {
 		return lack;
 	}
 	
-	// metoda sprawdza czy login jest unikalny bez uwzględniania bieżacego usera
+	// metoda sprawdza czy login jest unikalny
 	private boolean isLoginUnique(int currentUserId){
-		List<AbstractEntity> users = Main.getMMUser().list();	
+		User user = Main.getMMUser().getUserForLogin(userLoginField.getText());
+		if (user == null) return true;
+		else {
+			if (user.getId() == currentUserId) return true;
+		}
+		
+		lackUserLoginLabel.setText("taki login istnieje w bazie");
+		lackUserLoginLabel.setVisible(true);
+/*		List<AbstractEntity> users = Main.getMMUser().list();	
 		for (int i=0; i<users.size(); i++){
 			User userFromDb =   (User) users.get(i);
 			if (currentUserId == userFromDb.getId()) continue;
@@ -384,7 +392,8 @@ public class ManagerTabAddEmployeerController {
 				return false;
 			}
 		}	
-		return true;
+		return true;*/
+		return false;
 	}
 	
 	private boolean isTheSamePassword(){
