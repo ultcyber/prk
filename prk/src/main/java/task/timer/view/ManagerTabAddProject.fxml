@@ -17,7 +17,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="project" minWidth="-Infinity" prefHeight="573.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddProjectController">
+<AnchorPane fx:id="project" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="573.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.ManagerTabAddProjectController">
    <children>
       <AnchorPane fx:id="anchorPane2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="573.0" prefWidth="760.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -33,18 +33,18 @@
             </VBox>
             <AnchorPane fx:id="anchorpane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="595.0" prefWidth="505.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox fx:id="hbox" layoutX="-4.0" prefHeight="605.0" prefWidth="487.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
+                  <HBox fx:id="hbox" layoutX="-4.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="605.0" prefWidth="487.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Rectangle fx:id="rectangle2" arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="492.0" stroke="BLACK" strokeType="INSIDE" width="480.0" x="305.0" HBox.hgrow="ALWAYS">
                            <HBox.margin>
-                              <Insets top="92.0" />
+                              <Insets />
                            </HBox.margin>
                         </Rectangle>
                      </children>
                   </HBox>
                </children>
                <HBox.margin>
-                  <Insets />
+                  <Insets top="92.0" />
                </HBox.margin>
             </AnchorPane>
          </children>

@@ -112,7 +112,7 @@
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>
                   </TableView>
-                  <TableView fx:id="totalTimeTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="94.0" prefWidth="720.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="totalTimeTable" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" nodeOrientation="RIGHT_TO_LEFT" prefHeight="94.0" prefWidth="720.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn prefWidth="160.0" text="Łączny czas">
                            <columns>

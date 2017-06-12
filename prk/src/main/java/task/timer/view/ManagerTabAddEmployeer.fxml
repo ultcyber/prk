@@ -53,7 +53,7 @@
       </HBox>
       <AnchorPane fx:id="anchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="590.0" prefWidth="762.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox fx:id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="575.0" prefWidth="752.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <VBox fx:id="vbox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="575.0" prefWidth="752.0" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="22.0" prefWidth="740.0" VBox.vgrow="ALWAYS">
                      <children>
@@ -89,9 +89,9 @@
                         <Insets left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="528.0" prefWidth="752.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                  <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="525.0" prefWidth="752.0" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="usersTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
+                        <TableView fx:id="usersTable" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="280.0" HBox.hgrow="ALWAYS">
                           <columns>
                             <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="280.0" text="Pracownik">
                                  <columns>

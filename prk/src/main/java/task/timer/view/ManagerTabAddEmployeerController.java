@@ -33,6 +33,7 @@ public class ManagerTabAddEmployeerController {
 	@FXML private VBox vbox;
 	@FXML private HBox hbox;
 	@FXML private AnchorPane anchorPane;
+	@FXML private AnchorPane employeer;
 	
 	@FXML private TableView<User> usersTable;
 	@FXML private TableColumn<User, String> userNameColumn;
@@ -73,7 +74,10 @@ public class ManagerTabAddEmployeerController {
 			FXCollections.observableArrayList();
 	
 	@FXML private void initialize(){	
-		rectangle1.widthProperty().bind(vbox.widthProperty());
+		rectangle1.widthProperty().bind(employeer.widthProperty().subtract(10));
+		rectangle1.heightProperty().bind(employeer.heightProperty().subtract(10));
+		
+		
 		//rectangle1.heightProperty().bind(vbox.heightProperty().add(10));
 		
 		rectangle2.widthProperty().bind(hbox.widthProperty());

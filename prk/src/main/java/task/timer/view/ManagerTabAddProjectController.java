@@ -30,6 +30,7 @@ public class ManagerTabAddProjectController {
 	@FXML private VBox vbox1;
 	@FXML private VBox vbox2;
 	@FXML private HBox hbox;
+	@FXML private AnchorPane project;
 	@FXML private AnchorPane anchorpane;
 	@FXML private Rectangle rectangle1;
 	@FXML private Rectangle rectangle2;
@@ -65,8 +66,11 @@ public class ManagerTabAddProjectController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){	
-		rectangle1.widthProperty().bind(vbox1.widthProperty());		
+		rectangle1.widthProperty().bind(project.widthProperty().subtract(10));	
+		rectangle1.heightProperty().bind(project.heightProperty().subtract(10));
+		
 		rectangle2.widthProperty().bind(hbox.widthProperty().subtract(7));
+		rectangle2.heightProperty().bind(hbox.heightProperty().subtract(20));
 
 		
 		userNameColumn.prefWidthProperty().bind(usersOutOfProjectTable.widthProperty().divide(2));

@@ -71,8 +71,8 @@ public class ManagerTabSearchController {
 			FXCollections.observableArrayList();
 
 	@FXML private void initialize(){
-		rectangle.widthProperty().bind(anchorPane.widthProperty().subtract(10));
-		rectangle.heightProperty().bind(anchorPane.heightProperty());
+		rectangle.widthProperty().bind(search.widthProperty().subtract(10));
+		rectangle.heightProperty().bind(search.heightProperty().subtract(10));
 		
 		double width = dateColumn.widthProperty().get();
 		width += startTimeColumn.widthProperty().get();
