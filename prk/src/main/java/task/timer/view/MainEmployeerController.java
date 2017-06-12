@@ -96,7 +96,9 @@ public class MainEmployeerController {
 
 		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
 		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
-				
+		
+		recordTable.setPlaceholder(new Label("Lista pusta - brak danych"));
+		
 		loggedUserName.setText(
 				LoginWindowController.loggedUser.getFirstName() 
 				+ " " 
