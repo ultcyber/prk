@@ -122,33 +122,7 @@ private void populateData() {
 		return outputData;
 	}
 	
-	/**
-     * The main method.
-     *
-     * @param args the arguments
-	 * @throws IOException 
-     */
-    public static void main(String[] args) throws IOException {
-		List<AbstractEntity> testData = new MEFactory().getRecordEntityManager().list();
-		
-		ObservableList<Record> dataRecords = 
-				FXCollections.observableArrayList();
-		
-		for (AbstractEntity r : testData){
-			dataRecords.add((Record) r);
-		}
-		
-		byte[] data = new ExcelCreator(dataRecords).getOutputData();
-		
-		FileOutputStream fos = new FileOutputStream("testFile.xls");
-		try {
-			fos.write(data);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		fos.close();
 		
 
 	}
 	
-}

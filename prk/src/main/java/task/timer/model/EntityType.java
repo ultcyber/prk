@@ -1,22 +1,18 @@
 package task.timer.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Enum EntityType.
+ * The Enum EntityType. Exposes the limited number of classes to be used by @{link ManageEntity}.
  */
 public enum EntityType {
 	
 	
-	/** The User. */
+	/** User and its persistent class. */
 	User("task.timer.model.User"),
 	
-	/** The Record. */
+	/** Record and its persistent class. */
 	Record("task.timer.model.Record"),
 	
-	/** The Task. */
-	Task("task.timer.model.Task"),
-	
-	/** The Project. */
+	/** Project its persistent class.. */
 	Project("task.timer.model.Project");
 	
 	/** The class type. */
