@@ -2,11 +2,13 @@ package task.timer.model;
 
 import java.util.List;
 
+
 // TODO: Auto-generated Javadoc
 /**
  * The Interface IEntityManager.
  */
 public interface IEntityManager {
+	
 	
 	/**
 	 * Adds the.
@@ -16,12 +18,14 @@ public interface IEntityManager {
 	 */
 	Integer add(AbstractEntity entity);
 	
+	
 	/**
 	 * List.
 	 *
 	 * @return the list
 	 */
 	List<AbstractEntity> list();
+	
 	
 	/**
 	 * Update.
@@ -31,6 +35,7 @@ public interface IEntityManager {
 	 */
 	void update(AbstractEntity compareEntity) throws ClassNotFoundException;
 	
+	
 	/**
 	 * Delete.
 	 *
@@ -39,6 +44,11 @@ public interface IEntityManager {
 	 */
 	void delete(int id) throws ClassNotFoundException;
 	
+	/**
+	 * Fail.
+	 *
+	 * @param e the e
+	 */
 	void fail(Throwable e);
 	
 }

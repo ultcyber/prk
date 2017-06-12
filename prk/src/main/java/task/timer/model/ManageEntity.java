@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2017 Mateusz Trybulec and Marcin Zglenicki. All rights reserved.
+ */
 package task.timer.model;
 
 import java.io.IOException;
@@ -19,24 +22,42 @@ import javafx.scene.control.Alert.AlertType;
 import task.timer.helper.AlertDialog;
 
 /**
- * The Class ManageEntity.
- *
+ * This class implements a persistent Data Access Objects that 
+ * allows for a machine-friendly interaction with the database.
+ * 
+ * It facilitates standard database table interactions 
+ * (add/delete/update/list) as well as adds some utilility functions.
+ * All the operations are performed on AbstractEntity supertype, which
+ * allows for generic handling of all database entities.
+ * All supported entities extend from an abstract layer AbstractEntity.
+ * 
+ * Specific ManageEntities are defined at construction time using
+ * EntityType.
+ * 
+ * A ManageEnity instance will accept an existing SessionFactory or
+ * create it's own at construction.
+ * 
+ * @author Mateusz Trybulec
+ * @since JDK 1.8
+ * 
  * @param <T>
- *            the generic type
+ *            the generic type of AbstractEntity
  */
 public class ManageEntity<T> implements IEntityManager {
 
-	/** The factory. */
+	/** The Hibernate session factory. */
 	private SessionFactory factory;
 
 	/** The entity type. */
 	private EntityType entityType;
 
 	/**
-	 * Instantiates a new manage entity.
+	 * Instantiates a new Manage Entity.
+	 * 
+	 * Will create its own SessionFactory using default configuration.
 	 *
 	 * @param entityType
-	 *            the entity type
+	 *            the entity type from supported entities.
 	 */
 	public ManageEntity(EntityType entityType) {
 		this.entityType = entityType;
@@ -46,31 +67,26 @@ public class ManageEntity<T> implements IEntityManager {
 
 	/**
 	 * Instantiates a new manage entity.
-	 *
+	 * 
+	 * Will use the SessionFactory specified in the parameter.
+	 * 
 	 * @param factory
-	 *            the factory
-	 */
-	public ManageEntity(SessionFactory factory) {
-		this.factory = factory;
-	}
-
-	/**
-	 * Instantiates a new manage entity.
-	 *
-	 * @param factory
-	 *            the factory
+	 *            the session factory to use.
 	 * @param entityType
-	 *            the entity type
+	 *            the entity type from supported entities.
 	 */
 	public ManageEntity(SessionFactory factory, EntityType entityType) {
 		this.factory = factory;
 		this.entityType = entityType;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Adds a record to the database of EntityType defined at instantiation.
 	 * 
-	 * @see task.timer.model.IEntityManager#add(task.timer.model.AbstractEntity)
+	 * Will ping the database before performing the operation.
+	 *
+	 * @param entity the entity to add to database.
+	 * @return unique id of the entity added to the database.
 	 */
 	@Override
 	public Integer add(AbstractEntity entity) {
@@ -94,12 +110,14 @@ public class ManageEntity<T> implements IEntityManager {
 		}
 		return entityID;
 	}
-
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Updates a given entity in the database.
 	 * 
-	 * @see
-	 * task.timer.model.IEntityManager#update(task.timer.model.AbstractEntity)
+	 * Will ping the database before performing the operation.
+	 *
+	 * @param newEntity the updated entity.
+	 * @throws ClassNotFoundException if class for given EntityType cannot be found.
 	 */
 	@Override
 	public void update(AbstractEntity newEntity) throws ClassNotFoundException {
@@ -122,10 +140,14 @@ public class ManageEntity<T> implements IEntityManager {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Deletes an entity type of given ID from the database.
+	 *
+	 * Will ping the database before performing the operation.
 	 * 
-	 * @see task.timer.model.IEntityManager#delete(int)
+	 * @param id the id of the entity to delete.
+	 * @throws ClassNotFoundException if EntityType class cannot be found.
 	 */
 	@Override
 	public void delete(int id) throws ClassNotFoundException {
@@ -150,10 +172,16 @@ public class ManageEntity<T> implements IEntityManager {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
+	
+	/**
+	 * Returns all the entities of defined EntityType.
 	 * 
-	 * @see task.timer.model.IEntityManager#list()
+	 * When implemented for specific classes implementing AbstractEntity,
+	 * members of the list need to be cast to the target sub-class
+	 * 
+	 * Will ping the database before performing the operation.
+	 *
+	 * @return the list of AbstractEntity.
 	 */
 	@Override
 	public List<AbstractEntity> list() {
@@ -181,11 +209,13 @@ public class ManageEntity<T> implements IEntityManager {
 	}
 
 	/**
-	 * Gets the user for login.
+	 * Gets the user for a specific login.
+	 * 
+	 * Will ping the database before performing the operation.
 	 *
 	 * @param login
-	 *            the login
-	 * @return the user for login
+	 *            the searched login.
+	 * @return the User for specified login or null if User not found.
 	 */
 	public User getUserForLogin(String login) {
 
@@ -216,11 +246,13 @@ public class ManageEntity<T> implements IEntityManager {
 	/**
 	 * List records for date range.
 	 *
+	 * Will ping the database before performing the operation.
+	 *
 	 * @param dateStart
-	 *            the date start
+	 *            the search start date
 	 * @param dateEnd
-	 *            the date end
-	 * @return the list
+	 *            the search end date
+	 * @return the list of records.
 	 */
 	public List<Record> listRecordsForDateRange(String dateStart, String dateEnd) {
 		Session session = factory.openSession();
@@ -245,7 +277,13 @@ public class ManageEntity<T> implements IEntityManager {
 	}
 
 	/**
-	 * List records.
+	 * Lists records for a given user and/or project and/or specific date.
+	 * 
+	 * When parameter passed as null, it is treated as optional, 
+	 * i.e. all are returned. Example: a null for a user 
+	 * will return records for all the users.
+	 * 
+	 * Will ping the database before performing the operation.
 	 *
 	 * @param user
 	 *            the user
@@ -253,7 +291,7 @@ public class ManageEntity<T> implements IEntityManager {
 	 *            the project
 	 * @param date
 	 *            the date
-	 * @return the list
+	 * @return the list of records.
 	 */
 	public List<Record> listRecords(User user, Project project, LocalDate date) {
 		Session session = factory.openSession();
@@ -291,17 +329,24 @@ public class ManageEntity<T> implements IEntityManager {
 	}
 
 	/**
-	 * List records.
+	 * Lists records for a given user and/or project and/or specific date range.
+	 * 
+	 * When parameter passed as null, it is treated as optional, 
+	 * i.e. all are returned. Example: a null for a user 
+	 * will return records for all the users.
+	 * 
+	 * Will ping the database before performing the operation.
 	 *
 	 * @param user
 	 *            the user
 	 * @param project
 	 *            the project
 	 * @param dateStart
-	 *            the date start
+	 *            the search start date.
 	 * @param dateEnd
-	 *            the date end
-	 * @return the list
+	 *            the search end date.
+	 *       
+	 * @return the list of records.
 	 */
 	public List<Record> listRecords(User user, Project project, LocalDate dateStart, LocalDate dateEnd) {
 		if (dateEnd == null) {
@@ -348,6 +393,11 @@ public class ManageEntity<T> implements IEntityManager {
 		return entities;
 	}
 
+	/**
+	 * Ping the database using the ping url from the SessionFactory configuration file.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean ping() {
 		SessionFactoryImpl sessionFactoryImpl = (SessionFactoryImpl) factory;
 		Map<String, Object> props = sessionFactoryImpl.getProperties();
@@ -364,6 +414,14 @@ public class ManageEntity<T> implements IEntityManager {
 		return true;
 	}
 
+
+	/**
+	 * A standard fail handler for the class.
+	 * 
+	 * Shows a error window to the user with stackTrace of passed Throwable.
+	 *
+	 * @param e the Throwable of which stackTrace shall be printed.
+	 */
 	@Override
 	public void fail(Throwable e) {
 		new AlertDialog("Error", "Błąd połączenia z bazą danych.",
