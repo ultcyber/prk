@@ -26,10 +26,10 @@ import task.timer.helper.Helper;
 import task.timer.model.AbstractEntity;
 import task.timer.model.User;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class ManagerTabAddEmployeerController.
- * Author: Marcin Zglenicki
+ * @author Marcin Zglenicki
+ * @since JDK 1.8
  */
 public class ManagerTabAddEmployeerController {
 	
