@@ -14,6 +14,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import task.timer.Main;
+import task.timer.helper.AlertDialog;
 import task.timer.helper.ExcelCreator;
 import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
@@ -153,21 +155,22 @@ public class ManagerTabSearchController {
 		totalTimeTable.setItems(dataTotalTime);
 	}
 	
-	@FXML public void exportXls(ActionEvent event) throws IOException{
+	@FXML
+	public void exportXls(ActionEvent event) throws IOException {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
 		fileChooser.setInitialFileName("records-export.xls");
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		File file = fileChooser.showSaveDialog(stage);
-		
+		FileOutputStream fos = null;
+
 		byte[] data = new ExcelCreator(dataRecords).getOutputData();
-		FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
 		try {
+			fos = new FileOutputStream(file.getAbsolutePath());
 			fos.write(data);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		fos.close();
+		} 
 	}
 	
 	private void readUsersFromDataBase(){

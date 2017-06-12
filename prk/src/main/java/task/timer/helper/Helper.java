@@ -11,18 +11,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import task.timer.ViewLoader;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Helper.
+ * Utility functions for some operations.
  */
 public class Helper {
 	
 	/**
-	 * Encrypt password.
+	 * Encrypt the password with SHA-256.
 	 *
-	 * @param pass the pass
-	 * @return the string
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
+	 * @param pass the password to encrypt.
+	 * @return the SHA-256 encrypted hex.
+	 * @throws NoSuchAlgorithmException if SHA-256 algorithm is not found.
 	 */
 	// Encrypting
 	public static String encryptPassword(String pass) throws NoSuchAlgorithmException{
@@ -34,8 +33,8 @@ public class Helper {
 	/**
 	 * Bytes to hex.
 	 *
-	 * @param bytes the bytes
-	 * @return the string
+	 * @param bytes the bytes to convert to hex.
+	 * @return the hex representation of bytes.
 	 */
 	private static String bytesToHex(byte[] bytes) {
 	    StringBuffer result = new StringBuffer();
@@ -45,12 +44,12 @@ public class Helper {
 	
 	
 	/**
-	 * Change stage.
+	 * A utility method for changing the stage to a different controller.
 	 *
-	 * @param <P> the generic type
-	 * @param <O> the generic type
-	 * @param viewLoader the view loader
-	 * @param event the event
+	 * @param <P> the Pane type.
+	 * @param <O> the Controller class.
+	 * @param viewLoader the {@link ViewLoader} instance to apply.
+	 * @param event the action triggering event.
 	 */
 	// Utility methods
 	public static <P, O> void changeStage(ViewLoader<P, O> viewLoader, Event event){
@@ -59,16 +58,6 @@ public class Helper {
 		Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		appStage.setScene(scene);
         appStage.show();
-	}
-	
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 * @throws NoSuchAlgorithmException the no such algorithm exception
-	 */
-	public static void main (String[] args) throws NoSuchAlgorithmException{
-		System.out.println(Helper.encryptPassword("password"));
 	}
 	
 }
