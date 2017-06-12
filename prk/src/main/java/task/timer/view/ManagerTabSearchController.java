@@ -156,6 +156,7 @@ public class ManagerTabSearchController {
 	@FXML public void exportXls(ActionEvent event) throws IOException{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Wybierz folder docelowy i nazwę pliku");
+		fileChooser.setInitialFileName("records-export.xls");
 		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		File file = fileChooser.showSaveDialog(stage);
 		

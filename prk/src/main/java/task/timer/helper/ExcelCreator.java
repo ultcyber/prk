@@ -26,7 +26,7 @@ import org.apache.poi.ss.usermodel.CreationHelper;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class ExcelCreator.
+ * Creates an Excel spreadsheet given an ObservableList of Records. 
  */
 public class ExcelCreator {
 	

@@ -11,26 +11,20 @@ import java.util.List;
 
 import task.timer.model.AbstractEntity;
 import task.timer.model.EntityType;
+import task.timer.model.FactoryCreator;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
 import task.timer.model.Project;
 import task.timer.model.User;
 
 public class ProjectsTest {
-	ManageEntity MM;
+	ManageEntity<Project> MM;
     private SessionFactory sessionFactory;
 
 	@Before
 	public void setUp() {
-		try {
-			sessionFactory=new Configuration().configure().buildSessionFactory();}
-		catch(Throwable ex) {
-			System.err.println("Failed to create sessionFactory object." + ex);
-			ex.printStackTrace();
-			throw new ExceptionInInitializerError(ex);
-		}
-		MM = new ManageEntity(sessionFactory, EntityType.Project);
-		
+		sessionFactory=new FactoryCreator().getFactory();
+		MM = new ManageEntity<Project>(sessionFactory, EntityType.Project);		
 	}
 	
 	@Test
