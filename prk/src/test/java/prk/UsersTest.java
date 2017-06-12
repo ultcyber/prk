@@ -15,6 +15,7 @@ import task.timer.model.FactoryCreator;
 import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
 import task.timer.model.Project;
+import task.timer.model.Record;
 import task.timer.model.User;
 
 public class UsersTest {
@@ -37,15 +38,6 @@ public class UsersTest {
 		  assertEquals(Integer.valueOf(lastUserID), userID);	            
 	}
 	
-	@Test
-	public void MEFactory_save_a_user_to_a_database(){
-		  Integer userID = MM.add(new User("zara89", "testpass", "Zara", "Ali", "rw", true, true));
-		  List<AbstractEntity> users = MM.list();
-	      int lastIndex = users.size()-1;
-	      int lastUserID = ((User) users.get(lastIndex)).getId();
-	      
-		  assertEquals(Integer.valueOf(lastUserID), userID);	           
-	}
 	
 	@Test
 	public void when_adding_a_user_then_I_can_retrieve_his_data(){
@@ -72,8 +64,28 @@ public class UsersTest {
 	      
 		  assertFalse(users.get(lastIndex).equals(testUser) && lastUserId == userID);
 		  
-		  
-
+	}
+	
+	@Test
+	public void two_users_with_equal_ids_are_equal(){
+		User user1 = new User();
+		user1.setId(1);
+		
+		User user2 = new User();
+		user2.setId(2);
+		
+		assertEquals(user1,user2);
+	}
+	
+	@Test
+	public void a_user_is_not_equal_to_a_record_even_if_same_ids(){
+		User user1 = new User();
+		user1.setId(1);
+		
+		Record record1 = new Record();
+		record1.setId(1);
+		
+		assertFalse(user1.equals(record1));
 	}
 
 }

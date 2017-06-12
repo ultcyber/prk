@@ -37,5 +37,10 @@ public class ProjectsTest {
 		  assertEquals(Integer.valueOf(lastProjectID), projectID);            
 	}
 	
+	@Test
+	public void when_I_save_a_new_project_I_can_delete_it_from_the_database(){
+		
+	}
+	
 
 }

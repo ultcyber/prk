@@ -19,7 +19,8 @@ import javafx.beans.property.StringProperty;
 
 public class User extends AbstractEntity {
 	 
- 	/** The id. */
+
+	/** The id. */
  	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "id")
 	 private int id;
@@ -296,41 +297,6 @@ public class User extends AbstractEntity {
 	}
 	
 	
-	
-/* (non-Javadoc)
- * @see java.lang.Object#equals(java.lang.Object)
- */
-@Override
-	public boolean equals(Object other){
-		if (other == this) return true;
-		if (other == null) return false;
-		if (getClass() != other.getClass()) return false;
-		User user = (User) other;
-		
-		return 
-				getLogin().equals(user.getLogin()) &&
-				getPassword().equals(user.getPassword()) &&
-				getFirstName().equals(user.getFirstName()) &&
-				getLastName().equals(user.getLastName()) &&
-				getPermissions().equals(user.getPermissions());				
-	}
-		
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((permissions == null) ? 0 : permissions.hashCode());
-		return result;
-	}
-
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -338,5 +304,32 @@ public class User extends AbstractEntity {
 	public String toString(){
 		return firstName + " " + lastName;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + id;
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (getClass() != obj.getClass())
+			return false;
+		if (!super.equals(obj))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
