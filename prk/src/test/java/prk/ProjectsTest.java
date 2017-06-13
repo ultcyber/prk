@@ -1,21 +1,19 @@
 package prk;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.junit.Before;
+import org.junit.Test;
 
 import task.timer.model.AbstractEntity;
 import task.timer.model.EntityType;
 import task.timer.model.FactoryCreator;
-import task.timer.model.MEFactory;
 import task.timer.model.ManageEntity;
-import task.timer.model.Project;
-import task.timer.model.Record;
 import task.timer.model.Project;
 
 public class ProjectsTest {
@@ -86,6 +84,16 @@ public class ProjectsTest {
 		project2.setId(2);
 
 		assertFalse(project1.equals(project2));
+	}
+	
+	// Database table integrity tests. As dialog window cannot show and standard exceptions are suppressed, expects Throwable.
+	
+	@Test(expected=Throwable.class)
+	public void cannot_add_project_with_null_name(){
+		Project project = new Project();
+		
+		Integer id = MM.add(project);
+		assertTrue(id == null);
 	}
 
 }

@@ -221,6 +221,15 @@ public class Record extends AbstractEntity {
 	}
 	
 	/**
+	 * Sets the time start.
+	 *
+	 * @param date the date to set
+	 */
+	public void setDate(LocalDate date){
+		this.date = date;
+	}
+	
+	/**
 	 * Gets the time start property.
 	 *
 	 * @return the time start property
@@ -268,6 +277,7 @@ public class Record extends AbstractEntity {
 	public LocalDate getDate() {
 		return date;
 	}
+	
 
 	/**
 	 * Gets the date property.
