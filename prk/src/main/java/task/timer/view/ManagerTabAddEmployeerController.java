@@ -215,7 +215,9 @@ public class ManagerTabAddEmployeerController {
 	 * @throws ClassNotFoundException the class not found exception
 	 */
 	@FXML private void deleteUser() throws ClassNotFoundException{
-		if (usersTable.getSelectionModel().getSelectedIndex() >= -1)	// rób jeśli jest zaznaczony pracownik	
+		if ((usersTable.getSelectionModel().getSelectedIndex() >= -1) 
+				&& (havePermissionsToDelete(usersTable.getSelectionModel().getSelectedItem())))	// rób jeśli jest zaznaczony pracownik i masz uprawnienia do jego usuniecia
+			
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie loginu", "Czy na pewno chcesz usunąć login?", AlertType.CONFIRMATION);
 			if (dialog.getResult() == ButtonType.OK) {
@@ -239,6 +241,25 @@ public class ManagerTabAddEmployeerController {
 			else updateUser();
 	}
 	
+	private boolean havePermissionsToDelete(User currentUser){
+		if (currentUser.getPermissions().equals("pracownik")) return true;
+		if (LoginWindowController.loggedUser.getId() != currentUser.getId()){ // jeśli nie próbuje skasować sam siebie
+			if (LoginWindowController.loggedUser.getPermissions().equals("admin")) return true;			
+		}
+		
+		new AlertDialog("Brak uprawnień", "Nie masz uprawnień aby usuanąć tego użytkownika", AlertType.INFORMATION);
+		return false;
+		
+/*		if ((LoginWindowController.loggedUser.getPermissions().equals("admin")) // jeśli jest adminem
+			&& (LoginWindowController.loggedUser.getId() != currentUser.getId())) // jeśli nie próbuje skasować sam siebie
+			return true;
+		
+		if ((LoginWindowController.loggedUser.getPermissions().equals("manager")) // jeśli jest managerem
+				&& (LoginWindowController.loggedUser.getId() != currentUser.getId()) // jeśli nie próbuje skasować sam siebie
+				&& (currentUser.getPermissions().equals("pracownik"))) 
+			return true;
+		return false;*/
+	}
 	
 	/**
 	 * Preparing data to create new user
@@ -441,15 +462,19 @@ public class ManagerTabAddEmployeerController {
 	private void refreshInformationsFromTableView(User usr){
 		hideLackMessages();
 		newUser = false;
-	
+		
 		if (usr != null){
+			setPrivilagesToModifyUser(usr);
 			hidePassword();
 			changeCancelButton.setText("Zmień hasło");
 			userNameField.setText(usr.getFirstName());
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
 			userPasswordField.setText(usr.getPassword());
+			
 			if (usr.getPermissions().equals("manager")) userPermissionsBox.getSelectionModel().select(0);
+			System.out.println(usr.getPermissions());
+			
 			if (usr.getPermissions().equals("pracownik")) userPermissionsBox.getSelectionModel().select(1);
 			editingCheck.setSelected(usr.getEditing());
 			reminderCheck.setSelected(usr.getReminder());
@@ -464,6 +489,46 @@ public class ManagerTabAddEmployeerController {
 			editingCheck.setSelected(false);
 			reminderCheck.setSelected(false);
 		}
+	}
+	
+	private void setPrivilagesToModifyUser(User user){
+		setFields(false);
+		if (!LoginWindowController.loggedUser.getLogin().equals("admin"))
+		{
+			if (LoginWindowController.loggedUser.getId() != user.getId()){
+				System.out.println("zaznaczono innego usera");
+				if (user.getPermissions().equals("manager")){
+					setFields(true);
+				}
+				if (user.getPermissions().equals("pracownik")){
+					setFields(false);
+				}
+			}
+			
+			else {
+				System.out.println("jestem na swoim userze");
+				setFields(false);
+				deleteMenuItem.setDisable(true);
+			}
+		}
+		else {
+			if (LoginWindowController.loggedUser.getId() == user.getId()){
+				deleteMenuItem.setDisable(true);
+				userPermissionsBox.setDisable(true);
+			}
+		}
+	}
+	
+	private void setFields(boolean disabled){
+		userNameField.setDisable(disabled);
+		userLastNameField.setDisable(disabled);
+		userLoginField.setDisable(disabled);
+		userPermissionsBox.setDisable(disabled);
+		editingCheck.setDisable(disabled);
+		reminderCheck.setDisable(disabled);
+		changeCancelButton.setDisable(disabled);
+		saveUser.setDisable(disabled);
+		deleteMenuItem.setDisable(disabled);
 	}
 	
 	/**
