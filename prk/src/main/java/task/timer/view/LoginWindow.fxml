@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.LoginWindowController">
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="503.0" prefWidth="500.0" styleClass="background" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.timer.view.LoginWindowController">
   <children>
     <AnchorPane id="anchorPane2" layoutY="-15.0" prefHeight="315.0" prefWidth="500.0" styleClass="top-segment" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-15.0">
       <children>
@@ -24,11 +26,15 @@
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></PasswordField>
-                <ImageView id="app-login-logo" blendMode="SRC_ATOP" fitHeight="85.0" fitWidth="100.0" layoutX="163.0" layoutY="-14.0">
-                  <image>
-                    <Image url="@../helper/1496020755_preferences-system-login.png" />
-                  </image>
-                </ImageView>
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="427.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                      <ImageView id="app-login-logo" blendMode="SRC_ATOP" fitHeight="85.0" fitWidth="100.0">
+                        <image>
+                          <Image url="@../helper/1496020755_preferences-system-login.png" />
+                        </image>
+                      </ImageView>
+                           </children>
+                        </HBox>
               </children>
             </AnchorPane>
                   <Label fx:id="errorBox" prefHeight="84.0" prefWidth="372.0" textFill="RED" />
