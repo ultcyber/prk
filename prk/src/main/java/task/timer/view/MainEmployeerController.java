@@ -11,9 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+
 import javax.swing.Timer;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,10 +28,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Rectangle;
 import javafx.util.StringConverter;
 import task.timer.Main;
 import task.timer.ViewLoader;
@@ -41,7 +41,6 @@ import task.timer.helper.Helper;
 import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.User;
-import javafx.scene.shape.Rectangle;
 
 public class MainEmployeerController {
 	@FXML private Label loggedUserName;

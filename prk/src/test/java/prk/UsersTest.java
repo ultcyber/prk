@@ -42,6 +42,7 @@ public class UsersTest {
 	@Test
 	public void when_adding_a_user_then_I_can_retrieve_his_data(){
 	      User compareUser = new User("zara89", "testpass", "Zara", "Ali", "rw", true, true);
+		  Integer userID = MM.add(compareUser);
 		  List<AbstractEntity> users = MM.list();
 		  User userFromDb = (User) users.get(users.size()-1);
 		  
@@ -67,25 +68,25 @@ public class UsersTest {
 	}
 	
 	@Test
-	public void two_users_with_equal_ids_are_equal(){
-		User user1 = new User();
+	public void two_users_with_same_field_values_are_equal(){
+		User user1 = new User("tommy", "testpass", "Thomas", "Shelby", "r", true, true);
+		User user2 = new User("tommy", "testpass", "Thomas", "Shelby", "r", true, true);
+		
 		user1.setId(1);
-		
-		User user2 = new User();
-		user2.setId(2);
-		
+		user2.setId(1);
+
 		assertEquals(user1,user2);
 	}
 	
 	@Test
-	public void a_user_is_not_equal_to_a_record_even_if_same_ids(){
-		User user1 = new User();
+	public void two_users_with_same_props_but_different_ids_are_different(){
+		User user1 = new User("tommy", "testpass", "Thomas", "Shelby", "r", true, true);
+		User user2 = new User("tommy", "testpass", "Thomas", "Shelby", "r", true, true);
+		
 		user1.setId(1);
-		
-		Record record1 = new Record();
-		record1.setId(1);
-		
-		assertFalse(user1.equals(record1));
-	}
+		user2.setId(2);
 
+		assertFalse(user1.equals(user2));
+	}
 }
+

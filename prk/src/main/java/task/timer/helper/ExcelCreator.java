@@ -1,20 +1,7 @@
 package task.timer.helper;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import task.timer.model.AbstractEntity;
-import task.timer.model.MEFactory;
-import task.timer.model.Record;
-
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.sql.Date;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,6 +9,10 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+
+import javafx.collections.ObservableList;
+import task.timer.model.AbstractEntity;
+import task.timer.model.Record;
 
 
 // TODO: Auto-generated Javadoc

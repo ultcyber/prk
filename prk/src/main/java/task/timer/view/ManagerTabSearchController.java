@@ -1,5 +1,11 @@
 package task.timer.view;
 
+import static java.time.temporal.ChronoUnit.SECONDS;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +22,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,13 +32,6 @@ import task.timer.model.AbstractEntity;
 import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.User;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.LocalTime;
 
 
 /**

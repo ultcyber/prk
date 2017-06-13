@@ -1,10 +1,9 @@
 package task.timer.model;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import javafx.beans.property.SimpleStringProperty;
 
 // TODO: Auto-generated Javadoc
 /**
