@@ -10,24 +10,28 @@ import javafx.fxml.FXML;
 import task.timer.ViewLoader;
 import task.timer.helper.Helper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainManagerController.
+ */
 public class MainManagerController {
 	
+	/** The logged user name. */
 	@FXML private Label loggedUserName;
-	@FXML private AnchorPane project;
-	@FXML private GridPane gridpane;
-	@FXML private TabPane tabpane;
-	@FXML private VBox vbox;
 	
+	/** The project controller. */
 	@FXML private ManagerTabAddProjectController projectController;
+	
+	/** The employeer controller. */
 	@FXML private ManagerTabAddEmployeerController employeerController;
+	
+	/** The search controller. */
 	@FXML private ManagerTabSearchController searchController;
 	
+	/**
+	 * Initialize.
+	 */
 	@FXML private void initialize(){		
-		//System.out.println(anchorpane.isResizable());
-		//tabpane.requestLayout();
-		//tabpane.prefWidthProperty().bind(gridpane.prefWidthProperty());
-		//tabpane.prefHeightProperty().bind(vbox.prefHeightProperty());
-	
 	
 		loggedUserName.setText(
 				LoginWindowController.loggedUser.getFirstName() 
@@ -35,10 +39,16 @@ public class MainManagerController {
 				+ LoginWindowController.loggedUser.getLastName());
 	}
 	
+	/**
+	 * Clear fields in tab projects.
+	 */
 	@FXML private void clearTabProjects(){
 		projectController.clearFields();
 	}
 	
+	/**
+	 * Clear fields in tab employeer.
+	 */
 	@FXML private void clearTabEmployeer(){
 		employeerController.clearFields();
 		employeerController.hideLackMessages();
@@ -46,20 +56,23 @@ public class MainManagerController {
 		employeerController.resetSetting();
 	}
 	
+	/**
+	 * Read users and projects for tab search.
+	 */
 	@FXML private void readUsersAndProjects(){
 		searchController.refreshChooseUser();
 		searchController.refreshChooseProject();	
 		searchController.clearFields();
 	}
 	
+	/**
+	 * Logout.
+	 *
+	 * @param event the event
+	 */
 	@FXML private void logout(MouseEvent event){
 		
 		ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
-		Helper.changeStage(viewLoader, event);
-		
-	}
-
-	
-	
-	
+		Helper.changeStage(viewLoader, event);		
+	}	
 }

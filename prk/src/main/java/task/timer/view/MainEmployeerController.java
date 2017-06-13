@@ -42,64 +42,123 @@ import task.timer.model.Project;
 import task.timer.model.Record;
 import task.timer.model.User;
 
+/**
+ * The Class MainEmployeerController.
+ * @author Marcin Zglenicki
+ * @since JDK 1.8
+ */
 public class MainEmployeerController {
+	
+	/** The logged user name. */
 	@FXML private Label loggedUserName;
+	
+	/** The anchorpane1. */
 	@FXML private AnchorPane anchorPane1;
+	
+	/** The anchorpane2. */
 	@FXML private AnchorPane anchorPane2;
+	
+	/** The rectangle 1. */
 	@FXML private Rectangle rectangle1;
+	
+	/** The rectangle 2. */
 	@FXML private Rectangle rectangle2;
 	
-	List<Record> records;
+	/** The choose project box. */
 	@FXML private ChoiceBox<Project> chooseProject;
 	
+	/** Table with records. */
 	@FXML private TableView<Record> recordTable;
+	
+	/** The date column. */
 	@FXML private TableColumn<Record, String> dateColumn;
+	
+	/** The project name column. */
 	@FXML private TableColumn<Record, String> projectNameColumn;
+	
+	/** The description column. */
 	@FXML private TableColumn<Record, String> descriptionColumn;
+	
+	/** The start time column. */
 	@FXML private TableColumn<Record, String> startTimeColumn;
+	
+	/** The stop time column. */
 	@FXML private TableColumn<Record, String> stopTimeColumn;
 	
+	/** The start stop time button. */
 	@FXML private Button startStopTime;
+	
+	/** The measured time - hours label. */
 	@FXML private Label measuredTimeHoursLabel;
+	
+	/** The measured time - minutes label. */
 	@FXML private Label measuredTimeMinutesLabel;
+	
+	/** The measured time - seconds label. */
 	@FXML private Label measuredTimeSecondsLabel;
 
+	/** The description name. */
 	@FXML private TextField descriptionName;
+	
+	/** The current date tool. */
 	@FXML private DatePicker date;
+	
+	/** Label with current data. */
 	@FXML private Label dataLabel;
 	
+	/** The delete menu item. */
 	@FXML private MenuItem deleteMenuItem;
 	
+	/** The pattern date. */
 	private final String patternDate = "yyyy-MM-dd";
+	
+	/** The current date. */
 	private LocalDate currentDate;
 	
+	/** The time when user press start. */
 	private LocalTime timeStart;
+	
+	/** The time when user press stop. */
 	private LocalTime timeStop;
+	
+	/** The time - new thread. */
 	private Timer time;
+	
+	/** The passage of time in seconds. */
 	private long passageOfTimeSeconds;		
+	
+	/** The time hour. */
 	private long timeHour;								
+	
+	/** The time minutes. */
 	private long timeMinutes;
+	
+	/** The time seconds. */
 	private long timeSeconds;
+	
+	/** The rest - to count time. */
 	private long rest;	
 
+	/** The index of current project. */
 	private int indexOfCurrentProject;
 	
+	/** List of records. */
+	private List<Record> records;
+	
+	/** List of projects. */
 	private List<Project> projects;
 	
+	/** List of records - preparing to show in TableView. */
 	private final ObservableList<Record> dataRecords = 
 			FXCollections.observableArrayList();
 	
+	/**
+	 * Initialize.
+	 */
 	@FXML private void initialize(){
-		rectangle1.widthProperty().bind(anchorPane2.widthProperty());
-		rectangle2.widthProperty().bind(anchorPane1.widthProperty());
-		rectangle2.heightProperty().bind(anchorPane1.heightProperty().subtract(10));
+		binding();
 		
-		double width = dateColumn.widthProperty().get();
-		width += startTimeColumn.widthProperty().get();
-		width += stopTimeColumn.widthProperty().get();
-
-		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
-		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
+		projects = new ArrayList<Project>();
 		
 		recordTable.setPlaceholder(new Label("Lista pusta - brak danych"));
 		
@@ -107,10 +166,8 @@ public class MainEmployeerController {
 				LoginWindowController.loggedUser.getFirstName() 
 				+ " " 
 				+ LoginWindowController.loggedUser.getLastName());
-		
-		setDatePicker();
-		projects = new ArrayList<Project>();
-		
+
+		date.setValue(LocalDate.now());
 		currentDate = date.getValue();
 		dataLabel.setText(currentDate.toString());
 	
@@ -130,17 +187,25 @@ public class MainEmployeerController {
 		if (LoginWindowController.loggedUser.getEditing()) 
 			stopTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn()); // włącza edytowanie pola
 
-		readProjectsFromDataBase();
+		readProjects();		
+		chooseProject.getItems().addAll(projects); 
 		
-		chooseProject.getItems().addAll(projects);    
-		readAndShowRecordsFromDataBase();
+		readRecords();
+		showRecords();
 		
-		if (LoginWindowController.loggedUser.getReminder()){
-			launchReminder();
-		}
-		
+		if (LoginWindowController.loggedUser.getReminder())
+			launchReminder();		
 	}
 	
+	/**
+	 * Timing  
+	 * prepare fields 
+	 * start/stop measured work time
+	 * add new record to database
+	 * refresh view
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@FXML private void timing() throws ClassNotFoundException{
 		indexOfCurrentProject = chooseProject.getSelectionModel().getSelectedIndex();
 		
@@ -153,7 +218,8 @@ public class MainEmployeerController {
 				startTimeMeaserement();			
 				addRecord();	
 				currentPositionInTableView = recordTable.getItems().size();
-				readAndShowRecordsFromDataBase();		
+				readRecords();		
+				showRecords();
 				recordTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
 			}				
 			else {
@@ -168,21 +234,42 @@ public class MainEmployeerController {
 		}
 	}
 
-	@FXML private void readAndShowRecordsFromDataBase(){	
+	/**
+	 * Read records from database.
+	 */
+	@FXML private void readRecords(){	
 		records = Main.getMMRecord().listRecords(LoginWindowController.loggedUser, null, currentDate);		
 		if (records.size() > 0){
 			dataRecords.clear();			
-			dataRecords.addAll(records);					
-			recordTable.setItems(dataRecords);	
+			dataRecords.addAll(records);									
 		}
 	}
 	
+	/**
+	 * Show records in TableView.
+	 */
+	private void showRecords(){
+		recordTable.setItems(dataRecords);
+	}
+	
+	/**
+	 * Editing description and update record in database.
+	 *
+	 * @param descriptionEditEvent the description edit event
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	// umożliwia edycję pola w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditDescription(TableColumn.CellEditEvent<Record, String> descriptionEditEvent) throws ClassNotFoundException{	
 		recordTable.getSelectionModel().getSelectedItem().setDescription(descriptionEditEvent.getNewValue());
 		Main.getMMRecord().update(recordTable.getSelectionModel().getSelectedItem());		
 	}
 	
+	/**
+	 * Edit start time and update record in database.
+	 *
+	 * @param timeStartEditEvent the time start edit event
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	// umożliwia edycję startu pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditStartTime(TableColumn.CellEditEvent<Record, String> timeStartEditEvent) throws ClassNotFoundException{	
 		if (LoginWindowController.loggedUser.getEditing()){
@@ -204,6 +291,12 @@ public class MainEmployeerController {
 		}
 	}
 	
+	/**
+	 * Edit stop time and update record in database.
+	 *
+	 * @param timeStopEditEvent the time stop edit event
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	// umożliwia edycję konca pracy w TableView i zapis do bazy danych po zatwierdzeniu przez ENTER
 	@FXML private void onEditStopTime(TableColumn.CellEditEvent<Record, String> timeStopEditEvent) throws ClassNotFoundException{	
 		if (LoginWindowController.loggedUser.getEditing()){
@@ -221,6 +314,11 @@ public class MainEmployeerController {
 		}
 	}
 	
+	/**
+	 * Delete record from datebase.
+	 *
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@FXML void deleteRecord() throws ClassNotFoundException{
 		if (recordTable.getSelectionModel().getSelectedIndex() > -1)
 		{
@@ -233,11 +331,35 @@ public class MainEmployeerController {
 		}
 	}
 	
+	/**
+	 * Logout.
+	 *
+	 * @param event the event
+	 */
 	@FXML private void logout(MouseEvent event){	
 		ViewLoader<AnchorPane, Object> viewLoader = new ViewLoader<AnchorPane, Object>("view/LoginWindow.fxml");
 		Helper.changeStage(viewLoader, event);
 	}
 	
+	/**
+	 * Binding elements on graphic interface.
+	 */
+	private void binding(){
+		rectangle1.widthProperty().bind(anchorPane2.widthProperty());
+		rectangle2.widthProperty().bind(anchorPane1.widthProperty());
+		rectangle2.heightProperty().bind(anchorPane1.heightProperty().subtract(10));
+		
+		double width = dateColumn.widthProperty().get();
+		width += startTimeColumn.widthProperty().get();
+		width += stopTimeColumn.widthProperty().get();
+
+		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
+		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(2));
+	}
+	
+	/**
+	 * Adds the record to database.
+	 */
 	private void addRecord(){
 		indexOfCurrentProject = chooseProject.getSelectionModel().getSelectedIndex();
 		
@@ -254,6 +376,9 @@ public class MainEmployeerController {
 	    Main.getMMRecord().add(newRecord);
 	}
 	
+	/**
+	 * Disable elements on graphic interface.
+	 */
 	private void disableElements(){
 		startStopTime.setText("STOP");	
 		chooseProject.setDisable(true);
@@ -265,6 +390,9 @@ public class MainEmployeerController {
 		measuredTimeSecondsLabel.setText("0");
 	}
 	
+	/**
+	 * Enable elements on graphic interface.
+	 */
 	private void enableElements(){
 		startStopTime.setText("START");
 		chooseProject.setDisable(false);
@@ -273,32 +401,9 @@ public class MainEmployeerController {
 		recordTable.setDisable(false);
 	}
 
-	private void setDatePicker(){
-		date.setValue(LocalDate.now());
-		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
-	        DateTimeFormatter dateFormatter = 
-	            DateTimeFormatter.ofPattern(patternDate);
-	        
-	        @Override
-	        public String toString(LocalDate date) {
-	            if (date != null) 
-	            	return dateFormatter.format(date);
-	            else 
-	                return "";          
-	        }
-	        
-	        @Override
-	        public LocalDate fromString(String string) {
-	            if (string != null && !string.isEmpty()) 
-	                return LocalDate.parse(string, dateFormatter);
-	            else 
-	                return null;          
-	        }
-	    };             
-	    date.setConverter(converter);
-	    date.setPromptText(patternDate.toLowerCase());
-	}
-
+	/**
+	 * Start time measerement in new thread.
+	 */
 	private void startTimeMeaserement(){
 		time = new Timer(1000, e -> {	
 			timeStop = LocalTime.now();
@@ -314,16 +419,26 @@ public class MainEmployeerController {
 		time.start();
 	}
 
+	/**
+	 * Stop time measerement - stop thread.
+	 */
 	private void stopTimeMeaserement(){
 		time.stop();
 	}
 
-	private void readProjectsFromDataBase(){		
+	/**
+	 * Read the projects assigned to the logged in user
+	 */
+	private void readProjects(){		
 		Set<Project> projectsFromDataBase = LoginWindowController.loggedUser.getProjects();
 		Iterator<Project> wskaznik = projectsFromDataBase.iterator();
 		wskaznik.forEachRemaining(project -> projects.add(project));
 	}
 	
+	/**
+	 * Launch reminder.
+	 * author: Mateusz Trybulec
+	 */
 	private void launchReminder(){
 		
 		final int randDelay = new Random().nextInt(60)*60000+30;
@@ -365,10 +480,9 @@ public class MainEmployeerController {
 	/**
 	 * Allows a password change. Opens up a dialog.
 	 *
-	 * @param login name
+	 * author: Mateusz Trybulec
 	 * @return User object
-	 * @throws ClassNotFoundException 
-	 * @throws NoSuchAlgorithmException the no such algorithm exception for encryption handler.
+	 * @throws ClassNotFoundException the class not found exception
 	 */
 	
 	@FXML
@@ -378,10 +492,8 @@ public class MainEmployeerController {
 		
 		if (newPassHash != null){
 			user.setPassword(newPassHash);
-		}
-		
-		Main.getMMUser().update(user);
-				
+		}	
+		Main.getMMUser().update(user);				
 	}
 
 

@@ -202,34 +202,6 @@ public class ManagerTabAddEmployeerController {
 	@FXML private void hideLackUserConfirmPasswordLabel(){
 		lackUserConfirmPasswordLabel.setVisible(false);
 	}
-	
-	/**
-	 * When userPermissionsBox is changed then:
-	 *  - hide Label: lack permissions
-	 *  - hide/show CheckBoxes: editingCheck and reminderCheck
-	 */
-	private void changedChoiceBox(){
-		hideLackUserPermissionsLabel();
-		hideShowCheckBoxes();
-	}
-	
-	/**
-	 * Hide lack user permissions label.
-	 */
-	private void hideLackUserPermissionsLabel(){
-		lackUserPermissionsLabel.setVisible(false);
-	}
-	
-	private void hideShowCheckBoxes(){
-		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1){
-			editingCheck.setVisible(true);
-			reminderCheck.setVisible(true);
-		}
-		else {
-			editingCheck.setVisible(false);
-			reminderCheck.setVisible(false);
-		}			
-	}
 		
 	/**
 	 * Delete user.
@@ -292,6 +264,35 @@ public class ManagerTabAddEmployeerController {
 		
 		userNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
 		userLastNameColumn.prefWidthProperty().bind(usersTable.widthProperty().divide(2));
+	}
+	
+	
+	/**
+	 * When userPermissionsBox is changed then:
+	 *  - hide Label: lack permissions
+	 *  - hide/show CheckBoxes: editingCheck and reminderCheck
+	 */
+	private void changedChoiceBox(){
+		hideLackUserPermissionsLabel();
+		hideShowCheckBoxes();
+	}
+	
+	/**
+	 * Hide lack user permissions label.
+	 */
+	private void hideLackUserPermissionsLabel(){
+		lackUserPermissionsLabel.setVisible(false);
+	}
+	
+	private void hideShowCheckBoxes(){
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1){
+			editingCheck.setVisible(true);
+			reminderCheck.setVisible(true);
+		}
+		else {
+			editingCheck.setVisible(false);
+			reminderCheck.setVisible(false);
+		}			
 	}
 	
 	/**

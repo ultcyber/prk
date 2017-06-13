@@ -208,6 +208,22 @@ public class ManagerTabSearchController {
 	}
 	
 	/**
+	 * Binding elements on graphic interface.
+	 */
+	private void binding(){
+		rectangle.widthProperty().bind(search.widthProperty().subtract(10));
+		rectangle.heightProperty().bind(search.heightProperty().subtract(10));
+		
+		double width = dateColumn.widthProperty().get();
+		width += startTimeColumn.widthProperty().get();
+		width += stopTimeColumn.widthProperty().get();
+
+		userNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
+	}
+	
+	/**
 	 * Calculate total time.
 	 * author Mateusz Trybulec
 	 *
@@ -234,22 +250,7 @@ public class ManagerTabSearchController {
 		
 		return new Pair<Long, Long>(hours,minutes);		
 	}
-	
-	/**
-	 * Binding elements on graphic interface.
-	 */
-	private void binding(){
-		rectangle.widthProperty().bind(search.widthProperty().subtract(10));
-		rectangle.heightProperty().bind(search.heightProperty().subtract(10));
-		
-		double width = dateColumn.widthProperty().get();
-		width += startTimeColumn.widthProperty().get();
-		width += stopTimeColumn.widthProperty().get();
 
-		userNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
-		projectNameColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
-		descriptionColumn.prefWidthProperty().bind(recordTable.widthProperty().subtract(width).divide(3));
-	}
 	
 	/**
 	 * Read users from data base.
