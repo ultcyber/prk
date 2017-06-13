@@ -310,8 +310,8 @@ public class User extends AbstractEntity {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
+		final int prime = 1000000007;
+		int result = super.hashCode();	
 		result = prime * result + id;
 		return result;
 	}
@@ -323,15 +323,54 @@ public class User extends AbstractEntity {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		if (!super.equals(obj))
+		User other = (User) obj;
+		if (editing != other.editing)
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id != other.id)
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (login == null) {
+			if (other.login != null)
+				return false;
+		} else if (!login.equals(other.login))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (permissions == null) {
+			if (other.permissions != null)
+				return false;
+		} else if (!permissions.equals(other.permissions))
+			return false;
+		if (projects == null) {
+			if (other.projects != null)
+				return false;
+		} else if (!projects.equals(other.projects))
+			return false;
+		if (records == null) {
+			if (other.records != null)
+				return false;
+		} else if (!records.equals(other.records))
+			return false;
+		if (reminder != other.reminder)
 			return false;
 		return true;
 	}
-	
 	
 	
 }

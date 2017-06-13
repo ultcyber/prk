@@ -277,17 +277,19 @@ public class Record extends AbstractEntity {
 		SimpleStringProperty dateProperty = new SimpleStringProperty(date.toString());
 		return dateProperty;
 	}
-	
+
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int prime = 1000000007;
 		int result = super.hashCode();
 		result = prime * result + id;
 		return result;
 	}
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
@@ -296,13 +298,46 @@ public class Record extends AbstractEntity {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		if (!super.equals(obj))
+		Record other = (Record) obj;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
+			return false;
+		if (project == null) {
+			if (other.project != null)
+				return false;
+		} else if (!project.equals(other.project))
+			return false;
+		if (timeStart == null) {
+			if (other.timeStart != null)
+				return false;
+		} else if (!timeStart.equals(other.timeStart))
+			return false;
+		if (timeStop == null) {
+			if (other.timeStop != null)
+				return false;
+		} else if (!timeStop.equals(other.timeStop))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
 			return false;
 		return true;
-	}	
-	 
+	}
+	
+	
+	
 }
