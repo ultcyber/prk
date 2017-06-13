@@ -58,7 +58,7 @@ public class LoginWindowController {
 			ViewLoader<AnchorPane, Object> viewLoader = null;
 			
 			String permissions = loggedUser.getPermissions();
-			if (permissions.equals("manager")){
+			if (permissions.equals("manager") || permissions.equals("administrator")){
 				viewLoader = new ViewLoader<AnchorPane, Object>("view/MainManager.fxml");
 
 			}

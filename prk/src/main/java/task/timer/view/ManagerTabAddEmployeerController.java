@@ -147,7 +147,10 @@ public class ManagerTabAddEmployeerController {
 		usersTable.getSelectionModel().selectedItemProperty()
 			.addListener((observable, oldValue, newValue) -> refreshInformationsFromTableView(newValue));
 
-		userPermissionsBox.getItems().addAll("manager", "pracownik");
+		userPermissionsBox.getItems().add("pracownik");
+		if (LoginWindowController.loggedUser.getPermissions().equals("administrator")){
+			userPermissionsBox.getItems().add("manager");
+		}
 		userPermissionsBox.getSelectionModel().selectedIndexProperty()
 			.addListener((observable, oldValue, newValue) -> setPermission());
 		
