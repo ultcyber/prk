@@ -286,7 +286,11 @@ public class Record extends AbstractEntity {
 	public int hashCode() {
 		final int prime = 1000000007;
 		int result = super.hashCode();
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((timeStart == null) ? 0 : timeStart.hashCode());
+		result = prime * result + ((timeStop == null) ? 0 : timeStop.hashCode());
 		return result;
 	}
 
@@ -315,11 +319,6 @@ public class Record extends AbstractEntity {
 			return false;
 		if (id != other.id)
 			return false;
-		if (project == null) {
-			if (other.project != null)
-				return false;
-		} else if (!project.equals(other.project))
-			return false;
 		if (timeStart == null) {
 			if (other.timeStart != null)
 				return false;
@@ -330,13 +329,9 @@ public class Record extends AbstractEntity {
 				return false;
 		} else if (!timeStop.equals(other.timeStop))
 			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
 		return true;
 	}
+
 	
 	
 	

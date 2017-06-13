@@ -171,6 +171,7 @@ public class Project extends AbstractEntity {
 		final int prime = 1000000007;
 		int result = super.hashCode();
 		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -193,17 +194,9 @@ public class Project extends AbstractEntity {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (records == null) {
-			if (other.records != null)
-				return false;
-		} else if (!records.equals(other.records))
-			return false;
-		if (users == null) {
-			if (other.users != null)
-				return false;
-		} else if (!users.equals(other.users))
-			return false;
 		return true;
 	}
+
+	
 	
 }

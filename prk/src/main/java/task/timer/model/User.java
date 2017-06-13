@@ -311,7 +311,8 @@ public class User extends AbstractEntity {
 	@Override
 	public int hashCode() {
 		final int prime = 1000000007;
-		int result = super.hashCode();	
+		int result = super.hashCode();
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + id;
 		return result;
 	}
@@ -357,20 +358,12 @@ public class User extends AbstractEntity {
 				return false;
 		} else if (!permissions.equals(other.permissions))
 			return false;
-		if (projects == null) {
-			if (other.projects != null)
-				return false;
-		} else if (!projects.equals(other.projects))
-			return false;
-		if (records == null) {
-			if (other.records != null)
-				return false;
-		} else if (!records.equals(other.records))
-			return false;
 		if (reminder != other.reminder)
 			return false;
 		return true;
 	}
+
+	
 	
 	
 }

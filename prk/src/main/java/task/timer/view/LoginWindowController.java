@@ -88,7 +88,7 @@ public class LoginWindowController {
 	 * @throws NoSuchAlgorithmException the no such algorithm exception for encryption handler.
 	 */
 	@FXML
-	public Pair<User, String> login(String login) throws NoSuchAlgorithmException {
+	private Pair<User, String> login(String login) throws NoSuchAlgorithmException {
 
 		if (!Main.getMMUser().ping())
 			return new Pair<User, String>(null, "Błąd połączenia z bazą danych");
@@ -102,4 +102,5 @@ public class LoginWindowController {
 		}
 		return new Pair<User, String>(null, "Nieprawidłowa nazwa użytkownika lub hasło");
 	}
+	
 }
