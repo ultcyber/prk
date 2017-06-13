@@ -203,6 +203,11 @@ public class ManagerTabAddEmployeerController {
 		lackUserConfirmPasswordLabel.setVisible(false);
 	}
 	
+	/**
+	 * When userPermissionsBox is changed then:
+	 *  - hide Label: lack permissions
+	 *  - hide/show CheckBoxes: editingCheck and reminderCheck
+	 */
 	private void changedChoiceBox(){
 		hideLackUserPermissionsLabel();
 		hideShowCheckBoxes();
@@ -216,7 +221,6 @@ public class ManagerTabAddEmployeerController {
 	}
 	
 	private void hideShowCheckBoxes(){
-		System.out.println(userPermissionsBox.toString());
 		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1){
 			editingCheck.setVisible(true);
 			reminderCheck.setVisible(true);
@@ -403,8 +407,6 @@ public class ManagerTabAddEmployeerController {
 	 */
 	private void addUser() throws NoSuchAlgorithmException{
 		int currentPositionInTableView;
-		//	jeśli wszystkie pola są wypełnione i jeśli login jest unikalny i hasło jest takie, jak powtórzone hasło; 
-		// przekazywana wartość "-1" w metodzie isLoginUnique wskazuje, że wszyscy userzy będą przeszukani
 		if (isAllFieldsAreFull() 
 				&& isTheSamePassword() 
 				&& isLoginUnique(-1)){		
@@ -421,7 +423,7 @@ public class ManagerTabAddEmployeerController {
 			readUsers();
 			showUsers();
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
-			new AlertDialog("Operacja zakończona", "Dodano pracownika", AlertType.INFORMATION);
+			new AlertDialog("Operacja zako�czona", "Dodano pracownika", AlertType.INFORMATION);
 			newUser = false;
 		}	
 	}
@@ -463,7 +465,7 @@ public class ManagerTabAddEmployeerController {
 		if (usr != null){
 			setPrivilagesToModifyUser(usr);
 			hidePassword();
-			changeCancelButton.setText("Zmień hasło");
+			changeCancelButton.setText("Zmie� has�o");
 			userNameField.setText(usr.getFirstName());
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
@@ -490,13 +492,18 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	/**
+	 * Set permissions for the logged in user
+	 *
+	 * @param usr - current (selected) user
+	 */
 	private void setPrivilagesToModifyUser(User user){
 		setFields(false);
-		if (!LoginWindowController.loggedUser.getLogin().equals("admin"))
+		if (!LoginWindowController.loggedUser.getPermissions().equals("administrator"))
 		{
 			if (LoginWindowController.loggedUser.getId() != user.getId()){
-				System.out.println("zaznaczono innego usera");
-				if (user.getPermissions().equals("manager")){
+				if ((user.getPermissions().equals("manager")) 
+						|| (user.getPermissions().equals("administrator"))){
 					setFields(true);
 				}
 				if (user.getPermissions().equals("pracownik")){
@@ -505,7 +512,6 @@ public class ManagerTabAddEmployeerController {
 			}
 			
 			else {
-				System.out.println("jestem na swoim userze");
 				setFields(false);
 				deleteMenuItem.setDisable(true);
 			}
@@ -518,6 +524,11 @@ public class ManagerTabAddEmployeerController {
 		}
 	}
 	
+	/**
+	 * Set fields as enabled or disabled
+	 *
+	 * @param disabled - sets fields
+	 */
 	private void setFields(boolean disabled){
 		userNameField.setDisable(disabled);
 		userLastNameField.setDisable(disabled);
