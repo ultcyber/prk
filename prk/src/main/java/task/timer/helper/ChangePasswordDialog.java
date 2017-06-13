@@ -44,9 +44,9 @@ public class ChangePasswordDialog {
 		grid.setPadding(new Insets(20, 150, 10, 10));
 
 		PasswordField password = new PasswordField();
-		password.setPromptText("Username");
+		password.setPromptText("Hasło");
 		PasswordField rpassword = new PasswordField();
-		rpassword.setPromptText("Password");
+		rpassword.setPromptText("Powtórz hasło");
 
 		grid.add(new Label("Wpisz nowe hasło:"), 0, 0);
 		grid.add(password, 1, 0);

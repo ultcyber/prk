@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -95,12 +94,12 @@ public class ManageEntity<T> implements IEntityManager {
 		Integer entityID = null;
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			tx = session.beginTransaction();
 			entityID = (Integer) session.save(entity);
 			tx.commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
@@ -125,12 +124,12 @@ public class ManageEntity<T> implements IEntityManager {
 		Transaction tx = null;
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			tx = session.beginTransaction();
 			session.update(newEntity);
 			tx.commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
@@ -156,13 +155,13 @@ public class ManageEntity<T> implements IEntityManager {
 
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			tx = session.beginTransaction();
 			AbstractEntity existingEntity = (AbstractEntity) session.get(Class.forName(entityType.getClassType()), id);
 			session.delete(existingEntity);
 			tx.commit();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
@@ -191,13 +190,13 @@ public class ManageEntity<T> implements IEntityManager {
 		List<AbstractEntity> entities = null;
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			tx = session.beginTransaction();
 			entities = session.createQuery("from " + entityType).list();
 			tx.commit();
 			return entities;
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
@@ -223,7 +222,7 @@ public class ManageEntity<T> implements IEntityManager {
 		
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			String hql = "from User U where U.login = :user_login";
 			Query<User> query = session.createQuery(hql);
@@ -233,7 +232,7 @@ public class ManageEntity<T> implements IEntityManager {
 			if (results.size() == 1) {
 				return (User) results.get(0);
 			}
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			fail(e);
 		} finally {
 			session.close();
@@ -260,14 +259,14 @@ public class ManageEntity<T> implements IEntityManager {
 		
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			String hql = "from Records R where R.date between :date_start and :date_end";
 			Query<Record> query = session.createQuery(hql);
 			query.setParameter("date_start", dateStart);
 			query.setParameter("date_end", dateEnd);
 			results = query.list();
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			fail(e);
 		} finally {
 			session.close();
@@ -308,7 +307,7 @@ public class ManageEntity<T> implements IEntityManager {
 
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			String sql;
 			if (data.length > 0) {
@@ -319,7 +318,7 @@ public class ManageEntity<T> implements IEntityManager {
 			Query<Record> query = session.createQuery(sql, Record.class);
 			entities = query.list();
 
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			fail(e);
 			e.printStackTrace();
 		} finally {
@@ -371,7 +370,7 @@ public class ManageEntity<T> implements IEntityManager {
 
 		try {
 			if (!ping()) {
-				throw new HibernateException("No connection!");
+				throw new Exception("No connection!");
 			}
 			String sql;
 			if (data.length > 0) {
@@ -384,7 +383,7 @@ public class ManageEntity<T> implements IEntityManager {
 
 			return entities;
 
-		} catch (HibernateException e) {
+		} catch (Exception e) {
 			fail(e);
 			e.printStackTrace();
 		} finally {

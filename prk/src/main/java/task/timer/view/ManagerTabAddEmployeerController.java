@@ -424,7 +424,7 @@ public class ManagerTabAddEmployeerController {
 			readUsers();
 			showUsers();
 			usersTable.getSelectionModel().select(currentPositionInTableView); // ustaw podswietlenie na ostatni wiersz
-			new AlertDialog("Operacja zakoÒczona", "Dodano pracownika", AlertType.INFORMATION);
+			new AlertDialog("Operacja zako≈Ñczona", "Dodano pracownika", AlertType.INFORMATION);
 			newUser = false;
 		}	
 	}
@@ -466,7 +466,7 @@ public class ManagerTabAddEmployeerController {
 		if (usr != null){
 			setPrivilagesToModifyUser(usr);
 			hidePassword();
-			changeCancelButton.setText("ZmieÒ has≥o");
+			changeCancelButton.setText("Zmie≈Ñ has≈Ço");
 			userNameField.setText(usr.getFirstName());
 			userLastNameField.setText(usr.getLastName());
 			userLoginField.setText(usr.getLogin());
