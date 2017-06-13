@@ -18,7 +18,7 @@ import javafx.beans.property.StringProperty;
 
 // TODO: Auto-generated Javadoc
 /**
- * Record hibernate model.
+ * Record Hibernate model.
  */
 @Entity
 @Table(name="RECORDS")
