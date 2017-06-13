@@ -107,7 +107,7 @@
                         </VBox>
                         <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addProject" prefHeight="25.0" prefWidth="86.0" text="Dodaj">
                            <HBox.margin>
-                              <Insets top="17.0" />
+                              <Insets top="14.0" />
                            </HBox.margin>
                         </Button>
                      </children>
