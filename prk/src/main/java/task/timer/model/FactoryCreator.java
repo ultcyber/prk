@@ -32,8 +32,9 @@ public class FactoryCreator {
 			CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
 			File jarFile = new File(codeSource.getLocation().toURI().getPath());
 			String jarDir = jarFile.getParentFile().getPath();
+			System.out.println(jarDir+"/hibernate.cfg.xml");
 
-			factory = new Configuration().configure(jarDir).buildSessionFactory();
+			factory = new Configuration().configure(new File(jarDir+"/hibernate.cfg.xml")).buildSessionFactory();
 		} catch (ConfigurationException | URISyntaxException e) {
 			try {
 				factory = new Configuration().configure().buildSessionFactory();
