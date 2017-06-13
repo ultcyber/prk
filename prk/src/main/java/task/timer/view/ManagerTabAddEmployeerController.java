@@ -151,6 +151,8 @@ public class ManagerTabAddEmployeerController {
 		userPermissionsBox.getSelectionModel().selectedIndexProperty()
 			.addListener((observable, oldValue, newValue) -> setPermission());
 		
+		userPermissionsBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> changedChoiceBox());
+		
 		refreshData();
 	}
 	
@@ -202,11 +204,28 @@ public class ManagerTabAddEmployeerController {
 		lackUserConfirmPasswordLabel.setVisible(false);
 	}
 	
+	private void changedChoiceBox(){
+		hideLackUserPermissionsLabel();
+		hideShowCheckBoxes();
+	}
+	
 	/**
 	 * Hide lack user permissions label.
 	 */
-	@FXML private void hideLackUserPermissionsLabel(){
+	private void hideLackUserPermissionsLabel(){
 		lackUserPermissionsLabel.setVisible(false);
+	}
+	
+	private void hideShowCheckBoxes(){
+		System.out.println(userPermissionsBox.toString());
+		if (userPermissionsBox.getSelectionModel().getSelectedIndex() == 1){
+			editingCheck.setVisible(true);
+			reminderCheck.setVisible(true);
+		}
+		else {
+			editingCheck.setVisible(false);
+			reminderCheck.setVisible(false);
+		}			
 	}
 		
 	/**
@@ -215,8 +234,7 @@ public class ManagerTabAddEmployeerController {
 	 * @throws ClassNotFoundException the class not found exception
 	 */
 	@FXML private void deleteUser() throws ClassNotFoundException{
-		if ((usersTable.getSelectionModel().getSelectedIndex() >= -1) 
-				&& (havePermissionsToDelete(usersTable.getSelectionModel().getSelectedItem())))	// rób jeśli jest zaznaczony pracownik i masz uprawnienia do jego usuniecia
+		if (usersTable.getSelectionModel().getSelectedIndex() >= -1) // rób jeśli jest zaznaczony pracownik i masz uprawnienia do jego usuniecia
 			
 		{
 			AlertDialog dialog = new AlertDialog("Potwierdź usunięcie loginu", "Czy na pewno chcesz usunąć login?", AlertType.CONFIRMATION);
@@ -240,27 +258,7 @@ public class ManagerTabAddEmployeerController {
 		if (newUser) addUser();
 			else updateUser();
 	}
-	
-	private boolean havePermissionsToDelete(User currentUser){
-		if (currentUser.getPermissions().equals("pracownik")) return true;
-		if (LoginWindowController.loggedUser.getId() != currentUser.getId()){ // jeśli nie próbuje skasować sam siebie
-			if (LoginWindowController.loggedUser.getPermissions().equals("admin")) return true;			
-		}
 		
-		new AlertDialog("Brak uprawnień", "Nie masz uprawnień aby usuanąć tego użytkownika", AlertType.INFORMATION);
-		return false;
-		
-/*		if ((LoginWindowController.loggedUser.getPermissions().equals("admin")) // jeśli jest adminem
-			&& (LoginWindowController.loggedUser.getId() != currentUser.getId())) // jeśli nie próbuje skasować sam siebie
-			return true;
-		
-		if ((LoginWindowController.loggedUser.getPermissions().equals("manager")) // jeśli jest managerem
-				&& (LoginWindowController.loggedUser.getId() != currentUser.getId()) // jeśli nie próbuje skasować sam siebie
-				&& (currentUser.getPermissions().equals("pracownik"))) 
-			return true;
-		return false;*/
-	}
-	
 	/**
 	 * Preparing data to create new user
 	 */
@@ -473,9 +471,11 @@ public class ManagerTabAddEmployeerController {
 			userPasswordField.setText(usr.getPassword());
 			
 			if (usr.getPermissions().equals("manager")) userPermissionsBox.getSelectionModel().select(0);
-			System.out.println(usr.getPermissions());
 			
 			if (usr.getPermissions().equals("pracownik")) userPermissionsBox.getSelectionModel().select(1);
+			
+			hideShowCheckBoxes();
+			
 			editingCheck.setSelected(usr.getEditing());
 			reminderCheck.setSelected(usr.getReminder());
 		}
