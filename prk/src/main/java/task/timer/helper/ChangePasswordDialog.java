@@ -16,10 +16,18 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.util.Pair;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ChangePasswordDialog.
+ */
 public class ChangePasswordDialog {
 	
+	/** The password hash. */
 	private String passwordHash;
 	
+	/**
+	 * Instantiates a new change password dialog.
+	 */
 	public ChangePasswordDialog() {
 			
 		Dialog<String> dialog = new Dialog<String>();
@@ -89,6 +97,11 @@ public class ChangePasswordDialog {
 
 	}
 	
+	/**
+	 * Gets the password hash.
+	 *
+	 * @return the password hash
+	 */
 	public String getPasswordHash(){
 		return passwordHash;
 	}
