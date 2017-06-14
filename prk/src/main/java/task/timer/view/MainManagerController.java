@@ -10,9 +10,10 @@ import javafx.fxml.FXML;
 import task.timer.ViewLoader;
 import task.timer.helper.Helper;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MainManagerController.
+ * @author Marcin Zglenicki
+ * @since JDK 1.8
  */
 public class MainManagerController {
 	
