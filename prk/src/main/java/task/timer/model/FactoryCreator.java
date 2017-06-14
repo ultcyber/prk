@@ -14,6 +14,7 @@ import task.timer.helper.AlertDialog;
 
 /**
  * FactoryCreator class. Helps creating a SessionFactory object.
+ * @author Mateusz Trybulec
  */
 public class FactoryCreator {
 	   

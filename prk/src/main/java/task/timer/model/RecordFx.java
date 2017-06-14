@@ -5,9 +5,9 @@ import java.text.SimpleDateFormat;
 
 import javafx.beans.property.SimpleStringProperty;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class RecordFx.
+ * @author Marcin Zglenicki
  */
 public class RecordFx {
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * The Interface IEntityManager. Provides an abstract layer for implementing a DAO class.
+ * @author Mateusz Trybulec
  */
 public interface IEntityManager {
 	

@@ -1,10 +1,10 @@
 package task.timer.model;
 
-// TODO: Auto-generated Javadoc
 /**
  * An abstract layer for interactions with the database.
  * 
  * Keeps the consistency of types returned by {@link ManageEntity}
+ * @author Mateusz Trybulec
  * 
  */
 public abstract class AbstractEntity {

@@ -13,6 +13,7 @@ import task.timer.ViewLoader;
 
 /**
  * Utility functions for some operations.
+ * @author Mateusz Trybulec
  */
 public class Helper {
 	

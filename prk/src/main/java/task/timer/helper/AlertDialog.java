@@ -14,9 +14,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AlertDialog.
+ * Helper class for launching different types of Alert Windows.
+ * @author Mateusz Trybulec
  */
 public class AlertDialog {
 	

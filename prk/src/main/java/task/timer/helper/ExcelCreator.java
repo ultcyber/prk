@@ -15,9 +15,9 @@ import task.timer.model.AbstractEntity;
 import task.timer.model.Record;
 
 
-// TODO: Auto-generated Javadoc
 /**
- * Creates an Excel spreadsheet given an ObservableList of Records. 
+ * Creates an Excel spreadsheet given an ObservableList of Records.
+ * @author Mateusz Trybulec 
  */
 public class ExcelCreator {
 	

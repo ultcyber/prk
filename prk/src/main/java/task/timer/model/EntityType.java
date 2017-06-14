@@ -2,6 +2,7 @@ package task.timer.model;
 
 /**
  * The Enum EntityType. Exposes the limited number of classes to be used by @{link ManageEntity}.
+ * @author Mateusz Trybulec
  */
 public enum EntityType {
 	

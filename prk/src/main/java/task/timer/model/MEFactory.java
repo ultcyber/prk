@@ -1,9 +1,9 @@
 package task.timer.model;
 import org.hibernate.SessionFactory;
 
-// TODO: Auto-generated Javadoc
 /**
  * A factory for creating ME objects.
+ * @author Mateusz Trybulec
  */
 public class MEFactory {
 	

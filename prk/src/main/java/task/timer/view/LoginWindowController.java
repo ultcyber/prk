@@ -1,7 +1,4 @@
-/*
- * A FXML controller for the Login Window stage. Exposes methods for controlling the login process.
- * 
- */
+
 package task.timer.view;
 
 import java.io.IOException;
@@ -21,6 +18,7 @@ import task.timer.model.User;
 
 /**
  * Class LoginWindowController.
+ * A FXML controller for the Login Window stage. Exposes methods for controlling the login process.
  * @author Mateusz Trybulec
  */
 public class LoginWindowController {

@@ -14,9 +14,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class ChangePasswordDialog.
+ * Helper class for presenting the change password dialog for the user.
+ * @author Mateusz Trybulec
  */
 public class ChangePasswordDialog {
 	

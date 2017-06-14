@@ -437,7 +437,7 @@ public class MainEmployeerController {
 	
 	/**
 	 * Launch reminder.
-	 * author: Mateusz Trybulec
+	 * @author Mateusz Trybulec
 	 */
 	private void launchReminder(){
 		

@@ -185,7 +185,7 @@ public class ManagerTabSearchController {
 	
 	/**
 	 * Export xls with search results.
-	 * author Mateusz Trybulec
+	 * @author Mateusz Trybulec
 	 *
 	 * @param event the event
 	 * @throws IOException Signals that an I/O exception has occurred.

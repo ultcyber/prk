@@ -10,9 +10,9 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-// TODO: Auto-generated Javadoc
 /**
  * Project hibernate model.
+ * @author Mateusz Trybulec
  */
 @Entity
 @Table(name = "PROJECTS")
