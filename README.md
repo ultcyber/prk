@@ -1,6 +1,6 @@
 # Task Timer
 
-Task Timer jest aplikacją desktopową napisaną w JavaFX. Pomaga w rejestrowaniu czasu pracy pracowników spędzonych w ramach określonego projektu i ułatwia menedżerom analizę dotyczącą czasu pracy.
+Task Timer jest aplikacją desktopową napisaną w JavaFX. Pomaga w rejestrowaniu czasu pracy pracowników spędzonych w ramach określonego projektu i ułatwia menedżerom analizę czasu pracy.
 
 Task Timer pracuje z bazą danych MySQL.
 
